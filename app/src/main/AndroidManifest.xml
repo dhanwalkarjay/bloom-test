@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
+        android:name=".customer.BloomApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -11,15 +16,54 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Bloom">
+
         <activity
-            android:name=".MainActivity"
+            android:name=".customer.ui.splash.SplashActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/Theme.Bloom">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".customer.ui.auth.LoginActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name=".customer.ui.auth.SignupActivity" />
+        <activity android:name=".customer.ui.auth.OtpVerifyActivity" />
+        <activity android:name=".customer.ui.home.HomeActivity" />
+        <activity android:name=".customer.ui.location.ManualLocationActivity" />
+        <activity android:name=".customer.ui.shop.ShopDetailActivity" />
+        <activity android:name=".customer.ui.product.ProductDetailActivity" />
+        <activity android:name=".customer.ui.cart.CartActivity" />
+        <activity android:name=".customer.ui.checkout.AddressSelectActivity" />
+        <activity android:name=".customer.ui.checkout.AddAddressActivity" />
+        <activity android:name=".customer.ui.checkout.DeliverySlotActivity" />
+        <activity android:name=".customer.ui.checkout.PaymentActivity" />
+        <activity android:name=".customer.ui.orderconfirmation.OrderConfirmationActivity" />
+        <activity android:name=".customer.ui.ordertracking.OrderTrackingActivity" />
+        <activity android:name=".customer.ui.orderhistory.OrderHistoryActivity" />
+        <activity android:name=".customer.ui.reviews.ReviewActivity" />
+        <activity android:name=".customer.ui.profile.ProfileActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_GOOGLE_MAPS_API_KEY" />
+
+        <receiver
+            android:name="com.razorpay.RzpTokenReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="rzp.device_token.share" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize">
         </activity>
     </application>
 

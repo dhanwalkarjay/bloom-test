@@ -1,0 +1,44 @@
+package com.bloom.customer.ui.splash;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.bloom.customer.data.local.SessionManager;
+import com.bloom.customer.ui.auth.LoginActivity;
+import com.bloom.customer.ui.home.HomeActivity;
+import com.bloom.databinding.ActivitySplashBinding;
+
+/**
+ * Entry point Activity. Handles session routing.
+ * Principle: Single Responsibility - determines initial navigation flow.
+ */
+public class SplashActivity extends AppCompatActivity {
+
+    private static final int SPLASH_DELAY = 1500; // 1.5 seconds
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ActivitySplashBinding binding = ActivitySplashBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        new Handler(Looper.getMainLooper()).postDelayed(this::checkSession, SPLASH_DELAY);
+    }
+
+    private void checkSession() {
+        SessionManager sessionManager = SessionManager.getInstance(this);
+
+        if (sessionManager.isLoggedIn()) {
+            // Valid token found, route to Home
+            startActivity(new Intent(this, HomeActivity.class));
+        } else {
+            // No session found, route to Login
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+        finish();
+    }
+}
