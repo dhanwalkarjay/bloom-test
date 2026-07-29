@@ -145,6 +145,6 @@
         android:layout_margin="16dp"
         android:background="@drawable/bg_circle_translucent"
         android:src="@drawable/ic_arrow_back"
-        app:tint="@android:color/white" />
+        app:tint="#000000" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

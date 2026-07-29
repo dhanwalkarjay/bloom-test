@@ -12,8 +12,8 @@ public class Product {
     @SerializedName("shop_id")
     private String shopId;
 
-    @SerializedName("name")
-    private String name;
+    @SerializedName("title")
+    private String title;
 
     @SerializedName("description")
     private String description;
@@ -21,7 +21,7 @@ public class Product {
     @SerializedName("price")
     private double price;
 
-    @SerializedName("image_url")
+    @SerializedName("images")
     private String imageUrl;
 
     @SerializedName("category")
@@ -29,6 +29,15 @@ public class Product {
 
     @SerializedName("is_lux")
     private boolean isLux;
+
+    @SerializedName("occasion_tags")
+    private String[] occasionTags;
+
+    @SerializedName("is_bestseller")
+    private boolean isBestseller;
+
+    @SerializedName("stock_count")
+    private int stockCount;
 
     @SerializedName("created_at")
     private String createdAt;
@@ -40,8 +49,12 @@ public class Product {
     public String getShopId() { return shopId; }
     public void setShopId(String shopId) { this.shopId = shopId; }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    // Keep backward compatibility for code using florist_id
+    public String getFloristId() { return shopId; }
+    public void setFloristId(String floristId) { this.shopId = floristId; }
+
+    public String getName() { return title; }
+    public void setName(String name) { this.title = name; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }

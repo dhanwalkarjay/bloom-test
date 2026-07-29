@@ -25,6 +25,12 @@ public class HomeViewModel extends AndroidViewModel {
     private final LocationHelper locationHelper;
     private final MutableLiveData<Location> userLocation = new MutableLiveData<>();
 
+    // Manual location state - persists across refreshes until user explicitly changes it
+    private boolean hasManualLocation = false;
+    private double manualLat;
+    private double manualLng;
+    private String manualAreaName;
+
     public HomeViewModel(@NonNull Application application) {
         super(application);
         this.shopRepository = new ShopRepository(application);
@@ -36,11 +42,41 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void refreshLocation() {
+        // If user manually set a location, don't override it with GPS on refresh
+        if (hasManualLocation) return;
+
         locationHelper.getLastLocation(location -> {
             if (location != null) {
                 userLocation.setValue(location);
             }
         });
+    }
+
+    public void setManualLocation(double lat, double lng, String areaName) {
+        this.hasManualLocation = true;
+        this.manualLat = lat;
+        this.manualLng = lng;
+        this.manualAreaName = areaName;
+    }
+
+    public boolean hasManualLocation() {
+        return hasManualLocation;
+    }
+
+    public double getManualLat() {
+        return manualLat;
+    }
+
+    public double getManualLng() {
+        return manualLng;
+    }
+
+    public String getManualAreaName() {
+        return manualAreaName;
+    }
+
+    public void clearManualLocation() {
+        this.hasManualLocation = false;
     }
 
     public LiveData<NetworkResult<List<Shop>>> getNearbyShops(double lat, double lng) {

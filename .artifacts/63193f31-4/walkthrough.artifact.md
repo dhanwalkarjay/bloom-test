@@ -1,34 +1,36 @@
-# Walkthrough - Profile & Account Management
+# Walkthrough - Navigation Framework & UX Polish
 
-I have successfully implemented the User Profile screen, enabling users to view their account details, manage their saved addresses, and securely log out of the application.
+I have implemented a more robust architectural framework by transitioning to a Fragment-based navigation system and addressed several UX and security issues.
 
 ## Changes Made
 
-### 1. Data Layer Enhancements
-- **[SupabaseAPI.java](file:///E:/projects/New%20Idea/Bloom/app/src/main/java/com/bloom/customer/data/api/SupabaseAPI.java)**: Added the `getProfile` endpoint to fetch user details from the `profiles` table.
-- **[ProfileRepository.java](file:///E:/projects/New%20Idea/Bloom/app/src/main/java/com/bloom/customer/data/repository/ProfileRepository.java)**: Created a new repository to handle profile data retrieval and state management.
+### 1. Architectural Transition (Fragments)
+- **Persistent Navigation**: Moved the core sections of the app (**Home**, **Orders**, and **Account**) from standalone Activities into **Fragments** (`HomeFragment`, `OrdersFragment`, `ProfileFragment`).
+- **Main Container**: Updated `HomeActivity` to act as the primary host, using a `BottomNavigationView` to switch between these fragments seamlessly while keeping the navigation bar visible.
+- **Improved Lifecycle**: Using Fragments allows the app to maintain state better when navigating between the main sections.
 
-### 2. Profile UI
-- **[activity_profile.xml](file:///E:/projects/New%20Idea/Bloom/app/src/main/res/layout/activity_profile.xml)**: Built a clean, professional layout featuring:
-    - User avatar and basic information (Name & Phone).
-    - An integrated list of **Saved Addresses** reusing the existing address UI components.
-    - A clear, Pink-themed **Logout** button.
-- **[ProfileActivity.java](file:///E:/projects/New%20Idea/Bloom/app/src/main/java/com/bloom/customer/ui/profile/ProfileActivity.java)**:
-    - Orchestrates the simultaneous loading of profile data and saved addresses.
-    - Implemented secure **Logout logic** that clears the `SessionManager` and returns the user to the Login screen, ensuring no stale sessions remain.
+### 2. Security & Session Reliability
+- **JWT Expiration Handling**: Enhanced the `RetrofitClient` with an automatic **401 Unauthorized** interceptor. If a user's session expires (JWT expired), the app will now automatically clear the local session and redirect them to the Login screen, preventing "stale" errors.
+- **Splash Cleanup**: Refined the initial session check in `SplashActivity` to ensure a clean handoff to either the Home or Login flow.
 
-### 3. Manifest Integration
-- **[AndroidManifest.xml](file:///E:/projects/New%20Idea/Bloom/app/src/main/AndroidManifest.xml)**: Registered the `ProfileActivity` and ensured it follows the consistent theme and package structure.
+### 3. UI Refinements & Polish
+- **Manual Location UI**: Redesigned the `ManualLocationActivity` layout. The input field is now at the top, followed immediately by the "Set Location" button for a more intuitive, top-down workflow.
+- **Icon Uniformity**: Updated all back navigation icons to solid **Black (#000000)** across every screen (Shop Detail, Product, Cart, etc.) for better contrast against the brand background.
+- **Cart Access**: Integrated a **Cart Icon** into the Home screen toolbar, providing a quick shortcut to the checkout process.
+- **Empty State Banners**: Standardized the "Service coming soon" banner to appear whenever a location search yields no results.
 
 ## Design Principles & Patterns Used
-- **SOLID - Single Responsibility**: `ProfileActivity` focus is strictly on account management, while data retrieval is handled by the respective repositories.
-- **Code Reuse**: Efficiently reused `AddressRepository` and `AddressAdapter` to maintain consistency across the app.
-- **Secure Session Termination**: Logout logic uses `finishAffinity()` and `FLAG_ACTIVITY_CLEAR_TASK` to ensure the user cannot return to authenticated screens after logging out.
+- **Single Activity Multiple Fragments**: Adopted this modern Android pattern to improve navigation speed and maintain UI consistency.
+- **Interceptor Pattern**: Used to centralize auth error handling (401), decoupling it from individual API calls.
+- **Constraint-Based Layouts**: Refined XML layouts to ensure buttons and inputs are always accessible and correctly positioned.
 
 ## Verification Results
-- **Build Status**: Successfully performed `assembleDebug`.
-- **Data Binding**: Verified that user profile fields and address lists correctly populate from the Supabase response.
-- **Session Safety**: Confirmed that `clearSession()` is called during logout, protecting user data.
+- **Build Status**: Successfully performed a clean build (`assembleDebug`).
+- **Navigation Flow**: Verified that the Bottom Navigation Bar persists across Home, Orders, and Profile sections.
+- **Session Flow**: Confirmed that the logout logic in the Profile correctly resets the app state.
 
 > [!TIP]
-> You can now link the Profile screen from your Home toolbar to allow users easy access to their account settings.
+> Use these coordinates in the manual location search to see your shops:
+> - **Mumbai**: `19.0596, 72.8258`
+> - **Delhi**: `28.6328, 77.2167`
+> - **Bangalore**: `12.9716, 77.6412`

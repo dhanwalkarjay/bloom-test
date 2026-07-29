@@ -47,16 +47,18 @@ public class OtpVerifyActivity extends AppCompatActivity {
         viewModel.verifyOtp(phone, otp).observe(this, result -> {
             if (result.status == NetworkResult.Status.LOADING) {
                 setLoading(true);
+                binding.tvError.setVisibility(View.GONE);
             } else if (result.status == NetworkResult.Status.SUCCESS) {
                 setLoading(false);
-                Toast.makeText(this, "Verification successful", Toast.LENGTH_SHORT).show();
+                binding.tvError.setVisibility(View.GONE);
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
             } else if (result.status == NetworkResult.Status.ERROR) {
                 setLoading(false);
-                Toast.makeText(this, result.message, Toast.LENGTH_LONG).show();
+                binding.tvError.setText(result.message);
+                binding.tvError.setVisibility(View.VISIBLE);
             }
         });
     }

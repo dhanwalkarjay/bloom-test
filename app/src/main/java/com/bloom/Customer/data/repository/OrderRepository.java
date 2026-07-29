@@ -62,7 +62,7 @@ public class OrderRepository {
         MutableLiveData<NetworkResult<List<Order>>> result = new MutableLiveData<>();
         result.setValue(NetworkResult.loading(null));
 
-        String select = "*,order_items(*),shops(name)";
+        String select = "*,order_items(*),florists!inner(name)";
         String order = "created_at.desc";
 
         api.getOrders("eq." + userId, select, order).enqueue(new Callback<List<Order>>() {

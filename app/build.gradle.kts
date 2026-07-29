@@ -4,11 +4,7 @@ plugins {
 
 android {
     namespace = "com.bloom"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.bloom"
@@ -22,9 +18,7 @@ android {
 
     buildTypes {
         release {
-            optimization {
-                enable = false
-            }
+            isMinifyEnabled = false
         }
     }
     buildFeatures {

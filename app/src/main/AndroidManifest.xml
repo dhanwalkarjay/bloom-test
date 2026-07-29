@@ -33,6 +33,7 @@
 
         <activity android:name=".customer.ui.auth.SignupActivity" />
         <activity android:name=".customer.ui.auth.OtpVerifyActivity" />
+        <activity android:name=".customer.ui.auth.ForgotPasswordActivity" />
         <activity android:name=".customer.ui.home.HomeActivity" />
         <activity android:name=".customer.ui.location.ManualLocationActivity" />
         <activity android:name=".customer.ui.shop.ShopDetailActivity" />
@@ -44,9 +45,7 @@
         <activity android:name=".customer.ui.checkout.PaymentActivity" />
         <activity android:name=".customer.ui.orderconfirmation.OrderConfirmationActivity" />
         <activity android:name=".customer.ui.ordertracking.OrderTrackingActivity" />
-        <activity android:name=".customer.ui.orderhistory.OrderHistoryActivity" />
         <activity android:name=".customer.ui.reviews.ReviewActivity" />
-        <activity android:name=".customer.ui.profile.ProfileActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

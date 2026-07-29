@@ -12,7 +12,7 @@
         app:title="Rate your Order"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIconTint="#333333" />
+        app:navigationIconTint="#000000" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,6 +63,17 @@
             android:textAllCaps="false"
             android:backgroundTint="#E85D75"
             app:cornerRadius="12dp" />
+
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text=""
+            android:textColor="#D32F2F"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:visibility="gone" />
 
     </LinearLayout>
 

@@ -85,6 +85,6 @@
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:tint="@android:color/white" />
+        app:tint="#000000" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

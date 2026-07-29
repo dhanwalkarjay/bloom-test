@@ -13,7 +13,7 @@
         app:title="Your Cart"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIconTint="#333333" />
+        app:navigationIconTint="#000000" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCartItems"

@@ -1,37 +1,43 @@
-# Implementation Plan - Profile & Account Management
+# Implementation Plan - Navigation Framework & UX Polish
 
-This plan implements the User Profile screen, allowing users to view their details, manage saved addresses, and securely log out.
+This plan addresses the persistent navigation bar, JWT expiration handling, and several UI refinements to ensure a professional and functional user experience.
+
+## User Review Required
+
+> [!IMPORTANT]
+> To keep the bottom navigation bar persistent, I am moving the Home, Orders, and Profile sections into **Fragments**. `HomeActivity` will become the primary container for these fragments.
 
 ## Proposed Changes
 
-### 1. Data Layer (`data/api` & `data/repository`)
+### 1. Navigation Framework (Fragments)
+- **[NEW] HomeFragment.java**, **OrdersFragment.java**, **ProfileFragment.java**: Migrate the logic from the respective Activities into these Fragments.
+- **[MODIFY] [HomeActivity.java](file:///E:/projects/New%20Idea/Bloom/app/src/main/java/com/bloom/customer/ui/home/HomeActivity.java)**:
+    - Act as the main container for the fragments.
+    - Handle Bottom Navigation switching via `FragmentManager`.
+- **[MODIFY] [activity_home.xml](file:///E:/projects/New%20Idea/Bloom/app/src/main/res/layout/activity_home.xml)**: Add a `FragmentContainerView` for hosting sections.
 
-#### [MODIFY] [SupabaseAPI.java](file:///E:/projects/New%20Idea/Bloom/app/src/main/java/com/bloom/customer/data/api/SupabaseAPI.java)
-- Add `getProfile` endpoint to fetch the user's details from the `profiles` table.
-  ```java
-  @GET(Constants.REST_ENDPOINT + "profiles")
-  Call<List<Profile>> getProfile(@Query("id") String id);
-  ```
+### 2. JWT & Security
+- **[MODIFY] [RetrofitClient.java](file:///E:/projects/New%20Idea/Bloom/app/src/main/java/com/bloom/customer/data/api/RetrofitClient.java)**:
+    - Handle `401 JWT Expired` errors by clearing the session and redirecting the user to `LoginActivity`.
+- **[MODIFY] [SplashActivity.java](file:///E:/projects/New%20Idea/Bloom/app/src/main/java/com/bloom/customer/ui/splash/SplashActivity.java)**: Ensure a clean check of the session before routing.
 
-#### [NEW] [ProfileRepository.java](file:///E:/projects/New%20Idea/Bloom/app/src/main/java/com/bloom/customer/data/repository/ProfileRepository.java)
-- Implement `getProfile(userId)` using the API call.
-- Handles the state via `NetworkResult<Profile>`.
-
-### 2. UI Layer (`ui/profile`)
-
-#### [NEW] [activity_profile.xml](file:///E:/projects/New%20Idea/Bloom/app/src/main/res/layout/activity_profile.xml)
-- Header with user name and phone number.
-- Section for "Saved Addresses" with a `RecyclerView`.
-- "Logout" button with clear visual distinction (Bloom Pink).
-
-#### [NEW] [ProfileActivity.java](file:///E:/projects/New%20Idea/Bloom/app/src/main/java/com/bloom/customer/ui/profile/ProfileActivity.java)
-- Fetch and display profile data on load.
-- Re-use `AddressRepository` to populate the addresses list.
-- **Logout Logic**: Clears `SessionManager`, finishes all activities, and returns to `LoginActivity`.
+### 3. UI Polish
+- **[MODIFY] [activity_manual_location.xml](file:///E:/projects/New%20Idea/Bloom/app/src/main/res/layout/activity_manual_location.xml)**:
+    - Move the input field to the top.
+    - Place the "Set Location" button directly below it.
+- **Back Icons**: Set `app:tint="#000000"` for all back navigation icons to ensure they are black.
+- **Empty States**: Explicitly show the "Service coming soon!" banner if a city search returns zero shops.
 
 ## Verification Plan
 
 ### Manual Verification
-1. **Data Display**: Launch the Profile screen and verify that your `full_name` and `phone` are correctly pulled from Supabase.
-2. **Address List**: Verify that your saved addresses appear in the list within the profile screen.
-3. **Logout**: Click the Logout button. Verify that the app returns to the Login screen and that reopening the app shows the Login screen (session cleared).
+1. **JWT Expiration**: Simulate a 401 error and verify the app returns to Login.
+2. **Bottom Nav**: Switch between Home, Orders, and Profile. Verify the navbar stays visible and the state is preserved.
+3. **Manual Entry**: Open manual location, verify the new top-down layout, enter a city, and confirm it refreshes the shop list.
+4. **Icons**: Check all screens (Shop Detail, Product, Cart) to ensure back icons are black.
+
+### Sample Testing Coordinates
+To see products in your DB, use these locations in manual entry:
+- **Mumbai**: `19.0596, 72.8258`
+- **Delhi**: `28.6328, 77.2167`
+- **Bangalore**: `12.9716, 77.6412`
