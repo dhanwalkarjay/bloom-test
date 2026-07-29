@@ -1,0 +1,4 @@
+- [x] Consolidate theme in `themes.xml`
+- [x] Remove duplicate theme from `styles.xml`
+- [x] Verify build
+- [x] Create walkthrough

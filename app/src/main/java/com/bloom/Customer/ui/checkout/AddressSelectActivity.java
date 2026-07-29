@@ -65,15 +65,30 @@ public class AddressSelectActivity extends AppCompatActivity {
         String userId = SessionManager.getInstance(this).getUserId();
         
         if (userId == null) {
-            Toast.makeText(this, "Session expired, please login again", Toast.LENGTH_SHORT).show();
+            binding.emptyState.setVisibility(View.VISIBLE);
+            binding.rvAddresses.setVisibility(View.GONE);
             return;
         }
 
         repository.getAddresses(userId).observe(this, result -> {
-            if (result.status == NetworkResult.Status.SUCCESS) {
-                adapter.setAddresses(result.data);
+            if (result.status == NetworkResult.Status.LOADING) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.rvAddresses.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.GONE);
+            } else if (result.status == NetworkResult.Status.SUCCESS) {
+                binding.progressBar.setVisibility(View.GONE);
+                if (result.data != null && !result.data.isEmpty()) {
+                    adapter.setAddresses(result.data);
+                    binding.rvAddresses.setVisibility(View.VISIBLE);
+                    binding.emptyState.setVisibility(View.GONE);
+                } else {
+                    binding.rvAddresses.setVisibility(View.GONE);
+                    binding.emptyState.setVisibility(View.VISIBLE);
+                }
             } else if (result.status == NetworkResult.Status.ERROR) {
-                Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show();
+                binding.progressBar.setVisibility(View.GONE);
+                binding.rvAddresses.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.VISIBLE);
             }
         });
     }

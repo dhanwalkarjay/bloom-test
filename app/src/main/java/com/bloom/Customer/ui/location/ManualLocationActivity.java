@@ -38,16 +38,30 @@ public class ManualLocationActivity extends AppCompatActivity {
     }
 
     private void geocodeAndReturn(String addressText) {
-        // TODO: Implement real Geocoding (Google Maps Geocoding API or Geocoder)
-        // For now, using placeholder coordinates to verify workflow
-        double placeholderLat = 28.6139; // Delhi
-        double placeholderLng = 77.2090;
+        android.location.Geocoder geocoder = new android.location.Geocoder(this, java.util.Locale.getDefault());
+        try {
+            java.util.List<android.location.Address> addresses = geocoder.getFromLocationName(addressText, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                android.location.Address address = addresses.get(0);
+                double lat = address.getLatitude();
+                double lng = address.getLongitude();
+                String displayName = address.getAddressLine(0);
+                if (displayName == null || displayName.isEmpty()) {
+                    displayName = addressText;
+                }
 
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra("lat", placeholderLat);
-        resultIntent.putExtra("lng", placeholderLng);
-        resultIntent.putExtra("area_name", addressText);
-        setResult(RESULT_OK, resultIntent);
-        finish();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("lat", lat);
+                resultIntent.putExtra("lng", lng);
+                resultIntent.putExtra("area_name", displayName);
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            } else {
+                Toast.makeText(this, "Location not found. Try a different name.", Toast.LENGTH_SHORT).show();
+            }
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Could not find location. Check your connection.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

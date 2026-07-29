@@ -38,7 +38,18 @@ public class RetrofitClient {
                     requestBuilder.header("Authorization", "Bearer " + token);
                 }
 
-                return chain.proceed(requestBuilder.build());
+                okhttp3.Response response = chain.proceed(requestBuilder.build());
+
+                // Handle 401 JWT Expired
+                if (response.code() == 401) {
+                    SessionManager.getInstance(context).clearSession();
+                    // Redirect to Login (simplest way is to clear stack)
+                    android.content.Intent intent = new android.content.Intent(context, com.bloom.customer.ui.auth.LoginActivity.class);
+                    intent.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK | android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intent);
+                }
+
+                return response;
             };
 
             OkHttpClient okHttpClient = new OkHttpClient.Builder()

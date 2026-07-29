@@ -46,7 +46,15 @@ public class ShopRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     result.setValue(NetworkResult.success(response.body()));
                 } else {
-                    result.setValue(NetworkResult.error("Failed to fetch nearby shops", null));
+                    String errorMsg = "Error: " + response.code();
+                    try {
+                        if (response.errorBody() != null) {
+                            errorMsg += " - " + response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    result.setValue(NetworkResult.error(errorMsg, null));
                 }
             }
 

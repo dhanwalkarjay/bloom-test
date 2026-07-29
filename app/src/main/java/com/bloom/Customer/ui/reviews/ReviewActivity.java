@@ -1,6 +1,7 @@
 package com.bloom.customer.ui.reviews;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,12 +42,14 @@ public class ReviewActivity extends AppCompatActivity {
         repository.submitReview(orderId, rating, comment).observe(this, result -> {
             if (result.status == NetworkResult.Status.LOADING) {
                 binding.btnSubmit.setEnabled(false);
+                binding.tvError.setVisibility(View.GONE);
             } else if (result.status == NetworkResult.Status.SUCCESS) {
-                Toast.makeText(this, "Review submitted! Thank you.", Toast.LENGTH_SHORT).show();
+                binding.tvError.setVisibility(View.GONE);
                 finish();
             } else if (result.status == NetworkResult.Status.ERROR) {
                 binding.btnSubmit.setEnabled(true);
-                Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show();
+                binding.tvError.setText(result.message != null ? result.message : "Failed to submit review. Please try again.");
+                binding.tvError.setVisibility(View.VISIBLE);
             }
         });
     }
