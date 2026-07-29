@@ -2,59 +2,61 @@ package com.bloom.customer.ui.orderhistory;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bloom.customer.data.local.SessionManager;
-import com.bloom.customer.data.model.Order;
 import com.bloom.customer.data.repository.OrderRepository;
 import com.bloom.customer.ui.reviews.ReviewActivity;
 import com.bloom.customer.util.NetworkResult;
-import com.bloom.databinding.ActivityOrderHistoryBinding;
+import com.bloom.databinding.FragmentOrdersBinding;
 
-public class OrderHistoryActivity extends AppCompatActivity {
+public class OrdersFragment extends Fragment {
 
-    private ActivityOrderHistoryBinding binding;
+    private FragmentOrdersBinding binding;
     private OrderRepository orderRepository;
     private OrderHistoryAdapter adapter;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityOrderHistoryBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentOrdersBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
-        orderRepository = new OrderRepository(this);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        orderRepository = new OrderRepository(requireContext());
         adapter = new OrderHistoryAdapter();
 
-        setupToolbar();
         setupRecyclerView();
         fetchOrderHistory();
     }
 
-    private void setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener(v -> finish());
-    }
-
     private void setupRecyclerView() {
-        binding.rvOrderHistory.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvOrderHistory.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvOrderHistory.setAdapter(adapter);
 
         adapter.setListener(order -> {
-            Intent intent = new Intent(this, ReviewActivity.class);
+            Intent intent = new Intent(requireContext(), ReviewActivity.class);
             intent.putExtra("order_id", order.getId());
             startActivity(intent);
         });
     }
 
     private void fetchOrderHistory() {
-        String userId = SessionManager.getInstance(this).getUserId();
+        String userId = SessionManager.getInstance(requireContext()).getUserId();
         if (userId == null) return;
 
-        orderRepository.getOrderHistory(userId).observe(this, result -> {
+        orderRepository.getOrderHistory(userId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == NetworkResult.Status.LOADING) {
                 binding.progressBar.setVisibility(View.VISIBLE);
                 binding.tvEmpty.setVisibility(View.GONE);
@@ -68,8 +70,15 @@ public class OrderHistoryActivity extends AppCompatActivity {
                 }
             } else if (result.status == NetworkResult.Status.ERROR) {
                 binding.progressBar.setVisibility(View.GONE);
-                Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show();
+                binding.tvEmpty.setText(result.message != null ? result.message : "Could not load orders. Pull down to retry.");
+                binding.tvEmpty.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

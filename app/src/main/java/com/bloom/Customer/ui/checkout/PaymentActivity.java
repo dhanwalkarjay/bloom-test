@@ -69,12 +69,14 @@ public class PaymentActivity extends AppCompatActivity {
     private void handlePlaceOrder() {
         Order order = new Order();
         order.setUserId(SessionManager.getInstance(this).getUserId());
-        order.setShopId(cartRepository.getCartShopId());
+        order.setFloristId(cartRepository.getCartShopId());
         order.setAddressId(addressId);
         order.setTotalAmount(totalAmount);
         order.setDeliverySlot(deliverySlot);
-        order.setStatus("Placed");
-        order.setPaymentStatus("Pending");
+        order.setStatus("placed");
+        order.setPaymentStatus("pending");
+        order.setBouquetSubtotal(cartRepository.getCartTotal());
+        order.setDeliveryFee(50.0);
 
         List<CartItem> cartItems = cartRepository.getCartItems().getValue();
         List<OrderItem> orderItems = new ArrayList<>();
@@ -95,14 +97,20 @@ public class PaymentActivity extends AppCompatActivity {
         orderRepository.placeOrder(order).observe(this, result -> {
             if (result.status == NetworkResult.Status.LOADING) {
                 setLoading(true);
+                binding.tvError.setVisibility(View.GONE);
             } else if (result.status == NetworkResult.Status.SUCCESS) {
                 setLoading(false);
+                binding.tvError.setVisibility(View.GONE);
                 cartRepository.clearCart();
-                startActivity(new Intent(this, OrderConfirmationActivity.class));
+                Intent intent = new Intent(this, OrderConfirmationActivity.class);
+                intent.putExtra("order_id", result.data != null ? result.data.getId() : "");
+                intent.putExtra("shop_name", "Florist");
+                startActivity(intent);
                 finishAffinity();
             } else if (result.status == NetworkResult.Status.ERROR) {
                 setLoading(false);
-                Toast.makeText(this, result.message, Toast.LENGTH_LONG).show();
+                binding.tvError.setText(result.message != null ? result.message : "Failed to place order. Please try again.");
+                binding.tvError.setVisibility(View.VISIBLE);
             }
         });
     }

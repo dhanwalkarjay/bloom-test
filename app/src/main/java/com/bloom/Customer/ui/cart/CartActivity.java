@@ -1,8 +1,8 @@
 package com.bloom.customer.ui.cart;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -83,8 +83,7 @@ public class CartActivity extends AppCompatActivity {
         binding.btnStartShopping.setOnClickListener(v -> finish());
         
         binding.btnCheckout.setOnClickListener(v -> {
-            // TODO: Navigate to AddressSelectActivity
-            Toast.makeText(this, "Proceeding to checkout...", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, com.bloom.customer.ui.checkout.AddressSelectActivity.class));
         });
     }
 }

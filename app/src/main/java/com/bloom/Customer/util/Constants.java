@@ -23,6 +23,7 @@ public final class Constants {
     // API Endpoints
     public static final String AUTH_ENDPOINT = "auth/v1/";
     public static final String REST_ENDPOINT = "rest/v1/";
+    public static final String FUNCTIONS_ENDPOINT = "functions/v1/";
     
     // Shared Preferences Keys
     public static final String PREFS_NAME = "bloom_secure_prefs";

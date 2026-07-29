@@ -10,9 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="My Orders"
-        app:navigationIcon="@drawable/ic_arrow_back"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIconTint="#333333" />
+        app:titleTextColor="#333333" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOrderHistory"

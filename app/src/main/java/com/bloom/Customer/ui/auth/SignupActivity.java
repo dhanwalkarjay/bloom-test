@@ -58,9 +58,10 @@ public class SignupActivity extends AppCompatActivity {
         viewModel.signup(name, phone, password).observe(this, result -> {
             if (result.status == NetworkResult.Status.LOADING) {
                 setLoading(true);
+                binding.tvError.setVisibility(View.GONE);
             } else if (result.status == NetworkResult.Status.SUCCESS) {
                 setLoading(false);
-                Toast.makeText(this, "Account created. Verifying phone...", Toast.LENGTH_SHORT).show();
+                binding.tvError.setVisibility(View.GONE);
                 // After signup, we might need to send OTP explicitly or Supabase does it automatically
                 // assuming automatic for now, navigating to verify
                 Intent intent = new Intent(this, OtpVerifyActivity.class);
@@ -68,7 +69,8 @@ public class SignupActivity extends AppCompatActivity {
                 startActivity(intent);
             } else if (result.status == NetworkResult.Status.ERROR) {
                 setLoading(false);
-                Toast.makeText(this, result.message, Toast.LENGTH_LONG).show();
+                binding.tvError.setText(result.message);
+                binding.tvError.setVisibility(View.VISIBLE);
             }
         });
     }

@@ -12,7 +12,7 @@
         app:title="Delivery Slot"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIconTint="#333333" />
+        app:navigationIconTint="#000000" />
 
     <ScrollView
         android:layout_width="match_parent"

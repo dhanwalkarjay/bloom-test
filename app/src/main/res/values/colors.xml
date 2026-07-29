@@ -1,9 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- res/values/colors.xml -->
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="primary">#E85D75</color>
-    <color name="secondary">#4A7C59</color>
-    <color name="background">#FFFBF7</color>
-    <color name="text_dark">#333333</color>
+    <!-- Main theme -->
+    <color name="bloom_primary">#E85D75</color>
+    <color name="bloom_secondary">#4A7C59</color>
+    <color name="bloom_background">#FFFBF7</color>
+    <color name="bloom_text_primary">#2B2B2B</color>
+    <color name="bloom_text_secondary">#7C6768</color>
+    <color name="bloom_card_stroke">#F0D9DA</color>
+    <color name="bloom_chip_bg">#FDF2F2</color>
+
+    <!-- Status colors -->
+    <color name="status_open">#4A7C59</color>
+    <color name="status_closed">#888780</color>
+    <color name="status_pending">#D9A441</color>
+    <color name="status_error">#D9534F</color>
+
+    <!-- LUX theme (dark/gold) -->
+    <color name="lux_background">#1A1A1A</color>
+    <color name="lux_accent">#C9A24B</color>
+    <color name="lux_text">#F5F1E8</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>

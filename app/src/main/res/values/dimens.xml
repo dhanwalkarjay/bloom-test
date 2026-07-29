@@ -1,0 +1,26 @@
+<!-- res/values/dimens.xml -->
+<resources>
+    <!-- Corner radius -->
+    <dimen name="radius_card">16dp</dimen>
+    <dimen name="radius_button">16dp</dimen>
+    <dimen name="radius_chip">999dp</dimen>
+
+    <!-- Spacing -->
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_s">8dp</dimen>
+    <dimen name="spacing_m">16dp</dimen>
+    <dimen name="spacing_l">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+
+    <!-- Component sizes -->
+    <dimen name="button_height">52dp</dimen>
+    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="product_card_image_height">140dp</dimen>
+    <dimen name="shop_card_image_size">56dp</dimen>
+
+    <!-- Text sizes -->
+    <dimen name="text_headline">26sp</dimen>
+    <dimen name="text_title">18sp</dimen>
+    <dimen name="text_body">14sp</dimen>
+    <dimen name="text_caption">12sp</dimen>
+</resources>

@@ -2,6 +2,7 @@ package com.bloom.customer.data.api;
 
 import com.bloom.customer.data.model.Addon;
 import com.bloom.customer.data.model.Address;
+import com.bloom.customer.data.model.FeatureFlag;
 import com.bloom.customer.data.model.Order;
 import com.bloom.customer.data.model.OrderItem;
 import com.bloom.customer.data.model.Product;
@@ -34,7 +35,7 @@ public interface SupabaseAPI {
     Call<List<Shop>> getNearbyShops(@Body Map<String, Object> body);
 
     /**
-     * Get products for a specific shop.
+     * Get products for a specific florist/shop.
      */
     @GET(Constants.REST_ENDPOINT + "products")
     Call<List<Product>> getProductsByShop(@Query("shop_id") String shopId);
@@ -96,4 +97,10 @@ public interface SupabaseAPI {
      */
     @POST(Constants.REST_ENDPOINT + "reviews")
     Call<Void> postReview(@Body Review review);
+
+    /**
+     * Get all feature flags.
+     */
+    @GET(Constants.REST_ENDPOINT + "feature_flags")
+    Call<List<FeatureFlag>> getFeatureFlags();
 }

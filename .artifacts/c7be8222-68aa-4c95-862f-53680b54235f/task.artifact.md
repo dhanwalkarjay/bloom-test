@@ -1,0 +1,4 @@
+- [ ] Update `bottom_nav_menu.xml` to 5 items
+- [ ] Restyle `activity_home.xml` (background and BottomNav)
+- [ ] Redesign `fragment_home.xml` with new sections and Bloom styles
+- [ ] Run Gradle Sync and verify IDs in code

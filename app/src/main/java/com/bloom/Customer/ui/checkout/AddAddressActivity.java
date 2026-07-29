@@ -80,9 +80,12 @@ public class AddAddressActivity extends AppCompatActivity implements OnMapReadyC
         String fullAddress = binding.tvSelectedAddress.getText().toString() + (detail.isEmpty() ? "" : ", " + detail);
 
         com.bloom.customer.data.model.Address address = new com.bloom.customer.data.model.Address();
-        // In a real app, set fields via setter or builder
-        // For MVP, we assume the server takes lat/lng and formatted string
-        
+        address.setFullAddress(fullAddress);
+        address.setLatitude(selectedLatLng.latitude);
+        address.setLongitude(selectedLatLng.longitude);
+        address.setLabel(detail.isEmpty() ? "Home" : detail);
+        address.setUserId(com.bloom.customer.data.local.SessionManager.getInstance(this).getUserId());
+
         repository.addAddress(address).observe(this, result -> {
             if (result.status == NetworkResult.Status.SUCCESS) {
                 Toast.makeText(this, "Address saved", Toast.LENGTH_SHORT).show();

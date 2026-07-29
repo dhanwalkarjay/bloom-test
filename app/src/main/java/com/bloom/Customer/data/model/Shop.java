@@ -9,6 +9,9 @@ public class Shop {
     @SerializedName("id")
     private String id;
 
+    @SerializedName("shop_name")
+    private String shopName;
+
     @SerializedName("name")
     private String name;
 
@@ -17,6 +20,9 @@ public class Shop {
 
     @SerializedName("is_open")
     private boolean isOpen;
+
+    @SerializedName("preparation_minutes")
+    private int preparationMinutes;
 
     @SerializedName("prep_time")
     private String prepTime;
@@ -27,6 +33,9 @@ public class Shop {
     @SerializedName("opens_at")
     private String opensAt;
 
+    @SerializedName("tier")
+    private String tier;
+
     // Note: location is geography in DB, returned distance via RPC
     @SerializedName("distance")
     private double distance;
@@ -35,8 +44,11 @@ public class Shop {
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getName() {
+        if (name != null) return name;
+        return shopName;
+    }
+    public void setName(String name) { this.name = name; this.shopName = name; }
 
     public double getRating() { return rating; }
     public void setRating(double rating) { this.rating = rating; }

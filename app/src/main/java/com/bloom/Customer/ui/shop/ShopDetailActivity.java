@@ -3,7 +3,6 @@ package com.bloom.customer.ui.shop;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -79,10 +78,26 @@ public class ShopDetailActivity extends AppCompatActivity {
 
     private void setupObservers() {
         viewModel.getProducts().observe(this, result -> {
-            if (result.status == NetworkResult.Status.SUCCESS) {
-                adapter.setProducts(result.data);
+            if (result.status == NetworkResult.Status.LOADING) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.rvProducts.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.GONE);
+            } else if (result.status == NetworkResult.Status.SUCCESS) {
+                binding.progressBar.setVisibility(View.GONE);
+                if (result.data != null && !result.data.isEmpty()) {
+                    adapter.setProducts(result.data);
+                    binding.rvProducts.setVisibility(View.VISIBLE);
+                    binding.emptyState.setVisibility(View.GONE);
+                } else {
+                    binding.rvProducts.setVisibility(View.GONE);
+                    binding.emptyState.setVisibility(View.VISIBLE);
+                }
             } else if (result.status == NetworkResult.Status.ERROR) {
-                Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show();
+                binding.progressBar.setVisibility(View.GONE);
+                binding.rvProducts.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.VISIBLE);
+                binding.tvEmptyTitle.setText("Something went wrong");
+                binding.tvEmptySubtitle.setText(result.message != null ? result.message : "Failed to load products. Pull down to retry.");
             }
         });
 
