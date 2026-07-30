@@ -44,15 +44,9 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void checkSession() {
-        SessionManager sessionManager = SessionManager.getInstance(this);
-
-//        if (sessionManager.isLoggedIn()) {
-            // Valid token found, route to Home
-            startActivity(new Intent(this, HomeActivity.class));
-//        } else {
-//            // No session found, route to Login
-//            startActivity(new Intent(this, LoginActivity.class));
-//        }
+        // We always route to HomeActivity to support Guest Mode.
+        // HomeActivity and its fragments will handle UI state based on SessionManager.isLoggedIn()
+        startActivity(new Intent(this, HomeActivity.class));
         finish();
     }
 }

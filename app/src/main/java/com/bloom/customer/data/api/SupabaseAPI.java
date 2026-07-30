@@ -3,9 +3,11 @@ package com.bloom.customer.data.api;
 import com.bloom.customer.data.model.Addon;
 import com.bloom.customer.data.model.Address;
 import com.bloom.customer.data.model.FeatureFlag;
+import com.bloom.customer.data.model.Notification;
 import com.bloom.customer.data.model.Order;
 import com.bloom.customer.data.model.OrderItem;
 import com.bloom.customer.data.model.Product;
+import com.bloom.customer.data.model.ProductSearchResult;
 import com.bloom.customer.data.model.Profile;
 import com.bloom.customer.data.model.Review;
 import com.bloom.customer.data.model.Shop;
@@ -39,6 +41,37 @@ public interface SupabaseAPI {
      */
     @GET(Constants.REST_ENDPOINT + "products")
     Call<List<Product>> getProductsByShop(@Query("shop_id") String shopId);
+
+    /**
+     * Search products by title or category.
+     */
+    @GET(Constants.REST_ENDPOINT + "products")
+    Call<List<Product>> searchProducts(
+        @Query("title") String title,
+        @Query("category") String category,
+        @Query("is_lux") Boolean isLux
+    );
+
+    /**
+     * Get products by category.
+     */
+    @GET(Constants.REST_ENDPOINT + "products")
+    Call<List<Product>> getProductsByCategory(@Query("category") String category);
+
+    /**
+     * Search products nearby using RPC.
+     */
+    @POST(Constants.REST_ENDPOINT + "rpc/search_products_nearby")
+    Call<List<ProductSearchResult>> searchProductsNearby(@Body Map<String, Object> body);
+
+    /**
+     * Get featured products (seasonal or bestseller).
+     */
+    @GET(Constants.REST_ENDPOINT + "products")
+    Call<List<Product>> getFeaturedProducts(
+        @Query("is_seasonal") Boolean isSeasonal,
+        @Query("is_bestseller") Boolean isBestseller
+    );
 
     /**
      * Get user profile.
@@ -103,4 +136,13 @@ public interface SupabaseAPI {
      */
     @GET(Constants.REST_ENDPOINT + "feature_flags")
     Call<List<FeatureFlag>> getFeatureFlags();
+
+    /**
+     * Get user notifications.
+     */
+    @GET(Constants.REST_ENDPOINT + "notifications")
+    Call<List<Notification>> getNotifications(
+        @Query("user_id") String userId,
+        @Query("order") String order
+    );
 }

@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bloom.R;
 import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.repository.OrderRepository;
 import com.bloom.customer.ui.reviews.ReviewActivity;
@@ -59,19 +60,26 @@ public class OrdersFragment extends Fragment {
         orderRepository.getOrderHistory(userId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == NetworkResult.Status.LOADING) {
                 binding.progressBar.setVisibility(View.VISIBLE);
-                binding.tvEmpty.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.GONE);
+                binding.rvOrderHistory.setVisibility(View.GONE);
             } else if (result.status == NetworkResult.Status.SUCCESS) {
                 binding.progressBar.setVisibility(View.GONE);
                 if (result.data != null && !result.data.isEmpty()) {
                     adapter.setOrders(result.data);
-                    binding.tvEmpty.setVisibility(View.GONE);
+                    binding.emptyState.setVisibility(View.GONE);
+                    binding.rvOrderHistory.setVisibility(View.VISIBLE);
                 } else {
-                    binding.tvEmpty.setVisibility(View.VISIBLE);
+                    binding.tvEmptyTitle.setText(R.string.no_orders_placed);
+                    binding.tvEmptySubtitle.setText(R.string.no_orders_subtitle);
+                    binding.emptyState.setVisibility(View.VISIBLE);
+                    binding.rvOrderHistory.setVisibility(View.GONE);
                 }
             } else if (result.status == NetworkResult.Status.ERROR) {
                 binding.progressBar.setVisibility(View.GONE);
-                binding.tvEmpty.setText(result.message != null ? result.message : "Could not load orders. Pull down to retry.");
-                binding.tvEmpty.setVisibility(View.VISIBLE);
+                binding.rvOrderHistory.setVisibility(View.GONE);
+                binding.tvEmptyTitle.setText(R.string.error_load_orders);
+                binding.tvEmptySubtitle.setText(result.message != null ? result.message : "Pull down to retry.");
+                binding.emptyState.setVisibility(View.VISIBLE);
             }
         });
     }

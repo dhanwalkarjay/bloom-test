@@ -1,20 +1,24 @@
 package com.bloom.customer.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.graphics.Typeface;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bloom.customer.data.local.SessionManager;
+import com.bloom.customer.ui.auth.LoginActivity;
 import com.bloom.R;
+import com.bloom.customer.ui.lux.LuxActivity;
 import com.bloom.customer.ui.orderhistory.OrdersFragment;
 import com.bloom.customer.ui.profile.ProfileFragment;
+import com.bloom.customer.ui.search.SearchActivity;
 import com.bloom.databinding.ActivityHomeBinding;
 
 /**
@@ -48,23 +52,29 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         binding.navLux.setOnClickListener(v -> {
-            selectNavItem(binding.navHome);
-            Toast.makeText(this, "LUX experience coming soon", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LuxActivity.class));
         });
 
         binding.navSearch.setOnClickListener(v -> {
-            selectNavItem(binding.navHome);
-            Toast.makeText(this, "Search coming soon", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, SearchActivity.class));
         });
 
         binding.navOrders.setOnClickListener(v -> {
-            selectNavItem(binding.navOrders);
-            loadFragment(new OrdersFragment());
+            if (SessionManager.getInstance(this).isLoggedIn()) {
+                selectNavItem(binding.navOrders);
+                loadFragment(new OrdersFragment());
+            } else {
+                startActivity(new Intent(this, LoginActivity.class));
+            }
         });
 
         binding.navProfile.setOnClickListener(v -> {
-            selectNavItem(binding.navProfile);
-            loadFragment(new ProfileFragment());
+            if (SessionManager.getInstance(this).isLoggedIn()) {
+                selectNavItem(binding.navProfile);
+                loadFragment(new ProfileFragment());
+            } else {
+                startActivity(new Intent(this, LoginActivity.class));
+            }
         });
     }
 
