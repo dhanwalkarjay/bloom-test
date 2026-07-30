@@ -9,6 +9,30 @@
     <color name="bloom_card_stroke">#F0D9DA</color>
     <color name="bloom_chip_bg">#FDF2F2</color>
 
+    <!-- Cart redesign tokens -->
+    <color name="cart_background">#FFF8F7</color>
+    <color name="cart_surface">#FFFFFF</color>
+    <color name="cart_surface_container">#FFE9EA</color>
+    <color name="cart_surface_container_low">#FFF0F0</color>
+    <color name="cart_on_surface">#24181A</color>
+    <color name="cart_on_surface_variant">#574143</color>
+    <color name="cart_outline">#8B7173</color>
+    <color name="cart_outline_variant">#F4DDDE</color>
+    <color name="cart_primary">#A82D47</color>
+    <color name="cart_cta">#E85D75</color>
+
+    <!-- Home redesign tokens -->
+    <color name="home_background">#FFF8F7</color>
+    <color name="home_primary">#A82D47</color>
+    <color name="home_primary_container">#C9465E</color>
+    <color name="home_surface_container">#FFE9EA</color>
+    <color name="home_on_surface">#24181A</color>
+    <color name="home_on_surface_variant">#574143</color>
+    <color name="home_secondary_container">#B6EDC2</color>
+    <color name="home_on_secondary_container">#3B6D4B</color>
+    <color name="home_lux_gold">#D4AF37</color>
+    <color name="home_lux_dark">#1A1A1A</color>
+
     <!-- Status colors -->
     <color name="status_open">#4A7C59</color>
     <color name="status_closed">#888780</color>
