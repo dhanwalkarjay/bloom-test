@@ -3,36 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFBF7">
+    android:background="#FFF8F7">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
+    <ImageView
+        android:id="@+id/ivSplashBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@null"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/splash_floral_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tvLogo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bloom"
-            android:textColor="#E85D75"
-            android:textSize="48sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Your Flower Marketplace"
-            android:textColor="#4A7C59"
-            android:textSize="16sp"
-            android:letterSpacing="0.1" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tvLogo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/mea_culpa_regular"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="Bloom"
+        android:textColor="#912E42"
+        android:textSize="103sp"
+        android:translationX="8dp"
+        android:translationY="-4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
