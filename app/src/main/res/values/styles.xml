@@ -67,6 +67,16 @@
         <item name="android:textColor">@color/bloom_text_secondary</item>
     </style>
 
+    <style name="Bloom.CartImageShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="Bloom.HomeRounded12">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
     <!-- LUX theme variant, for the LUX screens only -->
     <style name="Theme.Bloom.Lux" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@color/lux_background</item>
