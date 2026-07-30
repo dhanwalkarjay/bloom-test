@@ -4,248 +4,370 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bloom_background">
+    android:background="@color/home_background">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <LinearLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/bloom_background"
-        app:elevation="0dp"
+        android:layout_height="56dp"
+        android:background="@color/home_background"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
+        <LinearLayout
+            android:id="@+id/llLocation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_home_location" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvLocationLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/dm_sans"
+                    android:letterSpacing="0.12"
+                    android:text="DELIVER TO"
+                    android:textColor="@color/home_on_surface_variant"
+                    android:textSize="10sp" />
 
                 <LinearLayout
-                    android:id="@+id/llLocation"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/ivCart">
+                    android:orientation="horizontal">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tvCurrentLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvLocationLabel"
-                            style="@style/Bloom.Text.Caption"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Delivering to" />
-
-                        <TextView
-                            android:id="@+id/tvCurrentLocation"
-                            style="@style/Bloom.Text.Title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="Current Location"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                        android:ellipsize="end"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:maxLines="1"
+                        android:text="New York, NY"
+                        android:textColor="@color/home_on_surface"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="@dimen/spacing_xs"
-                        android:src="@android:drawable/arrow_down_float"
-                        app:tint="@color/bloom_primary" />
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="2dp"
+                        android:src="@drawable/ic_home_arrow_down" />
+
                 </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/ivCart"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="10dp"
-                    android:src="@android:drawable/ic_popup_reminder"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/bloom_text_primary" />
+        <FrameLayout
+            android:layout_width="44dp"
+            android:layout_height="44dp">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
+            <ImageView
+                android:id="@+id/ivCart"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="10dp"
+                android:src="@drawable/ic_home_notification" />
+
+            <View
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="9dp"
+                android:background="@drawable/bg_home_notification_dot" />
+
+        </FrameLayout>
+
+    </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+        app:layout_constraintTop_toBottomOf="@id/topBar">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="28dp">
 
-                <!-- Occasions chips -->
                 <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_s"
+                    android:layout_height="64dp"
                     android:clipToPadding="false"
-                    android:paddingHorizontal="@dimen/spacing_m"
+                    android:overScrollMode="never"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:scrollbars="none">
 
-                    <com.google.android.material.chip.ChipGroup
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:singleLine="true">
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                        <com.google.android.material.chip.Chip
-                            style="@style/Bloom.Chip.Status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_home_chip_active"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:gravity="center"
                             android:text="Birthday"
-                            app:chipBackgroundColor="@color/bloom_chip_bg" />
+                            android:textColor="@android:color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
 
-                        <com.google.android.material.chip.Chip
-                            style="@style/Bloom.Chip.Status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <TextView
+                            android:layout_width="132dp"
+                            android:layout_height="44dp"
+                            android:layout_marginStart="12dp"
+                            android:background="@drawable/bg_home_chip_inactive"
+                            android:fontFamily="@font/work_sans"
+                            android:gravity="center"
                             android:text="Anniversary"
-                            app:chipBackgroundColor="@color/bloom_chip_bg" />
+                            android:textColor="@color/home_on_surface_variant"
+                            android:textSize="15sp" />
 
-                        <com.google.android.material.chip.Chip
-                            style="@style/Bloom.Chip.Status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <TextView
+                            android:layout_width="124dp"
+                            android:layout_height="44dp"
+                            android:layout_marginStart="12dp"
+                            android:background="@drawable/bg_home_chip_inactive"
+                            android:fontFamily="@font/work_sans"
+                            android:gravity="center"
                             android:text="Sympathy"
-                            app:chipBackgroundColor="@color/bloom_chip_bg" />
+                            android:textColor="@color/home_on_surface_variant"
+                            android:textSize="15sp" />
 
-                        <com.google.android.material.chip.Chip
-                            style="@style/Bloom.Chip.Status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Romance"
-                            app:chipBackgroundColor="@color/bloom_chip_bg" />
-                    </com.google.android.material.chip.ChipGroup>
+                        <TextView
+                            android:layout_width="168dp"
+                            android:layout_height="44dp"
+                            android:layout_marginStart="12dp"
+                            android:background="@drawable/bg_home_chip_inactive"
+                            android:fontFamily="@font/work_sans"
+                            android:gravity="center"
+                            android:text="Congratulations"
+                            android:textColor="@color/home_on_surface_variant"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
                 </HorizontalScrollView>
 
-                <!-- Hero Banner -->
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Bloom.Card"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_margin="@dimen/spacing_m"
-                    app:cardElevation="0dp">
+                    android:layout_height="188dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
 
-                    <ImageView
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivHeroImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_launcher_background" />
+                        android:src="@drawable/home_hero_spring_sale"
+                        app:shapeAppearanceOverlay="@style/Bloom.HomeRounded12" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_home_hero_overlay" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#4D000000"
                         android:gravity="bottom"
                         android:orientation="vertical"
-                        android:padding="@dimen/spacing_m">
+                        android:paddingStart="28dp"
+                        android:paddingEnd="24dp"
+                        android:paddingBottom="28dp">
 
                         <TextView
-                            style="@style/Bloom.Text.Headline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Spring Collection"
-                            android:textColor="@color/white" />
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:text="Spring Awakening Sale"
+                            android:textColor="@android:color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            style="@style/Bloom.Text.Body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Up to 20% off on all bouquets"
-                            android:textColor="@color/white" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- LUX Banner -->
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Bloom.Card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/spacing_m"
-                    android:layout_marginBottom="@dimen/spacing_m"
-                    app:cardBackgroundColor="@color/lux_background"
-                    app:cardElevation="4dp"
-                    app:strokeColor="@color/lux_accent"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/spacing_m">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                style="@style/Bloom.Text.Title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="BLOOM LUX"
-                                android:textColor="@color/lux_accent"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                style="@style/Bloom.Text.Caption"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Exclusive premium arrangements"
-                                android:textColor="@color/lux_text" />
-                        </LinearLayout>
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="@font/work_sans"
+                            android:text="Save up to 30% on seasonal favorites"
+                            android:textColor="#EFFFFFFF"
+                            android:textSize="14sp" />
 
                         <com.google.android.material.button.MaterialButton
-                            style="@style/Bloom.Button.Primary"
+                            android:id="@+id/btnShopCollection"
+                            android:layout_width="196dp"
+                            android:layout_height="56dp"
+                            android:layout_marginTop="16dp"
+                            android:backgroundTint="@color/home_primary"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:text="Shop Collection"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="12dp" />
+
+                    </LinearLayout>
+                </FrameLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/luxPromo"
+                    android:layout_width="match_parent"
+                    android:layout_height="108dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_home_lux_card"
+                    android:elevation="8dp"
+                    android:paddingStart="18dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="18dp"
+                    android:paddingBottom="16dp">
+
+                    <LinearLayout
+                        android:id="@+id/luxTextGroup"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/luxArrowCircle"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Explore"
-                            app:backgroundTint="@color/lux_accent"
-                            app:cornerRadius="@dimen/radius_button" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                <!-- Bestsellers Section -->
-                <TextView
-                    style="@style/Bloom.Text.Title"
-                    android:layout_width="wrap_content"
+                            <ImageView
+                                android:layout_width="17dp"
+                                android:layout_height="17dp"
+                                android:src="@drawable/ic_home_flare"
+                                app:tint="@color/home_lux_gold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:fontFamily="@font/dm_sans"
+                                android:letterSpacing="0.2"
+                                android:text="CURATED LUXURY"
+                                android:textColor="@color/home_lux_gold"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/playfair_display"
+                            android:lineSpacingExtra="0dp"
+                            android:text="Discover LUX —\nPremium Blooms"
+                            android:textColor="@android:color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/luxArrowCircle"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_home_lux_arrow_circle"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_arrow_forward"
+                            app:tint="@color/home_lux_gold" />
+
+                    </FrameLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="338dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/spacing_m"
-                    android:text="Bestsellers"
-                    android:textStyle="bold" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/work_sans"
+                        android:text="Seasonal Favorites"
+                        android:textColor="@color/home_on_surface"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="View All"
+                        android:textColor="@color/home_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_s"
+                    android:layout_marginTop="18dp"
                     android:clipToPadding="false"
-                    android:paddingHorizontal="@dimen/spacing_m"
+                    android:overScrollMode="never"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:scrollbars="none">
 
                     <LinearLayout
@@ -253,121 +375,247 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- Bestseller Card 1 -->
-                        <com.google.android.material.card.MaterialCardView
-                            style="@style/Bloom.Card"
-                            android:layout_width="160dp"
+                        <LinearLayout
+                            android:layout_width="132dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/spacing_s">
+                            android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                            <FrameLayout
+                                android:layout_width="132dp"
+                                android:layout_height="164dp">
 
-                                <ImageView
+                                <com.google.android.material.imageview.ShapeableImageView
                                     android:layout_width="match_parent"
-                                    android:layout_height="@dimen/product_card_image_height"
+                                    android:layout_height="match_parent"
                                     android:scaleType="centerCrop"
-                                    android:src="@drawable/ic_launcher_background" />
+                                    android:src="@drawable/home_product_autumn_harvest"
+                                    app:shapeAppearanceOverlay="@style/Bloom.HomeRounded12" />
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:padding="@dimen/spacing_s">
+                                <ImageButton
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:layout_gravity="bottom|end"
+                                    android:layout_marginEnd="6dp"
+                                    android:layout_marginBottom="6dp"
+                                    android:background="@drawable/bg_home_product_add"
+                                    android:padding="12dp"
+                                    android:src="@drawable/ic_home_add" />
 
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical">
+                            </FrameLayout>
 
-                                        <TextView
-                                            style="@style/Bloom.Text.Body"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:ellipsize="end"
-                                            android:maxLines="1"
-                                            android:text="Midnight Rose"
-                                            android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="132dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/plus_jakarta_sans"
+                                android:maxLines="1"
+                                android:text="Autumn Harvest"
+                                android:textColor="@color/home_on_surface"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
 
-                                        <TextView
-                                            style="@style/Bloom.Text.Caption"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="₹1,299" />
-                                    </LinearLayout>
-                                </LinearLayout>
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
+                            <TextView
+                                android:layout_width="132dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/plus_jakarta_sans"
+                                android:text="$45.00"
+                                android:textColor="@color/home_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
-                        <!-- Bestseller Card 2 -->
-                        <com.google.android.material.card.MaterialCardView
-                            style="@style/Bloom.Card"
-                            android:layout_width="160dp"
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="132dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/spacing_s">
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                            <FrameLayout
+                                android:layout_width="132dp"
+                                android:layout_height="164dp">
 
-                                <ImageView
+                                <com.google.android.material.imageview.ShapeableImageView
                                     android:layout_width="match_parent"
-                                    android:layout_height="@dimen/product_card_image_height"
+                                    android:layout_height="match_parent"
                                     android:scaleType="centerCrop"
-                                    android:src="@drawable/ic_launcher_background" />
+                                    android:src="@drawable/home_product_winter_white"
+                                    app:shapeAppearanceOverlay="@style/Bloom.HomeRounded12" />
 
-                                <LinearLayout
+                                <ImageButton
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:layout_gravity="bottom|end"
+                                    android:layout_marginEnd="6dp"
+                                    android:layout_marginBottom="6dp"
+                                    android:background="@drawable/bg_home_product_add"
+                                    android:padding="12dp"
+                                    android:src="@drawable/ic_home_add" />
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:layout_width="132dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/plus_jakarta_sans"
+                                android:maxLines="1"
+                                android:text="Winter White..."
+                                android:textColor="@color/home_on_surface"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="132dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/plus_jakarta_sans"
+                                android:text="$60.00"
+                                android:textColor="@color/home_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="132dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:layout_width="132dp"
+                                android:layout_height="164dp">
+
+                                <com.google.android.material.imageview.ShapeableImageView
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:padding="@dimen/spacing_s">
+                                    android:layout_height="match_parent"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/home_product_wildflower_breeze"
+                                    app:shapeAppearanceOverlay="@style/Bloom.HomeRounded12" />
 
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical">
+                                <ImageButton
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:layout_gravity="bottom|end"
+                                    android:layout_marginEnd="6dp"
+                                    android:layout_marginBottom="6dp"
+                                    android:background="@drawable/bg_home_product_add"
+                                    android:padding="12dp"
+                                    android:src="@drawable/ic_home_add" />
 
-                                        <TextView
-                                            style="@style/Bloom.Text.Body"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:ellipsize="end"
-                                            android:maxLines="1"
-                                            android:text="Ocean Breeze"
-                                            android:textStyle="bold" />
+                            </FrameLayout>
 
-                                        <TextView
-                                            style="@style/Bloom.Text.Caption"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="₹899" />
-                                    </LinearLayout>
-                                </LinearLayout>
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
+                            <TextView
+                                android:layout_width="132dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/plus_jakarta_sans"
+                                android:maxLines="1"
+                                android:text="Wildflower Br..."
+                                android:textColor="@color/home_on_surface"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="132dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/plus_jakarta_sans"
+                                android:text="$32.00"
+                                android:textColor="@color/home_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
                 </HorizontalScrollView>
 
-                <!-- Nearby Shops Section -->
-                <TextView
-                    style="@style/Bloom.Text.Title"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/spacing_m"
-                    android:layout_marginTop="@dimen/spacing_m"
-                    android:text="Shops near you"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="34dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/work_sans"
+                        android:text="Bestsellers"
+                        android:textColor="@color/home_on_surface"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="View All"
+                        android:textColor="@color/home_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:orientation="vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <FrameLayout
+                        android:layout_width="132dp"
+                        android:layout_height="164dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/home_product_blushing_rose"
+                            app:shapeAppearanceOverlay="@style/Bloom.HomeRounded12" />
+
+                        <ImageButton
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="bottom|end"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginBottom="6dp"
+                            android:background="@drawable/bg_home_product_add"
+                            android:padding="12dp"
+                            android:src="@drawable/ic_home_add" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="132dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:maxLines="1"
+                        android:text="Blushing Rose..."
+                        android:textColor="@color/home_on_surface"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvShops"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:nestedScrollingEnabled="false"
-                    android:padding="@dimen/spacing_m" />
+                    android:layout_height="1dp"
+                    android:visibility="gone"
+                    tools:listitem="@layout/item_shop" />
 
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -382,24 +630,29 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="@dimen/spacing_xl"
+                    android:padding="32dp"
                     android:visibility="gone">
 
                     <TextView
                         android:id="@+id/tvEmptyTitle"
-                        style="@style/Bloom.Text.Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Service coming soon!"
+                        android:textColor="@color/home_on_surface"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvEmptySubtitle"
-                        style="@style/Bloom.Text.Body"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_s"
-                        android:text="We haven't reached your city yet." />
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/work_sans"
+                        android:text="We haven't reached your city yet."
+                        android:textColor="@color/home_on_surface_variant"
+                        android:textSize="15sp" />
+
                 </LinearLayout>
 
             </LinearLayout>
