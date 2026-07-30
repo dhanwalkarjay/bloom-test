@@ -46,6 +46,9 @@
         <activity android:name=".customer.ui.orderconfirmation.OrderConfirmationActivity" />
         <activity android:name=".customer.ui.ordertracking.OrderTrackingActivity" />
         <activity android:name=".customer.ui.reviews.ReviewActivity" />
+        <activity android:name=".customer.ui.search.SearchActivity" />
+        <activity android:name=".customer.ui.lux.LuxActivity" />
+        <activity android:name=".customer.ui.notifications.NotificationActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

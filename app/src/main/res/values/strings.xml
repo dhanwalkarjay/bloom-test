@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">Bloom</string>
+    <string name="shop_closed">Shop is Currently Closed</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="filter_all">All</string>
+    <string name="filter_birthday">Birthday</string>
+    <string name="filter_anniversary">Anniversary</string>
+    <string name="filter_sympathy">Sympathy</string>
+    <string name="filter_congratulations">Congratulations</string>
+    <string name="curated_luxury">CURATED LUXURY</string>
+    <string name="search_hint">Search bouquets&#8230;</string>
+    <string name="no_products_found">No products found</string>
+    <string name="try_different_search">Try a different search or category.</string>
+    <string name="lux_title">LUX Collection</string>
+    <string name="no_orders_placed">No orders placed</string>
+    <string name="no_orders_found">No orders found</string>
+    <string name="no_orders_subtitle">Your previous orders will appear here.</string>
+    <string name="error_load_orders">Could not load orders</string>
+    <string name="no_addresses_yet">No saved addresses yet</string>
+    <string name="login_to_view_shops">Login to view nearby shops and place orders.</string>
+    <string name="discover_florists">Discover Nearby Florists</string>
+    <string name="login_signup">Login / Signup</string>
+    <string name="no_notifications">No new notifications</string>
+    <string name="notifications_subtitle">We\'ll notify you about orders and promos.</string>
+    <string name="currently_unavailable">Currently Unavailable</string>
+    <string name="no_matches_location">No matching flowers found in your location.</string>
 </resources>

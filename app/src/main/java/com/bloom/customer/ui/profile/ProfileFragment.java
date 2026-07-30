@@ -78,14 +78,25 @@ public class ProfileFragment extends Fragment {
                 binding.tvError.setVisibility(View.GONE);
             } else if (result.status == NetworkResult.Status.ERROR) {
                 binding.progressBar.setVisibility(View.GONE);
-                binding.tvError.setText(result.message != null ? result.message : "Failed to load profile.");
+                // If profile not found, maybe show basic info from session if available
+                // or a "Complete your profile" message
+                binding.tvFullName.setText("Bloom User");
+                binding.tvPhone.setText(SessionManager.getInstance(requireContext()).getUserId());
+                binding.tvError.setText(result.message != null ? result.message : "Failed to load profile details.");
                 binding.tvError.setVisibility(View.VISIBLE);
             }
         });
 
         addressRepository.getAddresses(userId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == NetworkResult.Status.SUCCESS) {
-                addressAdapter.setAddresses(result.data);
+                if (result.data != null && !result.data.isEmpty()) {
+                    addressAdapter.setAddresses(result.data);
+                    binding.rvAddresses.setVisibility(View.VISIBLE);
+                    binding.tvEmptyAddresses.setVisibility(View.GONE);
+                } else {
+                    binding.rvAddresses.setVisibility(View.GONE);
+                    binding.tvEmptyAddresses.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

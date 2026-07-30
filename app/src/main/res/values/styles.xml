@@ -77,6 +77,10 @@
         <item name="cornerSize">12dp</item>
     </style>
 
+    <style name="Bloom.LuxProgressBar" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateTint">@color/lux_accent</item>
+    </style>
+
     <!-- LUX theme variant, for the LUX screens only -->
     <style name="Theme.Bloom.Lux" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@color/lux_background</item>

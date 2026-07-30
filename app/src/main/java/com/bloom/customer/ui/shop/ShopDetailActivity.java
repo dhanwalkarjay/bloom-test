@@ -69,9 +69,10 @@ public class ShopDetailActivity extends AppCompatActivity {
         binding.rvProducts.setLayoutManager(new GridLayoutManager(this, 2));
         binding.rvProducts.setAdapter(adapter);
 
-        adapter.setOnProductClickListener(product -> {
+        adapter.setOnProductClickListener((product, isOpen) -> {
             Intent intent = new Intent(this, ProductDetailActivity.class);
             intent.putExtra("product_json", new Gson().toJson(product));
+            intent.putExtra("is_shop_open", isOpen);
             startActivity(intent);
         });
     }
@@ -85,7 +86,7 @@ public class ShopDetailActivity extends AppCompatActivity {
             } else if (result.status == NetworkResult.Status.SUCCESS) {
                 binding.progressBar.setVisibility(View.GONE);
                 if (result.data != null && !result.data.isEmpty()) {
-                    adapter.setProducts(result.data);
+                    adapter.setProducts(result.data, shop.isOpen());
                     binding.rvProducts.setVisibility(View.VISIBLE);
                     binding.emptyState.setVisibility(View.GONE);
                 } else {

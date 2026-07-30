@@ -1,4 +1,4 @@
-package com.bloom.customer.ui.shop;
+package com.bloom.customer.ui.home;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,26 +14,20 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Adapter for displaying products in a grid.
- * Principle: Single Responsibility - handles product item binding.
- */
-public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.ProductViewHolder> {
+public class FeaturedProductAdapter extends RecyclerView.Adapter<FeaturedProductAdapter.ViewHolder> {
 
     private final List<Product> products = new ArrayList<>();
     private OnProductClickListener listener;
-    private boolean isShopOpen = true;
 
     public interface OnProductClickListener {
-        void onProductClick(Product product, boolean isShopOpen);
+        void onProductClick(Product product);
     }
 
     public void setOnProductClickListener(OnProductClickListener listener) {
         this.listener = listener;
     }
 
-    public void setProducts(List<Product> newProducts, boolean isOpen) {
-        this.isShopOpen = isOpen;
+    public void setProducts(List<Product> newProducts) {
         products.clear();
         if (newProducts != null) {
             products.addAll(newProducts);
@@ -43,14 +37,20 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
 
     @NonNull
     @Override
-    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemProductBinding binding = ItemProductBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false);
-        return new ProductViewHolder(binding);
+        
+        // Fix width for horizontal scrolling
+        ViewGroup.LayoutParams params = binding.getRoot().getLayoutParams();
+        params.width = (int) (160 * parent.getContext().getResources().getDisplayMetrics().density);
+        binding.getRoot().setLayoutParams(params);
+        
+        return new ViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(products.get(position));
     }
 
@@ -59,10 +59,10 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
         return products.size();
     }
 
-    class ProductViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final ItemProductBinding binding;
 
-        ProductViewHolder(ItemProductBinding binding) {
+        ViewHolder(ItemProductBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -79,7 +79,7 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
-                    listener.onProductClick(product, isShopOpen);
+                    listener.onProductClick(product);
                 }
             });
         }

@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bloom.R;
 import com.bloom.customer.data.model.CartItem;
 import com.bloom.customer.data.model.Product;
 import com.bloom.customer.data.repository.CartRepository;
@@ -22,6 +23,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private ActivityProductDetailBinding binding;
     private CartRepository cartRepository;
     private Product product;
+    private boolean isShopOpen = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         // Parse product from intent
         String productJson = getIntent().getStringExtra("product_json");
         product = new Gson().fromJson(productJson, Product.class);
+        isShopOpen = getIntent().getBooleanExtra("is_shop_open", true);
 
         cartRepository = new CartRepository(this);
 
@@ -47,6 +50,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(product.getImageUrl())
                 .into(binding.ivProductImage);
+
+        if (!isShopOpen) {
+            binding.btnAddToCart.setEnabled(false);
+            binding.btnAddToCart.setText(R.string.shop_closed);
+            binding.btnAddToCart.setBackgroundColor(getColor(android.R.color.darker_gray));
+        }
     }
 
     private void setupListeners() {
