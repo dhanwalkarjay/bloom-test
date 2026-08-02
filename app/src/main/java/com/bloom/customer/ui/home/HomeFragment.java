@@ -14,6 +14,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -73,6 +76,19 @@ public class HomeFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         locationHelper = new LocationHelper(requireContext());
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.topBar, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            v.setPadding(
+                    v.getPaddingLeft(),
+                    insets.top,
+                    v.getPaddingRight(),
+                    v.getPaddingBottom()
+            );
+
+            return windowInsets;
+        });
 
         setupRecyclerView();
         setupObservers();

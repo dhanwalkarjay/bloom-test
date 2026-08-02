@@ -1,116 +1,655 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lux_background">
+    android:background="@color/lux_background"
+    tools:context=".customer.ui.lux.LuxActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBar"
+    <LinearLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:background="@color/lux_background">
+        android:layout_height="wrap_content"
+        android:minHeight="70dp"
+        android:background="@color/lux_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="@color/lux_background"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="false">
+        <ImageButton
+            android:id="@+id/btnMenu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Menu"
+            android:padding="8dp"
+            android:src="@drawable/ic_lux_menu" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/home_hero_spring_sale"
-                app:layout_collapseMode="parallax" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvLuxTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/playfair_display"
+                android:includeFontPadding="false"
+                android:lineHeight="38sp"
+                android:text="LUX"
+                android:textColor="@color/lux_text"
+                android:textSize="32sp"
+                android:textStyle="bold" />
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#99000000" />
+                android:layout_width="40dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_lux_gold_underline" />
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/ic_arrow_back"
-                app:navigationIconTint="@color/lux_accent" />
+        </LinearLayout>
 
-            <LinearLayout
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:contentDescription="Profile"
+            android:scaleType="centerCrop"
+            android:src="@drawable/lux_profile"
+            app:shapeAppearanceOverlay="@style/Bloom.LuxProfileShape"
+            app:strokeColor="#33C9A24B"
+            app:strokeWidth="1dp" />
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/luxScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.bloom.customer.ui.common.AspectRatioConstraintLayout
+                android:id="@+id/heroSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="24dp">
+                android:background="@color/lux_background"
+                app:bloomHeightRatio="618"
+                app:bloomWidthRatio="420">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_home_flare"
-                    app:tint="@color/lux_accent" />
+                    android:id="@+id/ivHero"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Winter collection floral arrangement"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/lux_hero_winter_collection" />
+
+                <View
+                    android:id="@+id/heroBottomScrim"
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:background="@drawable/bg_lux_hero_bottom_gradient"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/heroTextGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="32dp"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/dm_sans"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.2"
+                        android:lineHeight="16sp"
+                        android:text="EXCLUSIVELY CURATED"
+                        android:textAllCaps="true"
+                        android:textColor="@color/lux_accent"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/playfair_display"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:lineHeight="38sp"
+                        android:text="The Winter Collection"
+                        android:textColor="@color/lux_text"
+                        android:textSize="32sp"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/work_sans"
+                        android:includeFontPadding="false"
+                        android:lineHeight="20sp"
+                        android:text="Curated by Amélie Laurent"
+                        android:textColor="@color/lux_text_muted"
+                        android:textSize="14sp"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+
+            </com.bloom.customer.ui.common.AspectRatioConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/productSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingTop="32dp"
+                android:paddingEnd="16dp">
+
+                <LinearLayout
+                    android:id="@+id/productNoir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:orientation="vertical">
+
+                    <com.bloom.customer.ui.common.AspectRatioConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_lux_image_border"
+                        app:bloomHeightRatio="5"
+                        app:bloomWidthRatio="4">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:contentDescription="Noir Éclat"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/lux_product_noir_eclat"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </com.bloom.customer.ui.common.AspectRatioConstraintLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/playfair_display"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:lineHeight="30sp"
+                        android:text="Noir Éclat"
+                        android:textColor="@color/lux_text"
+                        android:textSize="24sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="24dp"
+                        android:fontFamily="@font/work_sans"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:lineHeight="24sp"
+                        android:text="A sculptural masterpiece of rare black\ncalla lilies"
+                        android:textColor="@color/lux_text_muted"
+                        android:textSize="16sp"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/dm_sans"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.01"
+                        android:lineHeight="26sp"
+                        android:text="$285.00"
+                        android:textColor="@color/lux_accent"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="48dp"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_lux_product_meta_line" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="@font/dm_sans"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.1"
+                        android:lineHeight="16sp"
+                        android:text="ONLY 4 LEFT TODAY"
+                        android:textColor="@color/lux_accent"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/productAura"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:orientation="vertical">
+
+                    <com.bloom.customer.ui.common.AspectRatioConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_lux_image_border"
+                        app:bloomHeightRatio="5"
+                        app:bloomWidthRatio="4">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:contentDescription="Aura Blush"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/lux_product_aura_blush"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </com.bloom.customer.ui.common.AspectRatioConstraintLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/playfair_display"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:lineHeight="30sp"
+                        android:text="Aura Blush"
+                        android:textColor="@color/lux_text"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="24dp"
+                        android:fontFamily="@font/work_sans"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:lineHeight="24sp"
+                        android:text="Ethereal layers of silk-petaled heirloom\npeonies"
+                        android:textColor="@color/lux_text_muted"
+                        android:textSize="16sp"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/dm_sans"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.01"
+                        android:lineHeight="26sp"
+                        android:text="$340.00"
+                        android:textColor="@color/lux_accent"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="48dp"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_lux_product_meta_line" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="@font/dm_sans"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.1"
+                        android:lineHeight="16sp"
+                        android:text="LIMITED EDITION"
+                        android:textColor="@color/lux_accent"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/productMidnight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:orientation="vertical">
+
+                    <com.bloom.customer.ui.common.AspectRatioConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_lux_image_border"
+                        app:bloomHeightRatio="5"
+                        app:bloomWidthRatio="4">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:contentDescription="Midnight Gilded"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/lux_product_midnight_gilded"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </com.bloom.customer.ui.common.AspectRatioConstraintLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/playfair_display"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:lineHeight="30sp"
+                        android:text="Midnight Gilded"
+                        android:textColor="@color/lux_text"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="24dp"
+                        android:fontFamily="@font/work_sans"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:lineHeight="24sp"
+                        android:text="Contrast of wild indigo thistles and\ngilded textures"
+                        android:textColor="@color/lux_text_muted"
+                        android:textSize="16sp"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/dm_sans"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.01"
+                        android:lineHeight="26sp"
+                        android:text="$215.00"
+                        android:textColor="@color/lux_accent"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="48dp"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_lux_product_meta_line" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="@font/dm_sans"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.1"
+                        android:lineHeight="16sp"
+                        android:text="ONLY 2 LEFT TODAY"
+                        android:textColor="@color/lux_accent"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/quoteSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="96dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/bg_lux_quote_divider" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/playfair_display"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:lineHeight="30sp"
+                    android:text="&quot;Flowers are the jewelry of a\nroom; they should be as rare and\nintentional as a gemstone.&quot;"
+                    android:textColor="@color/lux_text_soft"
+                    android:textSize="24sp"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     android:fontFamily="@font/dm_sans"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
                     android:letterSpacing="0.3"
-                    android:text="@string/curated_luxury"
+                    android:lineHeight="16sp"
+                    android:text="AMÉLIE LAURENT"
                     android:textColor="@color/lux_accent"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/playfair_display"
-                    android:text="@string/lux_title"
-                    android:textColor="@color/lux_text"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
             </LinearLayout>
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+        </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvLuxProducts"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:padding="12dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="visible"
-        android:theme="@style/Bloom.LuxProgressBar" />
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
-        android:id="@+id/emptyState"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@drawable/bg_lux_bottom_nav"
+        android:elevation="16dp"
         android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/no_products_found"
-            android:textColor="@color/lux_text"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:id="@+id/navHome"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ivNavHome"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home_home"
+                app:tint="@color/lux_nav_inactive" />
+
+            <TextView
+                android:id="@+id/tvNavHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/dm_sans"
+                android:includeFontPadding="false"
+                android:text="Home"
+                android:textColor="@color/lux_nav_inactive"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navLux"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_lux_nav_active"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ivNavLux"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home_flare"
+                app:tint="@color/lux_nav_active_text" />
+
+            <TextView
+                android:id="@+id/tvNavLux"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/dm_sans"
+                android:includeFontPadding="false"
+                android:text="LUX"
+                android:textColor="@color/lux_nav_active_text"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navSearch"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ivNavSearch"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home_search"
+                app:tint="@color/lux_nav_inactive" />
+
+            <TextView
+                android:id="@+id/tvNavSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/dm_sans"
+                android:includeFontPadding="false"
+                android:text="Search"
+                android:textColor="@color/lux_nav_inactive"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navOrders"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ivNavOrders"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home_bag"
+                app:tint="@color/lux_nav_inactive" />
+
+            <TextView
+                android:id="@+id/tvNavOrders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/dm_sans"
+                android:includeFontPadding="false"
+                android:text="Orders"
+                android:textColor="@color/lux_nav_inactive"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navProfile"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ivNavProfile"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home_person"
+                app:tint="@color/lux_nav_inactive" />
+
+            <TextView
+                android:id="@+id/tvNavProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/dm_sans"
+                android:includeFontPadding="false"
+                android:text="Profile"
+                android:textColor="@color/lux_nav_inactive"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

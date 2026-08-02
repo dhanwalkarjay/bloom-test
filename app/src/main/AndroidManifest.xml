@@ -45,6 +45,7 @@
         <activity android:name=".customer.ui.checkout.PaymentActivity" />
         <activity android:name=".customer.ui.orderconfirmation.OrderConfirmationActivity" />
         <activity android:name=".customer.ui.ordertracking.OrderTrackingActivity" />
+        <activity android:name=".customer.ui.orderhistory.OrdersActivity" />
         <activity android:name=".customer.ui.reviews.ReviewActivity" />
         <activity android:name=".customer.ui.search.SearchActivity" />
         <activity android:name=".customer.ui.lux.LuxActivity" />
