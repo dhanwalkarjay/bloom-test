@@ -11,23 +11,23 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="70dp"
+        android:minHeight="@dimen/_70sdp"
         android:background="@color/lux_background"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
+        android:paddingStart="@dimen/_16sdp"
+        android:paddingTop="@dimen/_16sdp"
+        android:paddingEnd="@dimen/_16sdp"
+        android:paddingBottom="@dimen/_16sdp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btnMenu"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Menu"
-            android:padding="8dp"
+            android:padding="@dimen/_8sdp"
             android:src="@drawable/ic_lux_menu" />
 
         <LinearLayout
@@ -43,24 +43,24 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/playfair_display"
                 android:includeFontPadding="false"
-                android:lineHeight="38sp"
+                android:lineHeight="@dimen/_38ssp"
                 android:text="LUX"
                 android:textColor="@color/lux_text"
-                android:textSize="32sp"
+                android:textSize="@dimen/_32ssp"
                 android:textStyle="bold" />
 
             <View
-                android:layout_width="40dp"
+                android:layout_width="@dimen/_40sdp"
                 android:layout_height="1dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:background="@drawable/bg_lux_gold_underline" />
 
         </LinearLayout>
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProfile"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_32sdp"
             android:contentDescription="Profile"
             android:scaleType="centerCrop"
             android:src="@drawable/lux_profile"
@@ -104,7 +104,7 @@
                 <View
                     android:id="@+id/heroBottomScrim"
                     android:layout_width="match_parent"
-                    android:layout_height="210dp"
+                    android:layout_height="@dimen/_210sdp"
                     android:background="@drawable/bg_lux_hero_bottom_gradient"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -114,9 +114,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="32dp"
+                    android:paddingStart="@dimen/_16sdp"
+                    android:paddingEnd="@dimen/_16sdp"
+                    android:paddingBottom="@dimen/_32sdp"
                     app:layout_constraintBottom_toBottomOf="parent">
 
                     <TextView
@@ -125,36 +125,36 @@
                         android:fontFamily="@font/dm_sans"
                         android:includeFontPadding="false"
                         android:letterSpacing="0.2"
-                        android:lineHeight="16sp"
+                        android:lineHeight="@dimen/_16ssp"
                         android:text="EXCLUSIVELY CURATED"
                         android:textAllCaps="true"
                         android:textColor="@color/lux_accent"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:fontFamily="@font/playfair_display"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:lineHeight="38sp"
+                        android:lineHeight="@dimen/_38ssp"
                         android:text="The Winter Collection"
                         android:textColor="@color/lux_text"
-                        android:textSize="32sp"
+                        android:textSize="@dimen/_32ssp"
                         android:textStyle="italic" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="@dimen/_12sdp"
                         android:fontFamily="@font/work_sans"
                         android:includeFontPadding="false"
-                        android:lineHeight="20sp"
+                        android:lineHeight="@dimen/_20ssp"
                         android:text="Curated by Amélie Laurent"
                         android:textColor="@color/lux_text_muted"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/_14ssp"
                         android:textStyle="italic" />
 
                 </LinearLayout>
@@ -166,9 +166,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingTop="32dp"
-                android:paddingEnd="16dp">
+                android:paddingStart="@dimen/_16sdp"
+                android:paddingTop="@dimen/_32sdp"
+                android:paddingEnd="@dimen/_16sdp">
 
                 <LinearLayout
                     android:id="@+id/productNoir"
@@ -202,63 +202,63 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/_16sdp"
                         android:fontFamily="@font/playfair_display"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:lineHeight="30sp"
+                        android:lineHeight="@dimen/_30ssp"
                         android:text="Noir Éclat"
                         android:textColor="@color/lux_text"
-                        android:textSize="24sp"
+                        android:textSize="@dimen/_24ssp"
                         android:textStyle="normal" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="24dp"
+                        android:layout_marginStart="@dimen/_24sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_marginEnd="@dimen/_24sdp"
                         android:fontFamily="@font/work_sans"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:lineHeight="24sp"
+                        android:lineHeight="@dimen/_24ssp"
                         android:text="A sculptural masterpiece of rare black\ncalla lilies"
                         android:textColor="@color/lux_text_muted"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/_16ssp"
                         android:textStyle="italic" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="@dimen/_12sdp"
                         android:fontFamily="@font/dm_sans"
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:letterSpacing="0.01"
-                        android:lineHeight="26sp"
+                        android:lineHeight="@dimen/_26ssp"
                         android:text="$285.00"
                         android:textColor="@color/lux_accent"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/_18ssp" />
 
                     <View
-                        android:layout_width="48dp"
+                        android:layout_width="@dimen/_48sdp"
                         android:layout_height="1dp"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_lux_product_meta_line" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="@dimen/_6sdp"
                         android:fontFamily="@font/dm_sans"
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:letterSpacing="0.1"
-                        android:lineHeight="16sp"
+                        android:lineHeight="@dimen/_16ssp"
                         android:text="ONLY 4 LEFT TODAY"
                         android:textColor="@color/lux_accent"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -267,7 +267,7 @@
                     android:id="@+id/productAura"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="@dimen/_40sdp"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
@@ -296,62 +296,62 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/_16sdp"
                         android:fontFamily="@font/playfair_display"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:lineHeight="30sp"
+                        android:lineHeight="@dimen/_30ssp"
                         android:text="Aura Blush"
                         android:textColor="@color/lux_text"
-                        android:textSize="24sp" />
+                        android:textSize="@dimen/_24ssp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="24dp"
+                        android:layout_marginStart="@dimen/_24sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_marginEnd="@dimen/_24sdp"
                         android:fontFamily="@font/work_sans"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:lineHeight="24sp"
+                        android:lineHeight="@dimen/_24ssp"
                         android:text="Ethereal layers of silk-petaled heirloom\npeonies"
                         android:textColor="@color/lux_text_muted"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/_16ssp"
                         android:textStyle="italic" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="@dimen/_12sdp"
                         android:fontFamily="@font/dm_sans"
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:letterSpacing="0.01"
-                        android:lineHeight="26sp"
+                        android:lineHeight="@dimen/_26ssp"
                         android:text="$340.00"
                         android:textColor="@color/lux_accent"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/_18ssp" />
 
                     <View
-                        android:layout_width="48dp"
+                        android:layout_width="@dimen/_48sdp"
                         android:layout_height="1dp"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_lux_product_meta_line" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="@dimen/_6sdp"
                         android:fontFamily="@font/dm_sans"
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:letterSpacing="0.1"
-                        android:lineHeight="16sp"
+                        android:lineHeight="@dimen/_16ssp"
                         android:text="LIMITED EDITION"
                         android:textColor="@color/lux_accent"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -360,7 +360,7 @@
                     android:id="@+id/productMidnight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="@dimen/_40sdp"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
@@ -389,62 +389,62 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/_16sdp"
                         android:fontFamily="@font/playfair_display"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:lineHeight="30sp"
+                        android:lineHeight="@dimen/_30ssp"
                         android:text="Midnight Gilded"
                         android:textColor="@color/lux_text"
-                        android:textSize="24sp" />
+                        android:textSize="@dimen/_24ssp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="24dp"
+                        android:layout_marginStart="@dimen/_24sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_marginEnd="@dimen/_24sdp"
                         android:fontFamily="@font/work_sans"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:lineHeight="24sp"
+                        android:lineHeight="@dimen/_24ssp"
                         android:text="Contrast of wild indigo thistles and\ngilded textures"
                         android:textColor="@color/lux_text_muted"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/_16ssp"
                         android:textStyle="italic" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="@dimen/_12sdp"
                         android:fontFamily="@font/dm_sans"
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:letterSpacing="0.01"
-                        android:lineHeight="26sp"
+                        android:lineHeight="@dimen/_26ssp"
                         android:text="$215.00"
                         android:textColor="@color/lux_accent"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/_18ssp" />
 
                     <View
-                        android:layout_width="48dp"
+                        android:layout_width="@dimen/_48sdp"
                         android:layout_height="1dp"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_lux_product_meta_line" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="@dimen/_6sdp"
                         android:fontFamily="@font/dm_sans"
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:letterSpacing="0.1"
-                        android:lineHeight="16sp"
+                        android:lineHeight="@dimen/_16ssp"
                         android:text="ONLY 2 LEFT TODAY"
                         android:textColor="@color/lux_accent"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -455,11 +455,11 @@
                 android:id="@+id/quoteSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="@dimen/_32sdp"
                 android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="96dp">
+                android:paddingStart="@dimen/_16sdp"
+                android:paddingEnd="@dimen/_16sdp"
+                android:paddingBottom="@dimen/_96sdp">
 
                 <View
                     android:layout_width="match_parent"
@@ -469,28 +469,28 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="@dimen/_32sdp"
                     android:fontFamily="@font/playfair_display"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    android:lineHeight="30sp"
+                    android:lineHeight="@dimen/_30ssp"
                     android:text="&quot;Flowers are the jewelry of a\nroom; they should be as rare and\nintentional as a gemstone.&quot;"
                     android:textColor="@color/lux_text_soft"
-                    android:textSize="24sp"
+                    android:textSize="@dimen/_24ssp"
                     android:textStyle="italic" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="@dimen/_24sdp"
                     android:fontFamily="@font/dm_sans"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:letterSpacing="0.3"
-                    android:lineHeight="16sp"
+                    android:lineHeight="@dimen/_16ssp"
                     android:text="AMÉLIE LAURENT"
                     android:textColor="@color/lux_accent"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/_12ssp"
                     android:textStyle="bold" />
 
             </LinearLayout>

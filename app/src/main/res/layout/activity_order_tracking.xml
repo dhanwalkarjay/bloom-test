@@ -18,32 +18,32 @@
         android:id="@+id/cardOrderInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
+        android:layout_margin="@dimen/_20sdp"
+        app:cardCornerRadius="@dimen/_16sdp"
+        app:cardElevation="@dimen/_4sdp"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="@dimen/_20sdp">
 
             <TextView
                 android:id="@+id/tvOrderId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Order #12345"
-                android:textSize="14sp"
+                android:textSize="@dimen/_14ssp"
                 android:textColor="#666666" />
 
             <TextView
                 android:id="@+id/tvShopName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:text="Rose Garden Florist"
-                android:textSize="20sp"
+                android:textSize="@dimen/_20ssp"
                 android:textStyle="bold"
                 android:textColor="#333333" />
         </LinearLayout>
@@ -52,7 +52,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="32dp"
+        android:layout_margin="@dimen/_32sdp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/cardOrderInfo"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -66,24 +66,24 @@
             android:alpha="1.0">
             <ImageView
                 android:id="@+id/dotPlaced"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginTop="4dp"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:src="@android:drawable/presence_online"
                 app:tint="#4A7C59" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="@dimen/_24sdp"
                 android:text="Order Placed"
-                android:textSize="16sp"
+                android:textSize="@dimen/_16ssp"
                 android:textStyle="bold" />
         </LinearLayout>
 
         <View
-            android:layout_width="2dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="5dp"
+            android:layout_width="@dimen/_2sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:background="#EEEEEE" />
 
         <LinearLayout
@@ -94,23 +94,23 @@
             android:alpha="0.5">
             <ImageView
                 android:id="@+id/dotConfirmed"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginTop="4dp"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:src="@android:drawable/presence_online"
                 app:tint="#CCCCCC" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="@dimen/_24sdp"
                 android:text="Confirmed"
-                android:textSize="16sp" />
+                android:textSize="@dimen/_16ssp" />
         </LinearLayout>
 
         <View
-            android:layout_width="2dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="5dp"
+            android:layout_width="@dimen/_2sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:background="#EEEEEE" />
 
         <LinearLayout
@@ -121,23 +121,23 @@
             android:alpha="0.5">
             <ImageView
                 android:id="@+id/dotPreparing"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginTop="4dp"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:src="@android:drawable/presence_online"
                 app:tint="#CCCCCC" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="@dimen/_24sdp"
                 android:text="Preparing"
-                android:textSize="16sp" />
+                android:textSize="@dimen/_16ssp" />
         </LinearLayout>
 
         <View
-            android:layout_width="2dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="5dp"
+            android:layout_width="@dimen/_2sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:background="#EEEEEE" />
 
         <LinearLayout
@@ -148,23 +148,23 @@
             android:alpha="0.5">
             <ImageView
                 android:id="@+id/dotOut"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginTop="4dp"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:src="@android:drawable/presence_online"
                 app:tint="#CCCCCC" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="@dimen/_24sdp"
                 android:text="Out for Delivery"
-                android:textSize="16sp" />
+                android:textSize="@dimen/_16ssp" />
         </LinearLayout>
 
         <View
-            android:layout_width="2dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="5dp"
+            android:layout_width="@dimen/_2sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:background="#EEEEEE" />
 
         <LinearLayout
@@ -175,17 +175,17 @@
             android:alpha="0.5">
             <ImageView
                 android:id="@+id/dotDelivered"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginTop="4dp"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:src="@android:drawable/presence_online"
                 app:tint="#CCCCCC" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="@dimen/_24sdp"
                 android:text="Delivered"
-                android:textSize="16sp" />
+                android:textSize="@dimen/_16ssp" />
         </LinearLayout>
 
     </LinearLayout>

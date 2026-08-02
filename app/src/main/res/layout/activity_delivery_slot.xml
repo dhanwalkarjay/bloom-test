@@ -24,13 +24,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="@dimen/_20sdp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Choose Timing"
-                android:textSize="20sp"
+                android:textSize="@dimen/_20ssp"
                 android:textStyle="bold"
                 android:textColor="#333333" />
 
@@ -38,8 +38,8 @@
                 android:id="@+id/cardInstant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:cardCornerRadius="12dp"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:cardCornerRadius="@dimen/_12sdp"
                 app:strokeWidth="1dp"
                 app:strokeColor="#EEEEEE"
                 app:cardElevation="0dp">
@@ -47,13 +47,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="@dimen/_16sdp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
                         android:src="@android:drawable/ic_menu_send"
                         app:tint="#4A7C59" />
 
@@ -61,14 +61,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="@dimen/_16sdp"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Instant Delivery"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/_16ssp"
                             android:textStyle="bold"
                             android:textColor="#333333" />
                         <TextView
@@ -90,8 +90,8 @@
                 android:id="@+id/cardSameDay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="12dp"
+                android:layout_marginTop="@dimen/_16sdp"
+                app:cardCornerRadius="@dimen/_12sdp"
                 app:strokeWidth="1dp"
                 app:strokeColor="#EEEEEE"
                 app:cardElevation="0dp">
@@ -99,13 +99,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="@dimen/_16sdp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
                         android:src="@android:drawable/ic_menu_today"
                         app:tint="#4A7C59" />
 
@@ -113,14 +113,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="@dimen/_16sdp"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Same-Day Delivery"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/_16ssp"
                             android:textStyle="bold"
                             android:textColor="#333333" />
                         <TextView
@@ -141,8 +141,8 @@
                 android:id="@+id/cardScheduled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="12dp"
+                android:layout_marginTop="@dimen/_16sdp"
+                app:cardCornerRadius="@dimen/_12sdp"
                 app:strokeWidth="1dp"
                 app:strokeColor="#EEEEEE"
                 app:cardElevation="0dp">
@@ -150,13 +150,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="@dimen/_16sdp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
                         android:src="@android:drawable/ic_menu_my_calendar"
                         app:tint="#4A7C59" />
 
@@ -164,14 +164,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="@dimen/_16sdp"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Scheduled Delivery"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/_16ssp"
                             android:textStyle="bold"
                             android:textColor="#333333" />
                         <TextView
@@ -191,8 +191,8 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="12dp"
+                android:layout_marginTop="@dimen/_16sdp"
+                app:cardCornerRadius="@dimen/_12sdp"
                 app:strokeWidth="1dp"
                 app:strokeColor="#EEEEEE"
                 app:cardElevation="0dp"
@@ -201,13 +201,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="@dimen/_16sdp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
                         android:src="@android:drawable/ic_menu_recent_history"
                         app:tint="#E85D75" />
 
@@ -215,14 +215,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="@dimen/_16sdp"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Midnight Special"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/_16ssp"
                             android:textStyle="bold"
                             android:textColor="#333333" />
                         <TextView
@@ -248,13 +248,13 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnContinue"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_margin="16dp"
+        android:layout_height="@dimen/_56sdp"
+        android:layout_margin="@dimen/_16sdp"
         android:text="Continue to Payment"
         android:textAllCaps="false"
         android:backgroundTint="#E85D75"
         android:textColor="@android:color/white"
-        app:cornerRadius="12dp"
+        app:cornerRadius="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
