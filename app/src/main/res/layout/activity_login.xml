@@ -9,7 +9,7 @@
         android:id="@+id/svContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="24dp"
+        android:padding="@dimen/_24sdp"
         app:layout_constraintBottom_toTopOf="@id/llBottomLinks"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -23,10 +23,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Welcome Back"
-                android:textSize="28sp"
+                android:textSize="@dimen/_28ssp"
                 android:textStyle="bold"
                 android:textColor="#E85D75"
-                android:layout_marginTop="64dp"/>
+                android:layout_marginTop="@dimen/_64sdp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPhone"
@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Phone Number"
-                android:layout_marginTop="32dp">
+                android:layout_marginTop="@dimen/_32sdp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPhone"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 app:passwordToggleEnabled="true"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="@dimen/_16sdp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
@@ -62,17 +62,17 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="32dp"
+                android:layout_height="@dimen/_56sdp"
+                android:layout_marginTop="@dimen/_32sdp"
                 android:text="Login"
                 android:backgroundTint="#E85D75"
-                app:cornerRadius="12dp"/>
+                app:cornerRadius="@dimen/_12sdp"/>
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:layout_gravity="center"
                 android:visibility="gone"/>
 
@@ -80,10 +80,10 @@
                 android:id="@+id/tvError"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:text=""
                 android:textColor="#D32F2F"
-                android:textSize="14sp"
+                android:textSize="@dimen/_14ssp"
                 android:textAlignment="center"
                 android:visibility="gone"/>
 
@@ -96,8 +96,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:paddingHorizontal="24dp"
-        android:paddingBottom="24dp"
+        android:paddingHorizontal="@dimen/_24sdp"
+        android:paddingBottom="@dimen/_24sdp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
@@ -106,8 +106,8 @@
             android:layout_height="wrap_content"
             android:text="Forgot Password?"
             android:textColor="#E85D75"
-            android:layout_marginBottom="12dp"
-            android:textSize="14sp" />
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:textSize="@dimen/_14ssp" />
 
         <TextView
             android:id="@+id/tvSignupLink"

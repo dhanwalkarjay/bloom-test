@@ -36,6 +36,10 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.material)
 
+    // Scalable sizes for responsive design
+    implementation("com.intuit.sdp:sdp-android:1.1.1")
+    implementation("com.intuit.ssp:ssp-android:1.1.1")
+
     // Networking
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
