@@ -16,10 +16,10 @@ import androidx.fragment.app.Fragment;
 import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.ui.auth.LoginActivity;
 import com.bloom.R;
-import com.bloom.customer.ui.lux.LuxActivity;
-import com.bloom.customer.ui.orderhistory.OrdersActivity;
+import com.bloom.customer.ui.lux.LuxFragment;
+import com.bloom.customer.ui.orderhistory.OrdersFragment;
 import com.bloom.customer.ui.profile.ProfileFragment;
-import com.bloom.customer.ui.search.SearchActivity;
+import com.bloom.customer.ui.search.SearchFragment;
 import com.bloom.databinding.ActivityHomeBinding;
 
 /**
@@ -54,22 +54,27 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         binding.navLux.setOnClickListener(v -> {
-            startActivity(new Intent(this, LuxActivity.class));
+            selectNavItem(binding.navLux);
+            loadFragment(new LuxFragment());
         });
 
         binding.navSearch.setOnClickListener(v -> {
-            startActivity(new Intent(this, SearchActivity.class));
+            selectNavItem(binding.navSearch);
+            loadFragment(new SearchFragment());
         });
 
-        binding.navOrders.setOnClickListener(v -> startActivity(new Intent(this, OrdersActivity.class)));
+        binding.navOrders.setOnClickListener(v -> {
+            selectNavItem(binding.navOrders);
+            loadFragment(new OrdersFragment());
+        });
 
         binding.navProfile.setOnClickListener(v -> {
-            if (SessionManager.getInstance(this).isLoggedIn()) {
+//            if (SessionManager.getInstance(this).isLoggedIn()) {
                 selectNavItem(binding.navProfile);
                 loadFragment(new ProfileFragment());
-            } else {
-                startActivity(new Intent(this, LoginActivity.class));
-            }
+//            } else {
+//                startActivity(new Intent(this, LoginActivity.class));
+//            }
         });
     }
 
