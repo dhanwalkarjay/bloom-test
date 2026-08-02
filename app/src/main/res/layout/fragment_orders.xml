@@ -11,14 +11,14 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="64dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:minHeight="@dimen/_64sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
         android:background="@color/orders_surface"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="@dimen/_16sdp"
+        android:paddingEnd="@dimen/_16sdp"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -27,29 +27,29 @@
             android:layout_weight="1"
             android:fontFamily="@font/manrope"
             android:includeFontPadding="false"
-            android:lineHeight="32sp"
+            android:lineHeight="@dimen/_32ssp"
             android:text="My Orders"
             android:textColor="@color/orders_primary"
-            android:textSize="24sp"
+            android:textSize="@dimen/_24ssp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/btnFavorites"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/_48sdp"
+            android:layout_height="@dimen/_48sdp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Favorites"
-            android:padding="8dp"
+            android:padding="@dimen/_8sdp"
             android:src="@drawable/ic_orders_heart" />
 
         <ImageButton
             android:id="@+id/btnCart"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="@dimen/_48sdp"
+            android:layout_height="@dimen/_48sdp"
+            android:layout_marginStart="@dimen/_8sdp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Cart"
-            android:padding="8dp"
+            android:padding="@dimen/_8sdp"
             android:src="@drawable/ic_orders_cart" />
 
     </LinearLayout>
@@ -77,19 +77,19 @@
             android:clipToPadding="false"
             android:clipChildren="false"
             android:orientation="vertical"
-            android:paddingStart="16dp"
-            android:paddingTop="12dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="132dp">
+            android:paddingStart="@dimen/_16sdp"
+            android:paddingTop="@dimen/_12sdp"
+            android:paddingEnd="@dimen/_16sdp"
+            android:paddingBottom="@dimen/_132sdp">
 
             <LinearLayout
                 android:id="@+id/segmentedControl"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/_48sdp"
                 android:background="@drawable/bg_orders_segment_container"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="4dp">
+                android:padding="@dimen/_4sdp">
 
                 <TextView
                     android:id="@+id/tabActive"
@@ -97,27 +97,27 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bg_orders_segment_active"
-                    android:elevation="3dp"
+                    android:elevation="@dimen/_3sdp"
                     android:fontFamily="@font/manrope"
                     android:includeFontPadding="false"
                     android:gravity="center"
                     android:text="Active"
                     android:textColor="@color/orders_primary"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/_16ssp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tabPast"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="@dimen/_4sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/manrope"
                     android:includeFontPadding="false"
                     android:gravity="center"
                     android:text="Past"
                     android:textColor="@color/orders_on_surface_variant"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/_16ssp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -126,14 +126,14 @@
                 android:id="@+id/orderCardOne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:background="@drawable/bg_orders_card"
                 android:clickable="true"
-                android:elevation="2dp"
+                android:elevation="@dimen/_2sdp"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="@dimen/_16sdp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -154,17 +154,17 @@
                             android:includeFontPadding="false"
                             android:text="#98122"
                             android:textColor="@color/orders_on_surface_variant"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/_12ssp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="@dimen/_4sdp"
                             android:fontFamily="@font/manrope"
                             android:includeFontPadding="false"
                             android:text="Eleanor Vance"
                             android:textColor="@color/orders_on_surface"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/_16ssp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -177,29 +177,29 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="24dp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@drawable/bg_orders_status_progress"
                             android:fontFamily="@font/work_sans"
                             android:includeFontPadding="false"
                             android:gravity="center"
                             android:letterSpacing="0.05"
-                            android:minWidth="96dp"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
+                            android:minWidth="@dimen/_96sdp"
+                            android:paddingStart="@dimen/_12sdp"
+                            android:paddingEnd="@dimen/_12sdp"
                             android:text="IN PROGRESS"
                             android:textColor="@color/orders_on_secondary_container"
-                            android:textSize="11sp"
+                            android:textSize="@dimen/_11ssp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="@dimen/_4sdp"
                             android:fontFamily="@font/work_sans"
                             android:includeFontPadding="false"
                             android:text="2h ago"
                             android:textColor="@color/orders_on_surface_variant"
-                            android:textSize="13sp" />
+                            android:textSize="@dimen/_13ssp" />
 
                     </LinearLayout>
 
@@ -208,22 +208,22 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="@dimen/_12sdp"
                     android:fontFamily="@font/work_sans"
-                    android:lineSpacingExtra="4dp"
+                    android:lineSpacingExtra="@dimen/_4sdp"
                     android:text="1x Midnight Rose Bouquet\n1x Glass Vase (Standard)"
                     android:textColor="@color/orders_on_surface"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/_14ssp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/_16sdp"
                     android:background="@color/orders_surface_variant" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="36dp"
+                    android:layout_height="@dimen/_36sdp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -235,7 +235,7 @@
                             android:includeFontPadding="false"
                         android:text="Total"
                         android:textColor="@color/orders_on_surface_variant"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/_14ssp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -244,7 +244,7 @@
                             android:includeFontPadding="false"
                         android:text="$124.50"
                         android:textColor="@color/orders_on_surface"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -255,14 +255,14 @@
                 android:id="@+id/orderCardTwo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:background="@drawable/bg_orders_card"
                 android:clickable="true"
-                android:elevation="2dp"
+                android:elevation="@dimen/_2sdp"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="@dimen/_16sdp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -283,17 +283,17 @@
                             android:includeFontPadding="false"
                             android:text="#98121"
                             android:textColor="@color/orders_on_surface_variant"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/_12ssp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="@dimen/_4sdp"
                             android:fontFamily="@font/manrope"
                             android:includeFontPadding="false"
                             android:text="Marcus Thorne"
                             android:textColor="@color/orders_on_surface"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/_16ssp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -306,29 +306,29 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="24dp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@drawable/bg_orders_status_urgent"
                             android:fontFamily="@font/work_sans"
                             android:includeFontPadding="false"
                             android:gravity="center"
                             android:letterSpacing="0.05"
-                            android:minWidth="74dp"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
+                            android:minWidth="@dimen/_74sdp"
+                            android:paddingStart="@dimen/_12sdp"
+                            android:paddingEnd="@dimen/_12sdp"
                             android:text="URGENT"
                             android:textColor="@android:color/white"
-                            android:textSize="11sp"
+                            android:textSize="@dimen/_11ssp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="@dimen/_4sdp"
                             android:fontFamily="@font/work_sans"
                             android:includeFontPadding="false"
                             android:text="3h ago"
                             android:textColor="@color/orders_on_surface_variant"
-                            android:textSize="13sp" />
+                            android:textSize="@dimen/_13ssp" />
 
                     </LinearLayout>
 
@@ -337,22 +337,22 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="@dimen/_12sdp"
                     android:fontFamily="@font/work_sans"
                             android:includeFontPadding="false"
                     android:text="3x Lily Assortment"
                     android:textColor="@color/orders_on_surface"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/_14ssp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/_16sdp"
                     android:background="@color/orders_surface_variant" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="36dp"
+                    android:layout_height="@dimen/_36sdp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -364,7 +364,7 @@
                             android:includeFontPadding="false"
                         android:text="Total"
                         android:textColor="@color/orders_on_surface_variant"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/_14ssp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -373,7 +373,7 @@
                             android:includeFontPadding="false"
                         android:text="$85.00"
                         android:textColor="@color/orders_on_surface"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -384,15 +384,15 @@
                 android:id="@+id/orderCardThree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:alpha="0.75"
                 android:background="@drawable/bg_orders_card"
                 android:clickable="true"
-                android:elevation="2dp"
+                android:elevation="@dimen/_2sdp"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="@dimen/_16sdp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -413,17 +413,17 @@
                             android:includeFontPadding="false"
                             android:text="#98120"
                             android:textColor="@color/orders_on_surface_variant"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/_12ssp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="@dimen/_4sdp"
                             android:fontFamily="@font/manrope"
                             android:includeFontPadding="false"
                             android:text="Sarah Jenkins"
                             android:textColor="@color/orders_on_surface"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/_16ssp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -436,29 +436,29 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="24dp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@drawable/bg_orders_status_draft"
                             android:fontFamily="@font/work_sans"
                             android:includeFontPadding="false"
                             android:gravity="center"
                             android:letterSpacing="0.05"
-                            android:minWidth="64dp"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
+                            android:minWidth="@dimen/_64sdp"
+                            android:paddingStart="@dimen/_12sdp"
+                            android:paddingEnd="@dimen/_12sdp"
                             android:text="DRAFT"
                             android:textColor="@color/orders_on_surface_variant"
-                            android:textSize="11sp"
+                            android:textSize="@dimen/_11ssp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="@dimen/_4sdp"
                             android:fontFamily="@font/work_sans"
                             android:includeFontPadding="false"
                             android:text="5h ago"
                             android:textColor="@color/orders_on_surface_variant"
-                            android:textSize="13sp" />
+                            android:textSize="@dimen/_13ssp" />
 
                     </LinearLayout>
 
@@ -467,22 +467,22 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="@dimen/_12sdp"
                     android:fontFamily="@font/work_sans"
                             android:includeFontPadding="false"
                     android:text="Custom Arrangement - Pending"
                     android:textColor="@color/orders_on_surface"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/_14ssp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/_16sdp"
                     android:background="@color/orders_surface_variant" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="36dp"
+                    android:layout_height="@dimen/_36sdp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -494,7 +494,7 @@
                             android:includeFontPadding="false"
                         android:text="Est. Total"
                         android:textColor="@color/orders_on_surface_variant"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/_14ssp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -503,7 +503,7 @@
                             android:includeFontPadding="false"
                         android:text="TBD"
                         android:textColor="@color/orders_on_surface"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
