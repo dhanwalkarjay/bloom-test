@@ -15,7 +15,7 @@ public final class Constants {
     }
 
     // Supabase Configuration
-    public static final String SUPABASE_URL = "https://ddelmbcqxuwminhjyemz.supabase.co";
+    public static final String SUPABASE_URL = "https://ddelmbcqxuwminhjyemz.supabase.co/";
     public static final String SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkZWxtYmNxeHV3bWluaGp5ZW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMjUwMzUsImV4cCI6MjEwMDgwMTAzNX0.deso9CqFu1n1tS6k_zc7qGwk3RSjOgA0nOVnFM4gcWo";
     // Razorpay Configuration
     public static final String RAZORPAY_KEY_ID = "rzp_test_TIsA2hNZPtgwQT";

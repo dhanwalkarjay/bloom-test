@@ -77,6 +77,11 @@
         <item name="cornerSize">12dp</item>
     </style>
 
+    <style name="Bloom.HomeRounded16">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
     <style name="Bloom.LuxProfileShape">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>

@@ -69,8 +69,9 @@ public interface SupabaseAPI {
      */
     @GET(Constants.REST_ENDPOINT + "products")
     Call<List<Product>> getFeaturedProducts(
-        @Query("is_seasonal") Boolean isSeasonal,
-        @Query("is_bestseller") Boolean isBestseller
+        @Query("is_seasonal") String isSeasonal,
+        @Query("is_bestseller") String isBestseller,
+        @Query("is_new_arrival") String isNewArrival
     );
 
     /**

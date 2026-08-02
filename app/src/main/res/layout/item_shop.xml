@@ -3,20 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/_16sdp"
-    app:cardCornerRadius="@dimen/_12sdp"
-    app:cardElevation="@dimen/_2sdp"
-    app:strokeWidth="0dp">
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    app:strokeColor="#14000000"
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/_12sdp">
+        android:paddingBottom="10dp">
 
         <ImageView
             android:id="@+id/ivShopImage"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_160sdp"
+            android:layout_height="120dp"
             android:scaleType="centerCrop"
             android:background="#EEEEEE"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -24,7 +25,7 @@
         <View
             android:id="@+id/vStatusOverlay"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_160sdp"
+            android:layout_height="120dp"
             android:background="#80000000"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -36,7 +37,7 @@
             android:text="CLOSED"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="@dimen/_18ssp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="@id/ivShopImage"
             app:layout_constraintBottom_toBottomOf="@id/ivShopImage"
@@ -44,15 +45,31 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
+            android:id="@+id/tvTopRatedBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#B6EDC2"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="TOP RATED"
+            android:textColor="#1B1C1C"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/tvShopName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
             android:text="Florist Name"
-            android:textColor="#333333"
-            android:textSize="@dimen/_18ssp"
+            android:textColor="#24181A"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/tvRating"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,9 +79,10 @@
             android:id="@+id/tvRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginEnd="12dp"
             android:text="★ 4.5"
             android:textColor="#4A7C59"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/tvShopName"
             app:layout_constraintEnd_toEndOf="parent"
@@ -74,11 +92,11 @@
             android:id="@+id/tvDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
             android:text="1.2 km"
-            android:textColor="#666666"
-            android:textSize="@dimen/_14ssp"
+            android:textColor="#7C6768"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvShopName" />
 
@@ -86,9 +104,9 @@
             android:id="@+id/tvDot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginStart="6dp"
             android:text="•"
-            android:textColor="#666666"
+            android:textColor="#7C6768"
             app:layout_constraintBottom_toBottomOf="@id/tvDistance"
             app:layout_constraintStart_toEndOf="@id/tvDistance"
             app:layout_constraintTop_toTopOf="@id/tvDistance" />
@@ -97,10 +115,10 @@
             android:id="@+id/tvPrepTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginStart="6dp"
             android:text="30-40 mins"
-            android:textColor="#666666"
-            android:textSize="@dimen/_14ssp"
+            android:textColor="#7C6768"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/tvDistance"
             app:layout_constraintStart_toEndOf="@id/tvDot"
             app:layout_constraintTop_toTopOf="@id/tvDistance" />
