@@ -77,6 +77,21 @@
         <item name="cornerSize">12dp</item>
     </style>
 
+    <style name="Bloom.LuxProfileShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Bloom.SearchRounded12">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="Bloom.SearchRounded16">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
     <style name="Bloom.LuxProgressBar" parent="Widget.AppCompat.ProgressBar">
         <item name="android:indeterminateTint">@color/lux_accent</item>
     </style>
