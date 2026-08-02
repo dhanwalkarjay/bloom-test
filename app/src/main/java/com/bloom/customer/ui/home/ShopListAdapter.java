@@ -72,6 +72,9 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ShopVi
             binding.tvDistance.setText(shop.getFormattedDistance());
             binding.tvPrepTime.setText(shop.getPrepTime());
 
+            // Handle Top Rated badge
+            binding.tvTopRatedBadge.setVisibility(shop.getRating() >= 4.7 ? View.VISIBLE : View.GONE);
+
             // Handle Open/Closed status
             if (shop.isOpen()) {
                 binding.vStatusOverlay.setVisibility(View.GONE);

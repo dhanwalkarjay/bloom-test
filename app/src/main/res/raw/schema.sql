@@ -31,6 +31,7 @@ CREATE TABLE products (
     occasion_tags TEXT[],
     is_bestseller BOOLEAN DEFAULT false,
     is_seasonal BOOLEAN DEFAULT false,
+    is_new_arrival BOOLEAN DEFAULT false,
     stock_count INTEGER DEFAULT 100,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

@@ -16,6 +16,7 @@ import com.bloom.R;
 import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.model.Product;
 import com.bloom.customer.ui.auth.LoginActivity;
+import com.bloom.customer.ui.cart.CartActivity;
 import com.bloom.customer.ui.common.FragmentStatusBar;
 import com.bloom.customer.ui.product.ProductDetailActivity;
 import com.bloom.databinding.FragmentLuxBinding;
@@ -41,8 +42,7 @@ public class LuxFragment extends Fragment {
     }
 
     private void setupListeners() {
-        binding.btnMenu.setOnClickListener(v -> Toast.makeText(requireContext(), "Menu clicked", Toast.LENGTH_SHORT).show());
-        binding.ivProfile.setOnClickListener(v -> openProfile());
+        binding.btnCart.setOnClickListener(v -> startActivity(new Intent(requireContext(), CartActivity.class)));
 
         binding.productNoir.setOnClickListener(v -> openProductDetail(
                 "lux-noir-eclat",
