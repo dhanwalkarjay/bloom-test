@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Used by FragmentStatusBar to store the original paddingTop of a topBar view
+         before the status bar inset is added, preventing double-application on reuse. -->
+    <item name="tag_original_top_padding" type="id" />
+</resources>
