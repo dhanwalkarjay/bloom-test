@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -16,7 +17,7 @@ import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.ui.auth.LoginActivity;
 import com.bloom.R;
 import com.bloom.customer.ui.lux.LuxActivity;
-import com.bloom.customer.ui.orderhistory.OrdersFragment;
+import com.bloom.customer.ui.orderhistory.OrdersActivity;
 import com.bloom.customer.ui.profile.ProfileFragment;
 import com.bloom.customer.ui.search.SearchActivity;
 import com.bloom.databinding.ActivityHomeBinding;
@@ -32,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -59,14 +61,7 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(new Intent(this, SearchActivity.class));
         });
 
-        binding.navOrders.setOnClickListener(v -> {
-            if (SessionManager.getInstance(this).isLoggedIn()) {
-                selectNavItem(binding.navOrders);
-                loadFragment(new OrdersFragment());
-            } else {
-                startActivity(new Intent(this, LoginActivity.class));
-            }
-        });
+        binding.navOrders.setOnClickListener(v -> startActivity(new Intent(this, OrdersActivity.class)));
 
         binding.navProfile.setOnClickListener(v -> {
             if (SessionManager.getInstance(this).isLoggedIn()) {

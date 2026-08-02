@@ -1,41 +1,32 @@
 package com.bloom.customer.ui.search;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.bloom.R;
-import com.bloom.R;
-import com.bloom.customer.data.api.RetrofitClient;
-import com.bloom.customer.data.api.SupabaseAPI;
+import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.model.Product;
-import com.bloom.customer.data.model.ProductSearchResult;
+import com.bloom.customer.ui.auth.LoginActivity;
+import com.bloom.customer.ui.cart.CartActivity;
+import com.bloom.customer.ui.home.HomeActivity;
+import com.bloom.customer.ui.lux.LuxActivity;
+import com.bloom.customer.ui.orderhistory.OrdersActivity;
 import com.bloom.customer.ui.product.ProductDetailActivity;
-import com.bloom.customer.ui.shop.ProductGridAdapter;
-import com.bloom.customer.util.NetworkResult;
 import com.bloom.databinding.ActivitySearchBinding;
+import com.bloom.databinding.IncludeSearchProductCardBinding;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity {
 
     private ActivitySearchBinding binding;
-    private ProductGridAdapter adapter;
-    private SupabaseAPI api;
-    private String category;
-    private double lat, lng;
+    private boolean showShops = true;
+    private boolean showBouquets = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,90 +34,152 @@ public class SearchActivity extends AppCompatActivity {
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        api = RetrofitClient.getClient(this).create(SupabaseAPI.class);
-        category = getIntent().getStringExtra("category");
-        lat = getIntent().getDoubleExtra("lat", 0);
-        lng = getIntent().getDoubleExtra("lng", 0);
-
-        setupRecyclerView();
+        setupProductCards();
         setupListeners();
-
-        if (category != null) {
-            binding.etSearch.setText(category);
-            fetchProducts(null, category);
-        }
     }
 
-    private void setupRecyclerView() {
-        adapter = new ProductGridAdapter();
-        binding.rvSearchResults.setLayoutManager(new GridLayoutManager(this, 2));
-        binding.rvSearchResults.setAdapter(adapter);
+    private void setupProductCards() {
+        bindProduct(
+                binding.cardVelvetLove,
+                R.drawable.search_bouquet_velvet_love,
+                "BESTSELLER",
+                "4.9",
+                "Velvet Love",
+                "$85.00",
+                true
+        );
+        bindProduct(
+                binding.cardPureGrace,
+                R.drawable.search_bouquet_pure_grace,
+                "PREMIUM",
+                "4.7",
+                "Pure Grace",
+                "$120.00",
+                false
+        );
+        bindProduct(
+                binding.cardGoldenAnniversary,
+                R.drawable.search_bouquet_golden_anniversary,
+                "FRESH",
+                "4.8",
+                "Golden Anniversary",
+                "$65.00",
+                false
+        );
+        bindProduct(
+                binding.cardMidnightBloom,
+                R.drawable.search_bouquet_midnight_bloom,
+                "LUXURY",
+                "5.0",
+                "Midnight Bloom",
+                "$195.00",
+                true
+        );
+    }
 
-        adapter.setOnProductClickListener((product, isOpen) -> {
-            Intent intent = new Intent(this, ProductDetailActivity.class);
-            intent.putExtra("product_json", new Gson().toJson(product));
-            intent.putExtra("is_shop_open", true); // Search results are global, assume open or handle per item
-            startActivity(intent);
+    private void bindProduct(
+            IncludeSearchProductCardBinding card,
+            int imageResId,
+            String tag,
+            String rating,
+            String name,
+            String price,
+            boolean favorite
+    ) {
+        card.ivProduct.setImageResource(imageResId);
+        card.tvTag.setText(tag);
+        card.tvRating.setText(rating);
+        card.tvProductName.setText(name);
+        card.tvPrice.setText(price);
+        card.btnFavorite.setImageResource(favorite ? R.drawable.ic_search_heart_filled : R.drawable.ic_search_heart);
+        card.getRoot().setOnClickListener(v -> openProductDetail(name, tag, price, imageResId));
+        card.btnFavorite.setOnClickListener(v -> {
+            card.btnFavorite.setImageResource(R.drawable.ic_search_heart_filled);
+            Toast.makeText(this, "Saved to favorites", Toast.LENGTH_SHORT).show();
         });
     }
 
     private void setupListeners() {
-        binding.btnBack.setOnClickListener(v -> finish());
+        binding.btnCart.setOnClickListener(v -> startActivity(new Intent(this, CartActivity.class)));
+        binding.btnMenu.setOnClickListener(v -> finish());
+        binding.tvSeeAll.setOnClickListener(v -> Toast.makeText(this, "Showing all shops", Toast.LENGTH_SHORT).show());
+        binding.shopRosies.setOnClickListener(v -> Toast.makeText(this, "Rosie's Petals", Toast.LENGTH_SHORT).show());
+        binding.shopBloomBar.setOnClickListener(v -> Toast.makeText(this, "The Bloom Bar", Toast.LENGTH_SHORT).show());
+
+        binding.chipShops.setOnClickListener(v -> {
+            showShops = !showShops;
+            updateSections();
+        });
+        binding.chipBouquets.setOnClickListener(v -> {
+            showBouquets = !showBouquets;
+            updateSections();
+        });
+        binding.chipFilter.setOnClickListener(v -> Toast.makeText(this, "Filters coming soon", Toast.LENGTH_SHORT).show());
+        binding.chipSort.setOnClickListener(v -> Toast.makeText(this, "Sort coming soon", Toast.LENGTH_SHORT).show());
 
         binding.etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                String query = binding.etSearch.getText().toString().trim();
-                fetchProducts(query, null);
+                Toast.makeText(this, "Search updated", Toast.LENGTH_SHORT).show();
                 return true;
             }
             return false;
         });
+
+        binding.navShop.setOnClickListener(v -> openHome());
+        binding.navExplore.setOnClickListener(v -> binding.scrollContent.smoothScrollTo(0, 0));
+        binding.navLux.setOnClickListener(v -> startActivity(new Intent(this, LuxActivity.class)));
+        binding.navOrders.setOnClickListener(v -> openOrders());
+        binding.navProfile.setOnClickListener(v -> openProtectedArea());
     }
 
-    private void fetchProducts(String query, String cat) {
-        binding.progressBar.setVisibility(View.VISIBLE);
-        binding.rvSearchResults.setVisibility(View.GONE);
-        binding.emptyState.setVisibility(View.GONE);
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("lat", lat);
-        body.put("lng", lng);
-        if (query != null && !query.isEmpty()) body.put("search_query", query);
-        if (cat != null && !cat.isEmpty()) body.put("cat_filter", cat);
-
-        api.searchProductsNearby(body).enqueue(new Callback<List<ProductSearchResult>>() {
-            @Override
-            public void onResponse(Call<List<ProductSearchResult>> call, Response<List<ProductSearchResult>> response) {
-                binding.progressBar.setVisibility(View.GONE);
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    List<Product> products = new ArrayList<>();
-                    for (ProductSearchResult res : response.body()) {
-                        products.add(res.toProduct());
-                    }
-                    adapter.setProducts(products, true); // Search results already filter open shops if needed, or we can use shop_open flag
-                    binding.rvSearchResults.setVisibility(View.VISIBLE);
-                } else {
-                    showEmptyState();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ProductSearchResult>> call, Throwable t) {
-                binding.progressBar.setVisibility(View.GONE);
-                showEmptyState();
-            }
-        });
-    }
-
-    private void showEmptyState() {
-        binding.emptyState.setVisibility(View.VISIBLE);
-        // "Currently Unavailable" message if it was a valid location search
-        if (lat != 0 && lng != 0) {
-            binding.tvEmptyTitle.setText(R.string.currently_unavailable);
-            binding.tvEmptySubtitle.setText(R.string.no_matches_location);
-        } else {
-            binding.tvEmptyTitle.setText(R.string.no_products_found);
-            binding.tvEmptySubtitle.setText(R.string.try_different_search);
+    private void updateSections() {
+        if (!showShops && !showBouquets) {
+            showShops = true;
+            showBouquets = true;
         }
+
+        binding.shopsSection.setVisibility(showShops ? View.VISIBLE : View.GONE);
+        binding.bouquetsSection.setVisibility(showBouquets ? View.VISIBLE : View.GONE);
+        binding.chipShops.setBackgroundResource(showShops ? R.drawable.bg_search_chip_active : R.drawable.bg_search_chip_inactive);
+        binding.chipBouquets.setBackgroundResource(showBouquets ? R.drawable.bg_search_chip_active : R.drawable.bg_search_chip_inactive);
+    }
+
+    private void openProductDetail(String name, String tag, String priceText, int imageResId) {
+        Product product = new Product();
+        product.setId("search-" + name.toLowerCase().replace(" ", "-"));
+        product.setShopId("explore-marketplace");
+        product.setName(name);
+        product.setDescription(tag + " anniversary bouquet curated by Bloom.");
+        product.setPrice(Double.parseDouble(priceText.replace("$", "")));
+        product.setLux("LUXURY".equals(tag));
+        product.setImageUrl(resourceUri(imageResId));
+
+        Intent intent = new Intent(this, ProductDetailActivity.class);
+        intent.putExtra("product_json", new Gson().toJson(product));
+        intent.putExtra("is_shop_open", true);
+        startActivity(intent);
+    }
+
+    private String resourceUri(int resId) {
+        return Uri.parse("android.resource://" + getPackageName() + "/" + resId).toString();
+    }
+
+    private void openHome() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    private void openProtectedArea() {
+        if (SessionManager.getInstance(this).isLoggedIn()) {
+            openHome();
+        } else {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
+    private void openOrders() {
+        startActivity(new Intent(this, OrdersActivity.class));
     }
 }
