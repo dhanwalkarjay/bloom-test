@@ -41,6 +41,7 @@ public class HomeViewModel extends AndroidViewModel {
     
     private final MutableLiveData<NetworkResult<List<Product>>> seasonalProducts = new MutableLiveData<>();
     private final MutableLiveData<NetworkResult<List<Product>>> bestsellerProducts = new MutableLiveData<>();
+    private final MutableLiveData<NetworkResult<List<Product>>> newArrivalProducts = new MutableLiveData<>();
 
     // Manual location state - persists across refreshes until user explicitly changes it
     private boolean hasManualLocation = false;
@@ -130,8 +131,13 @@ public class HomeViewModel extends AndroidViewModel {
         return bestsellerProducts;
     }
 
+    public LiveData<NetworkResult<List<Product>>> getNewArrivalProducts() {
+        return newArrivalProducts;
+    }
+
     public void fetchFeaturedProducts() {
-        productRepository.getFeaturedProducts(true, false).observeForever(result -> seasonalProducts.setValue(result));
-        productRepository.getFeaturedProducts(false, true).observeForever(result -> bestsellerProducts.setValue(result));
+        productRepository.getFeaturedProducts(true, false, false).observeForever(result -> seasonalProducts.setValue(result));
+        productRepository.getFeaturedProducts(false, true, false).observeForever(result -> bestsellerProducts.setValue(result));
+        productRepository.getFeaturedProducts(false, false, true).observeForever(result -> newArrivalProducts.setValue(result));
     }
 }

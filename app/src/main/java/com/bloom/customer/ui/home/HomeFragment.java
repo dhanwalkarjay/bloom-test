@@ -24,6 +24,7 @@ import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.local.LocationHelper;
 import com.bloom.customer.data.model.Product;
 import com.bloom.customer.ui.auth.LoginActivity;
+import com.bloom.customer.ui.cart.CartActivity;
 import com.bloom.customer.ui.common.FragmentStatusBar;
 import com.bloom.customer.ui.location.ManualLocationActivity;
 import com.bloom.customer.ui.notifications.NotificationActivity;
@@ -40,9 +41,12 @@ public class HomeFragment extends Fragment {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
     private FragmentHomeBinding binding;
     private HomeViewModel viewModel;
+    private MainSharedViewModel sharedViewModel;
     private ShopListAdapter shopAdapter;
     private FeaturedProductAdapter seasonalAdapter;
     private FeaturedProductAdapter bestsellerAdapter;
+    private FeaturedProductAdapter newArrivalsAdapter;
+    private com.bloom.customer.data.repository.CartRepository cartRepository;
     private LocationHelper locationHelper;
 
     private final ActivityResultLauncher<Intent> manualLocationLauncher = registerForActivityResult(
@@ -73,6 +77,8 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(MainSharedViewModel.class);
+        cartRepository = new com.bloom.customer.data.repository.CartRepository(requireContext());
         locationHelper = new LocationHelper(requireContext());
 
         // Push the topBar down by the status bar height so the cream background
@@ -119,12 +125,32 @@ public class HomeFragment extends Fragment {
         seasonalAdapter = new FeaturedProductAdapter();
         binding.rvSeasonal.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.rvSeasonal.setAdapter(seasonalAdapter);
-        seasonalAdapter.setOnProductClickListener(this::openProductDetail);
+        setupFeaturedListener(seasonalAdapter);
 
         bestsellerAdapter = new FeaturedProductAdapter();
         binding.rvBestsellers.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.rvBestsellers.setAdapter(bestsellerAdapter);
-        bestsellerAdapter.setOnProductClickListener(this::openProductDetail);
+        setupFeaturedListener(bestsellerAdapter);
+
+        newArrivalsAdapter = new FeaturedProductAdapter();
+        binding.rvNewArrivals.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.rvNewArrivals.setAdapter(newArrivalsAdapter);
+        setupFeaturedListener(newArrivalsAdapter);
+    }
+
+    private void setupFeaturedListener(FeaturedProductAdapter adapter) {
+        adapter.setOnProductClickListener(new FeaturedProductAdapter.OnProductClickListener() {
+            @Override
+            public void onProductClick(Product product) {
+                openProductDetail(product);
+            }
+
+            @Override
+            public void onAddClick(Product product) {
+                cartRepository.addToCart(new com.bloom.customer.data.model.CartItem(product));
+                Toast.makeText(requireContext(), "Added to cart: " + product.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void openProductDetail(Product product) {
@@ -153,6 +179,21 @@ public class HomeFragment extends Fragment {
         viewModel.getBestsellerProducts().observe(getViewLifecycleOwner(), result -> {
             if (result.status == NetworkResult.Status.SUCCESS) {
                 bestsellerAdapter.setProducts(result.data);
+            }
+        });
+
+        viewModel.getNewArrivalProducts().observe(getViewLifecycleOwner(), result -> {
+            if (result.status == NetworkResult.Status.SUCCESS) {
+                newArrivalsAdapter.setProducts(result.data);
+            }
+        });
+
+        cartRepository.getCartItems().observe(getViewLifecycleOwner(), items -> {
+            if (items != null && !items.isEmpty()) {
+                binding.tvCartBadge.setVisibility(View.VISIBLE);
+                binding.tvCartBadge.setText(String.valueOf(items.size()));
+            } else {
+                binding.tvCartBadge.setVisibility(View.GONE);
             }
         });
     }
@@ -201,12 +242,16 @@ public class HomeFragment extends Fragment {
             manualLocationLauncher.launch(new Intent(requireContext(), ManualLocationActivity.class));
         });
 
-        binding.ivCart.setOnClickListener(v -> {
+        binding.ivNotifications.setOnClickListener(v -> {
             if (SessionManager.getInstance(requireContext()).isLoggedIn()) {
                 startActivity(new Intent(requireContext(), NotificationActivity.class));
             } else {
                 startActivity(new Intent(requireContext(), LoginActivity.class));
             }
+        });
+
+        binding.ivCart.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), CartActivity.class));
         });
 
         binding.luxPromo.setOnClickListener(v -> {
@@ -224,6 +269,7 @@ public class HomeFragment extends Fragment {
 
         binding.tvViewAllSeasonal.setOnClickListener(v -> openSearch(null));
         binding.tvViewAllBestsellers.setOnClickListener(v -> openSearch(null));
+        binding.tvViewAllNewArrivals.setOnClickListener(v -> openSearch(null));
 
         binding.btnLogin.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), LoginActivity.class));
@@ -231,7 +277,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void openSearch(String category) {
-        if (requireActivity() != null) {
+        if (requireActivity() instanceof HomeActivity) {
+            sharedViewModel.setSearchParams(null, category);
             View navSearch = requireActivity().findViewById(R.id.navSearch);
             if (navSearch != null) navSearch.performClick();
         }

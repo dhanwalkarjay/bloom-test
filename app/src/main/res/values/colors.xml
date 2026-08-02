@@ -21,17 +21,18 @@
     <color name="cart_primary">#A82D47</color>
     <color name="cart_cta">#E85D75</color>
 
-    <!-- Home redesign tokens -->
-    <color name="home_background">#FFF8F7</color>
-    <color name="home_primary">#A82D47</color>
+    <!-- Home redesign tokens (Figma matched) -->
+    <color name="home_background">#FFFBF7</color>
+    <color name="home_primary">#E85D75</color>
     <color name="home_primary_container">#C9465E</color>
-    <color name="home_surface_container">#FFE9EA</color>
+    <color name="home_surface_container">#FFFFFF</color>
     <color name="home_on_surface">#24181A</color>
     <color name="home_on_surface_variant">#574143</color>
     <color name="home_secondary_container">#B6EDC2</color>
-    <color name="home_on_secondary_container">#3B6D4B</color>
+    <color name="home_on_secondary_container">#1B1C1C</color>
     <color name="home_lux_gold">#D4AF37</color>
-    <color name="home_lux_dark">#1A1A1A</color>
+    <color name="home_lux_dark">#2B2425</color>
+    <color name="home_lux_active">#008644</color>
 
     <!-- Search / Explore redesign tokens -->
     <color name="search_surface">#FFF8F7</color>

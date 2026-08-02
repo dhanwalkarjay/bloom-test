@@ -199,48 +199,43 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void selectNavItem(View selectedItem) {
-        setNavItem(binding.navHomeBg, binding.ivNavHome, binding.tvNavHome, selectedItem == binding.navHome);
-        setNavItem(binding.navLuxBg, binding.ivNavLux, binding.tvNavLux, selectedItem == binding.navLux);
-        setNavItem(binding.navSearchBg, binding.ivNavSearch, binding.tvNavSearch, selectedItem == binding.navSearch);
-        setNavItem(binding.navOrdersBg, binding.ivNavOrders, binding.tvNavOrders, selectedItem == binding.navOrders);
-        setNavItem(binding.navProfileBg, binding.ivNavProfile, binding.tvNavProfile, selectedItem == binding.navProfile);
+        boolean isLuxActive = TAG_LUX.equals(activeFragmentTag);
+        
+        // Darken nav background if LUX is active
+        binding.bottomNavigation.setBackgroundColor(isLuxActive ? 
+                ContextCompat.getColor(this, R.color.home_lux_dark) : 
+                ContextCompat.getColor(this, android.R.color.white));
+
+        setNavItem(binding.navHomeBg, binding.ivNavHome, binding.tvNavHome, selectedItem == binding.navHome, isLuxActive);
+        setNavItem(binding.navLuxBg, binding.ivNavLux, binding.tvNavLux, selectedItem == binding.navLux, isLuxActive);
+        setNavItem(binding.navSearchBg, binding.ivNavSearch, binding.tvNavSearch, selectedItem == binding.navSearch, isLuxActive);
+        setNavItem(binding.navOrdersBg, binding.ivNavOrders, binding.tvNavOrders, selectedItem == binding.navOrders, isLuxActive);
+        setNavItem(binding.navProfileBg, binding.ivNavProfile, binding.tvNavProfile, selectedItem == binding.navProfile, isLuxActive);
     }
 
-    private void setNavItem(View bgView, ImageView icon, TextView label, boolean selected) {
-        int selectedColor = ContextCompat.getColor(this, android.R.color.white);
-        int defaultColor = ContextCompat.getColor(this, R.color.home_on_surface_variant);
+    private void setNavItem(View bgView, ImageView icon, TextView label, boolean selected, boolean isLuxActive) {
+        int activeColor = ContextCompat.getColor(this, isLuxActive ? R.color.home_lux_active : R.color.home_primary_container);
+        int inactiveColor = ContextCompat.getColor(this, isLuxActive ? R.color.lux_text_muted : R.color.home_on_surface_variant);
+        int selectedIconColor = ContextCompat.getColor(this, android.R.color.white);
 
-        // Premium motion for the active background indicator ONLY (small to big)
-        if (selected) {
-            bgView.animate()
-                    .alpha(1f)
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setDuration(400)
-                    .setInterpolator(new android.view.animation.OvershootInterpolator(1.2f))
-                    .start();
-            icon.animate()
-                    .scaleX(1.15f)
-                    .scaleY(1.15f)
-                    .setDuration(300)
-                    .start();
-        } else {
-            bgView.animate()
-                    .alpha(0f)
-                    .scaleX(0.4f)
-                    .scaleY(0.4f)
-                    .setDuration(250)
-                    .setInterpolator(new android.view.animation.AccelerateDecelerateInterpolator())
-                    .start();
-            icon.animate()
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setDuration(300)
-                    .start();
+        // Update pill background color
+        if (bgView.getBackground() instanceof android.graphics.drawable.GradientDrawable) {
+            ((android.graphics.drawable.GradientDrawable) bgView.getBackground()).setColor(activeColor);
         }
 
-        icon.setColorFilter(selected ? selectedColor : defaultColor);
-        label.setTextColor(selected ? selectedColor : defaultColor);
+        // Premium motion
+        if (selected) {
+            bgView.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(400)
+                    .setInterpolator(new android.view.animation.OvershootInterpolator(1.2f)).start();
+            icon.animate().scaleX(1.15f).scaleY(1.15f).setDuration(300).start();
+        } else {
+            bgView.animate().alpha(0f).scaleX(0.4f).scaleY(0.4f).setDuration(250)
+                    .setInterpolator(new android.view.animation.AccelerateDecelerateInterpolator()).start();
+            icon.animate().scaleX(1f).scaleY(1f).setDuration(300).start();
+        }
+
+        icon.setColorFilter(selected ? selectedIconColor : inactiveColor);
+        label.setTextColor(selected ? selectedIconColor : inactiveColor);
         label.setTypeface(label.getTypeface(), selected ? Typeface.BOLD : Typeface.NORMAL);
     }
 }

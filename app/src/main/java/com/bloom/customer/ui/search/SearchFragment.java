@@ -1,7 +1,6 @@
 package com.bloom.customer.ui.search;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,22 +11,32 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.bloom.R;
-import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.model.Product;
+import com.bloom.customer.data.model.ProductSearchResult;
+import com.bloom.customer.data.repository.ProductRepository;
 import com.bloom.customer.ui.cart.CartActivity;
 import com.bloom.customer.ui.common.FragmentStatusBar;
+import com.bloom.customer.ui.home.HomeViewModel;
+import com.bloom.customer.ui.home.MainSharedViewModel;
 import com.bloom.customer.ui.product.ProductDetailActivity;
+import com.bloom.customer.ui.shop.ProductGridAdapter;
+import com.bloom.customer.util.NetworkResult;
 import com.bloom.databinding.FragmentSearchBinding;
-import com.bloom.databinding.IncludeSearchProductCardBinding;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
-    private boolean showShops = true;
-    private boolean showBouquets = true;
+    private MainSharedViewModel sharedViewModel;
+    private HomeViewModel homeViewModel;
+    private ProductRepository productRepository;
+    private ProductGridAdapter productAdapter;
 
     @Nullable
     @Override
@@ -39,130 +48,115 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Cream (#FFF8F7) background fills transparent status bar; dark icons set by HomeActivity.
+
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(MainSharedViewModel.class);
+        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+        productRepository = new ProductRepository(requireContext());
+
         FragmentStatusBar.applyTopInset(this, binding.topBar);
-        setupProductCards();
+        
+        setupRecyclerView();
         setupListeners();
+        setupSearchObservation();
     }
 
-    private void setupProductCards() {
-        bindProduct(
-                binding.cardVelvetLove,
-                R.drawable.search_bouquet_velvet_love,
-                "BESTSELLER",
-                "4.9",
-                "Velvet Love",
-                "$85.00",
-                true
-        );
-        bindProduct(
-                binding.cardPureGrace,
-                R.drawable.search_bouquet_pure_grace,
-                "PREMIUM",
-                "4.7",
-                "Pure Grace",
-                "$120.00",
-                false
-        );
-        bindProduct(
-                binding.cardGoldenAnniversary,
-                R.drawable.search_bouquet_golden_anniversary,
-                "FRESH",
-                "4.8",
-                "Golden Anniversary",
-                "$65.00",
-                false
-        );
-        bindProduct(
-                binding.cardMidnightBloom,
-                R.drawable.search_bouquet_midnight_bloom,
-                "LUXURY",
-                "5.0",
-                "Midnight Bloom",
-                "$195.00",
-                true
-        );
+    private void setupRecyclerView() {
+        productAdapter = new ProductGridAdapter();
+        binding.rvResults.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        binding.rvResults.setAdapter(productAdapter);
+
+        productAdapter.setOnProductClickListener((product, isOpen) -> {
+            Intent intent = new Intent(requireContext(), ProductDetailActivity.class);
+            intent.putExtra("product_json", new Gson().toJson(product));
+            intent.putExtra("is_shop_open", isOpen);
+            startActivity(intent);
+        });
     }
 
-    private void bindProduct(
-            IncludeSearchProductCardBinding card,
-            int imageResId,
-            String tag,
-            String rating,
-            String name,
-            String price,
-            boolean favorite
-    ) {
-        card.ivProduct.setImageResource(imageResId);
-        card.tvTag.setText(tag);
-        card.tvRating.setText(rating);
-        card.tvProductName.setText(name);
-        card.tvPrice.setText(price);
-        card.btnFavorite.setImageResource(favorite ? R.drawable.ic_search_heart_filled : R.drawable.ic_search_heart);
-        card.getRoot().setOnClickListener(v -> openProductDetail(name, tag, price, imageResId));
-        card.btnFavorite.setOnClickListener(v -> {
-            card.btnFavorite.setImageResource(R.drawable.ic_search_heart_filled);
-            Toast.makeText(requireContext(), "Saved to favorites", Toast.LENGTH_SHORT).show();
+    private void setupSearchObservation() {
+        sharedViewModel.getSearchCategory().observe(getViewLifecycleOwner(), category -> {
+            if (category != null) {
+                binding.etSearch.setText(category);
+                performSearch(null, category);
+            }
+        });
+        
+        sharedViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
+            if (query != null) {
+                binding.etSearch.setText(query);
+                performSearch(query, null);
+            }
         });
     }
 
     private void setupListeners() {
         binding.btnCart.setOnClickListener(v -> startActivity(new Intent(requireContext(), CartActivity.class)));
-        binding.btnMenu.setOnClickListener(v -> Toast.makeText(requireContext(), "Menu clicked", Toast.LENGTH_SHORT).show());
-        binding.tvSeeAll.setOnClickListener(v -> Toast.makeText(requireContext(), "Showing all shops", Toast.LENGTH_SHORT).show());
-        binding.shopRosies.setOnClickListener(v -> Toast.makeText(requireContext(), "Rosie's Petals", Toast.LENGTH_SHORT).show());
-        binding.shopBloomBar.setOnClickListener(v -> Toast.makeText(requireContext(), "The Bloom Bar", Toast.LENGTH_SHORT).show());
-
-        binding.chipShops.setOnClickListener(v -> {
-            showShops = !showShops;
-            updateSections();
-        });
-        binding.chipBouquets.setOnClickListener(v -> {
-            showBouquets = !showBouquets;
-            updateSections();
-        });
-        binding.chipFilter.setOnClickListener(v -> Toast.makeText(requireContext(), "Filters coming soon", Toast.LENGTH_SHORT).show());
-        binding.chipSort.setOnClickListener(v -> Toast.makeText(requireContext(), "Sort coming soon", Toast.LENGTH_SHORT).show());
 
         binding.etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                Toast.makeText(requireContext(), "Search updated", Toast.LENGTH_SHORT).show();
+                String query = binding.etSearch.getText().toString().trim();
+                performSearch(query, null);
                 return true;
             }
             return false;
         });
+
+        binding.chipShops.setOnClickListener(v -> {
+            binding.chipShops.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_active);
+            binding.chipBouquets.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_inactive);
+            binding.chipShops.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.search_primary));
+            binding.chipBouquets.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.search_on_surface_variant));
+            
+            // Re-run search if there's text
+            String query = binding.etSearch.getText().toString().trim();
+            performSearch(query, null);
+        });
+
+        binding.chipBouquets.setOnClickListener(v -> {
+            binding.chipBouquets.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_active);
+            binding.chipShops.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_inactive);
+            binding.chipBouquets.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.search_primary));
+            binding.chipShops.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.search_on_surface_variant));
+            
+            String query = binding.etSearch.getText().toString().trim();
+            performSearch(query, null);
+        });
     }
 
-    private void updateSections() {
-        if (!showShops && !showBouquets) {
-            showShops = true;
-            showBouquets = true;
+    private void performSearch(String query, String category) {
+        double lat = 0, lng = 0;
+        if (homeViewModel.hasManualLocation()) {
+            lat = homeViewModel.getManualLat();
+            lng = homeViewModel.getManualLng();
+        } else if (homeViewModel.getUserLocation().getValue() != null) {
+            lat = homeViewModel.getUserLocation().getValue().getLatitude();
+            lng = homeViewModel.getUserLocation().getValue().getLongitude();
         }
 
-        binding.shopsSection.setVisibility(showShops ? View.VISIBLE : View.GONE);
-        binding.bouquetsSection.setVisibility(showBouquets ? View.VISIBLE : View.GONE);
-        binding.chipShops.setBackgroundResource(showShops ? R.drawable.bg_search_chip_active : R.drawable.bg_search_chip_inactive);
-        binding.chipBouquets.setBackgroundResource(showBouquets ? R.drawable.bg_search_chip_active : R.drawable.bg_search_chip_inactive);
-    }
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.resultsSection.setVisibility(View.GONE);
+        binding.emptyState.setVisibility(View.GONE);
 
-    private void openProductDetail(String name, String tag, String priceText, int imageResId) {
-        Product product = new Product();
-        product.setId("search-" + name.toLowerCase().replace(" ", "-"));
-        product.setShopId("explore-marketplace");
-        product.setName(name);
-        product.setDescription(tag + " anniversary bouquet curated by Bloom.");
-        product.setPrice(Double.parseDouble(priceText.replace("$", "")));
-        product.setLux("LUXURY".equals(tag));
-        product.setImageUrl(resourceUri(imageResId));
-
-        Intent intent = new Intent(requireContext(), ProductDetailActivity.class);
-        intent.putExtra("product_json", new Gson().toJson(product));
-        intent.putExtra("is_shop_open", true);
-        startActivity(intent);
-    }
-
-    private String resourceUri(int resId) {
-        return Uri.parse("android.resource://" + requireContext().getPackageName() + "/" + resId).toString();
+        productRepository.searchProductsNearby(lat, lng, query, category).observe(getViewLifecycleOwner(), result -> {
+            binding.progressBar.setVisibility(View.GONE);
+            if (result.status == NetworkResult.Status.SUCCESS) {
+                if (result.data != null && !result.data.isEmpty()) {
+                    List<Product> products = new ArrayList<>();
+                    for (ProductSearchResult res : result.data) {
+                        products.add(res.toProduct());
+                    }
+                    productAdapter.setProducts(products, true);
+                    binding.resultsSection.setVisibility(View.VISIBLE);
+                    binding.emptyState.setVisibility(View.GONE);
+                } else {
+                    binding.resultsSection.setVisibility(View.GONE);
+                    binding.emptyState.setVisibility(View.VISIBLE);
+                }
+            } else if (result.status == NetworkResult.Status.ERROR) {
+                binding.resultsSection.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override

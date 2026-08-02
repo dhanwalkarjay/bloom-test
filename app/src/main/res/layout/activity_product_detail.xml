@@ -7,64 +7,72 @@
     android:background="#FFFBF9"
     tools:context=".customer.ui.product.ProductDetailActivity">
 
-    <!-- Top App Bar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="#FFFBF9"
+        android:fitsSystemWindows="true"
         app:elevation="0dp">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_56sdp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/_16sdp"
-            android:paddingEnd="@dimen/_16sdp">
+            android:layout_height="56dp"
+            app:contentInsetStart="0dp">
 
-            <ImageButton
-                android:id="@+id/btnMenu"
-                android:layout_width="@dimen/_48sdp"
-                android:layout_height="@dimen/_48sdp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="@dimen/_12sdp"
-                android:src="@drawable/ic_search_menu"
-                app:tint="#8B2F44" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/playfair_display"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:text="Bloom"
-                android:textColor="#8B2F44"
-                android:textSize="@dimen/_26ssp"
-                android:textStyle="bold" />
+                <ImageButton
+                    android:id="@+id/btnBack"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_arrow_back"
+                    app:tint="#8B2F44"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/ivAvatar"
-                android:layout_width="@dimen/_36sdp"
-                android:layout_height="@dimen/_36sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/search_shop_rosies_petals"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
-                app:cornerFamily="rounded"
-                app:cornerSize="@dimen/_18sdp"/>
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/playfair_display"
+                    android:text="Bloom"
+                    android:textColor="#8B2F44"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/btnCartTop"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_cart"
+                    app:tint="#8B2F44"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Scrollable Content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:fillViewport="true"
         android:overScrollMode="never"
-        android:paddingBottom="@dimen/_100sdp"
+        android:paddingBottom="80dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -72,10 +80,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Hero Image Section with back/heart buttons -->
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_420sdp">
+                android:layout_height="320dp">
 
                 <ImageView
                     android:id="@+id/ivProductImage"
@@ -85,42 +92,29 @@
                     android:background="#EEEEEE" />
 
                 <ImageButton
-                    android:id="@+id/btnBack"
-                    android:layout_width="@dimen/_44sdp"
-                    android:layout_height="@dimen/_44sdp"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    android:background="@drawable/bg_circle_translucent"
-                    android:src="@drawable/ic_arrow_back"
-                    app:tint="@android:color/white" />
-
-                <ImageButton
                     android:id="@+id/btnFavorite"
-                    android:layout_width="@dimen/_44sdp"
-                    android:layout_height="@dimen/_44sdp"
-                    android:layout_marginEnd="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
                     android:layout_gravity="end"
                     android:background="@drawable/bg_circle_translucent"
                     android:src="@drawable/ic_search_heart"
                     app:tint="@android:color/white" />
             </FrameLayout>
 
-            <!-- Bottom overlapping card -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_minus40sdp"
+                android:layout_marginTop="-24dp"
                 android:background="@drawable/bg_search_bottom_nav"
                 android:backgroundTint="#FFFBF9"
-                android:elevation="0dp"
                 android:orientation="vertical"
-                android:paddingStart="@dimen/_24sdp"
-                android:paddingTop="@dimen/_28sdp"
-                android:paddingEnd="@dimen/_24sdp"
-                android:paddingBottom="@dimen/_40sdp">
+                android:paddingStart="20dp"
+                android:paddingTop="24dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="40dp">
 
-                <!-- Title & Price row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -133,10 +127,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/plus_jakarta_sans"
-                        android:includeFontPadding="false"
                         android:text="Sunrise Roses"
                         android:textColor="#24181A"
-                        android:textSize="@dimen/_32ssp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -144,315 +137,89 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/plus_jakarta_sans"
-                        android:includeFontPadding="false"
                         android:text="$58.00"
                         android:textColor="#8B2F44"
-                        android:textSize="@dimen/_26ssp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!-- Rating row -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="@dimen/_16sdp"
-                        android:layout_height="@dimen/_16sdp"
-                        android:src="@drawable/ic_search_star"
-                        app:tint="#F4B400" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_6sdp"
-                        android:fontFamily="@font/work_sans"
-                        android:text="4.8"
-                        android:textColor="#24181A"
-                        android:textSize="@dimen/_14ssp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_4sdp"
-                        android:fontFamily="@font/work_sans"
-                        android:text="(124 reviews)"
-                        android:textColor="#574143"
-                        android:textSize="@dimen/_14ssp" />
-                </LinearLayout>
-
-                <!-- Description -->
                 <TextView
                     android:id="@+id/tvDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/work_sans"
-                    android:lineSpacingMultiplier="1.4"
-                    android:text="A radiant collection of premium roses in warm sunrise hues, perfect for brightening any space and celebrating new beginnings."
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="A radiant collection of premium roses."
                     android:textColor="#574143"
-                    android:textSize="@dimen/_15ssp" />
+                    android:textSize="12sp" />
 
-                <!-- Filter chips row -->
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
+                <!-- Add more info -->
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:clipToPadding="false"
-                    android:overScrollMode="never"
-                    android:scrollbars="none">
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="Select Size"
+                    android:textColor="#24181A"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_28sdp"
-                            android:background="@drawable/bg_product_chip"
-                            android:fontFamily="@font/plus_jakarta_sans"
-                            android:gravity="center"
-                            android:paddingStart="@dimen/_16sdp"
-                            android:paddingEnd="@dimen/_16sdp"
-                            android:text="Birthday"
-                            android:textColor="#3B6D4B"
-                            android:textSize="@dimen/_12ssp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_28sdp"
-                            android:layout_marginStart="@dimen/_8sdp"
-                            android:background="@drawable/bg_product_chip"
-                            android:fontFamily="@font/plus_jakarta_sans"
-                            android:gravity="center"
-                            android:paddingStart="@dimen/_16sdp"
-                            android:paddingEnd="@dimen/_16sdp"
-                            android:text="Anniversary"
-                            android:textColor="#3B6D4B"
-                            android:textSize="@dimen/_12ssp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_28sdp"
-                            android:layout_marginStart="@dimen/_8sdp"
-                            android:background="@drawable/bg_product_chip"
-                            android:fontFamily="@font/plus_jakarta_sans"
-                            android:gravity="center"
-                            android:paddingStart="@dimen/_16sdp"
-                            android:paddingEnd="@dimen/_16sdp"
-                            android:text="Just Because"
-                            android:textColor="#3B6D4B"
-                            android:textSize="@dimen/_12ssp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </HorizontalScrollView>
-
-                <!-- Customize Button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCustomize"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_56sdp"
-                    android:layout_marginTop="@dimen/_24sdp"
-                    android:fontFamily="@font/work_sans"
-                    android:text="Customize this bouquet"
-                    android:textAllCaps="false"
-                    android:textColor="#8B2F44"
-                    app:cornerRadius="@dimen/_12sdp"
-                    app:icon="@drawable/ic_home_flare"
-                    app:iconGravity="textStart"
-                    app:iconTint="#8B2F44"
-                    app:strokeColor="#DEBFC1"
-                    app:strokeWidth="1dp" />
-
-                <!-- Delivery Options Section -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_28sdp"
-                    android:background="@drawable/bg_product_delivery_container"
-                    android:orientation="vertical"
-                    android:padding="@dimen/_20sdp">
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:letterSpacing="0.1"
-                        android:text="DELIVERY OPTIONS"
-                        android:textColor="#574143"
-                        android:textSize="@dimen/_11ssp"
-                        android:textStyle="bold" />
+                        android:background="@drawable/bg_home_chip_active"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="8dp"
+                        android:text="Regular"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        android:orientation="horizontal">
-
-                        <!-- Same Day -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_72sdp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_search_product_card"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="@dimen/_24sdp"
-                                android:layout_height="@dimen/_24sdp"
-                                android:src="@drawable/ic_product_lightning" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_8sdp"
-                                android:fontFamily="@font/work_sans"
-                                android:text="Same Day"
-                                android:textColor="#24181A"
-                                android:textSize="@dimen/_12ssp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <!-- Scheduled -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_72sdp"
-                            android:layout_marginStart="@dimen/_12sdp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_search_product_card"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="@dimen/_24sdp"
-                                android:layout_height="@dimen/_24sdp"
-                                android:src="@drawable/ic_product_calendar" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_8sdp"
-                                android:fontFamily="@font/work_sans"
-                                android:text="Scheduled"
-                                android:textColor="#574143"
-                                android:textSize="@dimen/_12ssp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <!-- Midnight -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_72sdp"
-                            android:layout_marginStart="@dimen/_12sdp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_search_product_card"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="@dimen/_24sdp"
-                                android:layout_height="@dimen/_24sdp"
-                                android:src="@drawable/ic_product_moon" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_8sdp"
-                                android:fontFamily="@font/work_sans"
-                                android:text="Midnight"
-                                android:textColor="#574143"
-                                android:textSize="@dimen/_12ssp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Freshly Picked Section -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="@dimen/_140sdp"
-                        android:layout_height="@dimen/_140sdp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/search_shop_rosies_petals"
-                        app:shapeAppearanceOverlay="@style/Bloom.SearchRounded12" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/_140sdp"
-                        android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_product_freshly_picked"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_20sdp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/playfair_display"
-                            android:text="Freshly Picked"
-                            android:textColor="#8B2F44"
-                            android:textSize="@dimen/_16ssp"
-                            android:textStyle="italic" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_12sdp"
-                            android:fontFamily="@font/work_sans"
-                            android:lineSpacingMultiplier="1.3"
-                            android:text="Arrives in our signature eco-friendly Bloom wrap."
-                            android:textColor="#574143"
-                            android:textSize="@dimen/_14ssp" />
-                    </LinearLayout>
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_home_chip_inactive"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="8dp"
+                        android:text="Deluxe"
+                        android:textColor="#574143"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
             </LinearLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Bottom Action Bar -->
     <LinearLayout
         android:id="@+id/bottomActionBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_96sdp"
+        android:layout_height="72dp"
         android:layout_gravity="bottom"
         android:background="@android:color/white"
-        android:elevation="@dimen/_16sdp"
+        android:elevation="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/_24sdp"
-        android:paddingEnd="@dimen/_24sdp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
-        <!-- Quantity Selector -->
         <LinearLayout
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_48sdp"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
             android:background="@drawable/bg_product_quantity"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/btnMinus"
-                android:layout_width="@dimen/_32sdp"
-                android:layout_height="@dimen/_32sdp"
-                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_delete_outline"
                 app:tint="#24181A" />
@@ -466,14 +233,13 @@
                 android:gravity="center"
                 android:text="1"
                 android:textColor="#24181A"
-                android:textSize="@dimen/_18ssp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/btnPlus"
-                android:layout_width="@dimen/_32sdp"
-                android:layout_height="@dimen/_32sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_home_add"
                 app:tint="#24181A" />
@@ -482,20 +248,19 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAddToCart"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_56sdp"
-            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:backgroundTint="#E85D75"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="Add to Cart"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            app:cornerRadius="@dimen/_28sdp"
-            app:icon="@drawable/ic_orders_cart"
-            app:iconGravity="textStart"
-            app:iconTint="@android:color/white" />
+            app:cornerRadius="24dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp" />
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
