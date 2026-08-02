@@ -81,12 +81,15 @@ public class ProductRepository {
         return result;
     }
 
-    public LiveData<NetworkResult<List<Product>>> getFeaturedProducts(boolean isSeasonal, boolean isBestseller) {
+    public LiveData<NetworkResult<List<Product>>> getFeaturedProducts(boolean isSeasonal, boolean isBestseller, boolean isNewArrival) {
         MutableLiveData<NetworkResult<List<Product>>> result = new MutableLiveData<>();
         result.setValue(NetworkResult.loading(null));
 
-        api.getFeaturedProducts(isSeasonal ? true : null, isBestseller ? true : null)
-                .enqueue(new Callback<List<Product>>() {
+        api.getFeaturedProducts(
+                isSeasonal ? "eq.true" : null, 
+                isBestseller ? "eq.true" : null,
+                isNewArrival ? "eq.true" : null
+        ).enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 if (response.isSuccessful() && response.body() != null) {

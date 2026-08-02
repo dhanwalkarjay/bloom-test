@@ -64,23 +64,25 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         }
 
         void bind(Order order) {
-            binding.tvShopName.setText(order.getShop() != null ? order.getShop().getName() : "Unknown Shop");
             binding.tvStatus.setText(order.getStatus());
-            binding.tvDate.setText(order.getCreatedAt().substring(0, 10)); // Simple date format
+            binding.tvDate.setText(order.getCreatedAt().substring(0, 10));
             binding.tvTotal.setText(String.format("₹%.2f", order.getTotalAmount()));
+            
+            // Hide shop name if we want to focus on product
+            binding.tvShopName.setVisibility(View.GONE);
 
             // Itemized list logic
             binding.llItems.removeAllViews();
-            if (order.getItems() != null) {
                 for (OrderItem item : order.getItems()) {
                     TextView tv = new TextView(itemView.getContext());
-                    tv.setText(String.format("• %dx Product ID: %s (%s)", 
-                        item.getQuantity(), item.getProductId(), item.getSize()));
-                    tv.setTextColor(0xFF666666);
+                    String productName = item.getProduct() != null ? item.getProduct().getTitle() : "Product";
+                    tv.setText(String.format("• %dx %s (%s)", 
+                        item.getQuantity(), productName, item.getSize()));
+                    tv.setTextColor(0xFF24181A);
+                    tv.setTextSize(13);
                     tv.setPadding(0, 4, 0, 4);
                     binding.llItems.addView(tv);
                 }
-            }
 
             boolean isExpanded = expandedOrderIds.contains(order.getId());
             binding.llItems.setVisibility(isExpanded ? View.VISIBLE : View.GONE);

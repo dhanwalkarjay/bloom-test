@@ -36,7 +36,7 @@
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="Shopping Cart"
             android:textColor="@color/cart_on_surface"
-            android:textSize="@dimen/_26ssp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
     </androidx.appcompat.widget.Toolbar>
@@ -198,7 +198,7 @@
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:text="$97.50"
                     android:textColor="@color/cart_primary"
-                    android:textSize="@dimen/_26ssp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBaseline_toBaselineOf="@id/tvTotalLabel"
                     app:layout_constraintEnd_toEndOf="parent" />
@@ -224,21 +224,21 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCheckout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_64sdp"
+            android:layout_height="56dp"
             android:backgroundTint="@color/cart_cta"
-            android:elevation="@dimen/_8sdp"
+            android:elevation="4dp"
             android:fontFamily="@font/plus_jakarta_sans"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="Proceed to Checkout"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/_20ssp"
+            android:textSize="15sp"
             android:textStyle="bold"
-            app:cornerRadius="@dimen/_16sdp"
+            app:cornerRadius="12dp"
             app:icon="@drawable/ic_arrow_forward"
             app:iconGravity="textEnd"
-            app:iconPadding="@dimen/_12sdp"
+            app:iconPadding="8dp"
             app:iconTint="@android:color/white" />
 
     </LinearLayout>

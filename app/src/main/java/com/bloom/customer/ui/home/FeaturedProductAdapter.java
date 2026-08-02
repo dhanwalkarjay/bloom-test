@@ -21,6 +21,7 @@ public class FeaturedProductAdapter extends RecyclerView.Adapter<FeaturedProduct
 
     public interface OnProductClickListener {
         void onProductClick(Product product);
+        void onAddClick(Product product);
     }
 
     public void setOnProductClickListener(OnProductClickListener listener) {
@@ -41,9 +42,10 @@ public class FeaturedProductAdapter extends RecyclerView.Adapter<FeaturedProduct
         ItemProductBinding binding = ItemProductBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false);
         
-        // Fix width for horizontal scrolling
+        // Dynamic width: ~42% of screen to match Figma "peek" layout precisely
+        int screenWidth = parent.getContext().getResources().getDisplayMetrics().widthPixels;
         ViewGroup.LayoutParams params = binding.getRoot().getLayoutParams();
-        params.width = (int) (160 * parent.getContext().getResources().getDisplayMetrics().density);
+        params.width = (int) (screenWidth * 0.42);
         binding.getRoot().setLayoutParams(params);
         
         return new ViewHolder(binding);
@@ -80,6 +82,12 @@ public class FeaturedProductAdapter extends RecyclerView.Adapter<FeaturedProduct
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onProductClick(product);
+                }
+            });
+
+            binding.btnAddProduct.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onAddClick(product);
                 }
             });
         }

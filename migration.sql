@@ -18,6 +18,7 @@ END $$;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS occasion_tags TEXT[];
 ALTER TABLE products ADD COLUMN IF NOT EXISTS is_bestseller BOOLEAN DEFAULT false;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS is_seasonal BOOLEAN DEFAULT false;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS is_new_arrival BOOLEAN DEFAULT false;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_count INTEGER DEFAULT 100;
 
 -- 3. Drop functions to avoid overloading issues

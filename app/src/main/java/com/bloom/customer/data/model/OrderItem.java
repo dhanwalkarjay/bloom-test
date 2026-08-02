@@ -48,4 +48,18 @@ public class OrderItem {
 
     public String getCardMessage() { return cardMessage; }
     public void setCardMessage(String cardMessage) { this.cardMessage = cardMessage; }
+
+    @SerializedName("products")
+    private ProductInfo product;
+
+    public ProductInfo getProduct() { return product; }
+    public void setProduct(ProductInfo product) { this.product = product; }
+
+    public static class ProductInfo {
+        @SerializedName("title")
+        private String title;
+
+        public String getTitle() { return title; }
+        public void setTitle(String title) { this.title = title; }
+    }
 }

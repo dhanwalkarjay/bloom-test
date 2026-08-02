@@ -1,5 +1,6 @@
 package com.bloom.customer.ui.product;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -53,8 +54,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                     WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
             );
 
-            binding.appBarLayout.setPadding(0, insets.top, 0, 0);
-
             binding.bottomActionBar.setPadding(
                     binding.bottomActionBar.getPaddingLeft(),
                     binding.bottomActionBar.getPaddingTop(),
@@ -104,7 +103,9 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void setupListeners() {
         binding.btnBack.setOnClickListener(v -> finish());
         
-        binding.btnMenu.setOnClickListener(v -> finish());
+        binding.btnCartTop.setOnClickListener(v -> {
+            startActivity(new Intent(this, com.bloom.customer.ui.cart.CartActivity.class));
+        });
 
         binding.btnMinus.setOnClickListener(v -> {
             if (quantity > 1) {
