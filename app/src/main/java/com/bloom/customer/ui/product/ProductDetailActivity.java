@@ -5,6 +5,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
+import android.graphics.Color;
 
 import com.bloom.R;
 import com.bloom.customer.data.model.CartItem;
@@ -24,12 +30,47 @@ public class ProductDetailActivity extends AppCompatActivity {
     private CartRepository cartRepository;
     private Product product;
     private boolean isShopOpen = true;
+    private int quantity = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        
+        WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        insetsController.setAppearanceLightStatusBars(true);
+
         binding = ActivityProductDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        int originalBottomBarHeight = binding.bottomActionBar.getLayoutParams().height;
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
+            );
+
+            binding.appBarLayout.setPadding(0, insets.top, 0, 0);
+
+            binding.bottomActionBar.setPadding(
+                    binding.bottomActionBar.getPaddingLeft(),
+                    binding.bottomActionBar.getPaddingTop(),
+                    binding.bottomActionBar.getPaddingRight(),
+                    insets.bottom
+            );
+            
+            if (originalBottomBarHeight > 0) {
+                binding.bottomActionBar.getLayoutParams().height = originalBottomBarHeight + insets.bottom;
+                binding.bottomActionBar.requestLayout();
+            }
+
+            return windowInsets;
+        });
+
+        ViewCompat.requestApplyInsets(binding.getRoot());
 
         // Parse product from intent
         String productJson = getIntent().getStringExtra("product_json");
@@ -56,26 +97,41 @@ public class ProductDetailActivity extends AppCompatActivity {
             binding.btnAddToCart.setText(R.string.shop_closed);
             binding.btnAddToCart.setBackgroundColor(getColor(android.R.color.darker_gray));
         }
+        
+        updateQuantityText();
     }
 
     private void setupListeners() {
         binding.btnBack.setOnClickListener(v -> finish());
+        
+        binding.btnMenu.setOnClickListener(v -> finish());
+
+        binding.btnMinus.setOnClickListener(v -> {
+            if (quantity > 1) {
+                quantity--;
+                updateQuantityText();
+            }
+        });
+
+        binding.btnPlus.setOnClickListener(v -> {
+            if (quantity < 10) {
+                quantity++;
+                updateQuantityText();
+            }
+        });
 
         binding.btnAddToCart.setOnClickListener(v -> {
             CartItem cartItem = new CartItem(product);
-            
-            // Set size from toggle group
-            int checkedId = binding.toggleSize.getCheckedButtonId();
-            if (checkedId == binding.btnSizeLarge.getId()) {
-                cartItem.setSize("Large");
-            } else {
-                cartItem.setSize("Regular");
-            }
-            
-            cartItem.setCardMessage(binding.etCardMessage.getText().toString().trim());
+            cartItem.setQuantity(quantity);
+            cartItem.setSize("Regular");
+            cartItem.setCardMessage("");
 
             handleAddToCart(cartItem);
         });
+    }
+
+    private void updateQuantityText() {
+        binding.tvQuantity.setText(String.valueOf(quantity));
     }
 
     private void handleAddToCart(CartItem item) {

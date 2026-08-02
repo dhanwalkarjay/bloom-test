@@ -101,13 +101,13 @@ public final class SystemBarInsets {
     }
 
     private static boolean isDarkSystemBarScreen(Activity activity) {
-        return activity.getClass().getName().endsWith(".ui.lux.LuxActivity");
+        // LuxFragment is now hosted inside HomeActivity which handles its own status bar color.
+        return false;
     }
 
     private static boolean hasFullscreenTopContent(Activity activity) {
         String className = activity.getClass().getName();
         return className.endsWith(".ui.checkout.AddAddressActivity")
-                || className.endsWith(".ui.lux.LuxActivity")
                 || className.endsWith(".ui.product.ProductDetailActivity")
                 || className.endsWith(".ui.shop.ShopDetailActivity");
     }

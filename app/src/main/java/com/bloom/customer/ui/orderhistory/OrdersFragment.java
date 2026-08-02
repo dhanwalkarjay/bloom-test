@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bloom.R;
 import com.bloom.customer.ui.cart.CartActivity;
+import com.bloom.customer.ui.common.FragmentStatusBar;
 import com.bloom.databinding.FragmentOrdersBinding;
 
 public class OrdersFragment extends Fragment {
@@ -31,6 +32,8 @@ public class OrdersFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Warm-white (#FCF9F8) background fills transparent status bar; dark icons set by HomeActivity.
+        FragmentStatusBar.applyTopInset(this, binding.topBar);
         setupListeners();
     }
 

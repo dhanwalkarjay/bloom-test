@@ -14,9 +14,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +24,7 @@ import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.local.LocationHelper;
 import com.bloom.customer.data.model.Product;
 import com.bloom.customer.ui.auth.LoginActivity;
+import com.bloom.customer.ui.common.FragmentStatusBar;
 import com.bloom.customer.ui.location.ManualLocationActivity;
 import com.bloom.customer.ui.notifications.NotificationActivity;
 import com.bloom.customer.ui.product.ProductDetailActivity;
@@ -77,18 +75,9 @@ public class HomeFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         locationHelper = new LocationHelper(requireContext());
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.topBar, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-            v.setPadding(
-                    v.getPaddingLeft(),
-                    insets.top,
-                    v.getPaddingRight(),
-                    v.getPaddingBottom()
-            );
-
-            return windowInsets;
-        });
+        // Push the topBar down by the status bar height so the cream background
+        // (#FFF8F7) fills the transparent status bar area seamlessly.
+        FragmentStatusBar.applyTopInset(this, binding.topBar);
 
         setupRecyclerView();
         setupObservers();

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.repository.ProfileRepository;
 import com.bloom.customer.ui.auth.LoginActivity;
+import com.bloom.customer.ui.common.FragmentStatusBar;
 import com.bloom.customer.util.NetworkResult;
 import com.bloom.databinding.FragmentProfileBinding;
 import com.bumptech.glide.Glide;
@@ -34,8 +35,10 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        profileRepository = new ProfileRepository(requireContext());
+        // Light-rose (#FCF0F3) background fills transparent status bar; dark icons set by HomeActivity.
+        FragmentStatusBar.applyTopInset(this, binding.appBarLayout);
 
+        profileRepository = new ProfileRepository(requireContext());
         setupListeners();
         fetchProfileData();
     }
