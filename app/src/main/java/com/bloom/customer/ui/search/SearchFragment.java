@@ -17,6 +17,7 @@ import com.bloom.R;
 import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.model.Product;
 import com.bloom.customer.ui.cart.CartActivity;
+import com.bloom.customer.ui.common.FragmentStatusBar;
 import com.bloom.customer.ui.product.ProductDetailActivity;
 import com.bloom.databinding.FragmentSearchBinding;
 import com.bloom.databinding.IncludeSearchProductCardBinding;
@@ -38,6 +39,8 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Cream (#FFF8F7) background fills transparent status bar; dark icons set by HomeActivity.
+        FragmentStatusBar.applyTopInset(this, binding.topBar);
         setupProductCards();
         setupListeners();
     }

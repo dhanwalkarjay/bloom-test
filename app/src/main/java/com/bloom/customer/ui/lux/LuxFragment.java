@@ -16,6 +16,7 @@ import com.bloom.R;
 import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.model.Product;
 import com.bloom.customer.ui.auth.LoginActivity;
+import com.bloom.customer.ui.common.FragmentStatusBar;
 import com.bloom.customer.ui.product.ProductDetailActivity;
 import com.bloom.databinding.FragmentLuxBinding;
 import com.google.gson.Gson;
@@ -34,6 +35,8 @@ public class LuxFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Dark (#1A1A1A) background fills transparent status bar; white icons set by HomeActivity.
+        FragmentStatusBar.applyTopInset(this, binding.toolbar);
         setupListeners();
     }
 
