@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:padding="@dimen/_24sdp"
     android:background="#FFFBF7">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -11,7 +11,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="@dimen/_32sdp"
         android:hint="Enter City or Area Name"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -25,19 +25,19 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSetLocation"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="24dp"
+        android:layout_height="@dimen/_56sdp"
+        android:layout_marginTop="@dimen/_24sdp"
         android:text="Set Location"
         android:backgroundTint="#4A7C59"
-        app:cornerRadius="12dp"
+        app:cornerRadius="@dimen/_12sdp"
         app:layout_constraintTop_toBottomOf="@id/tilManualAddress" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRetryGps"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="@dimen/_56sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="Try again with GPS"
         android:textColor="#E85D75"
         app:layout_constraintTop_toBottomOf="@id/btnSetLocation" />

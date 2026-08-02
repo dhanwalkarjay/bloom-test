@@ -10,13 +10,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bloom.customer.data.local.SessionManager;
-import com.bloom.customer.data.repository.AddressRepository;
 import com.bloom.customer.data.repository.ProfileRepository;
 import com.bloom.customer.ui.auth.LoginActivity;
-import com.bloom.customer.ui.checkout.AddressAdapter;
+import com.bloom.customer.ui.common.FragmentStatusBar;
 import com.bloom.customer.util.NetworkResult;
 import com.bloom.databinding.FragmentProfileBinding;
 import com.bumptech.glide.Glide;
@@ -25,8 +23,6 @@ public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
     private ProfileRepository profileRepository;
-    private AddressRepository addressRepository;
-    private AddressAdapter addressAdapter;
 
     @Nullable
     @Override
@@ -39,22 +35,16 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        profileRepository = new ProfileRepository(requireContext());
-        addressRepository = new AddressRepository(requireContext());
+        // Light-rose (#FCF0F3) background fills transparent status bar; dark icons set by HomeActivity.
+        FragmentStatusBar.applyTopInset(this, binding.appBarLayout);
 
-        setupRecyclerView();
+        profileRepository = new ProfileRepository(requireContext());
         setupListeners();
         fetchProfileData();
     }
 
-    private void setupRecyclerView() {
-        addressAdapter = new AddressAdapter();
-        binding.rvAddresses.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.rvAddresses.setAdapter(addressAdapter);
-    }
-
     private void setupListeners() {
-        binding.btnLogout.setOnClickListener(v -> logout());
+        binding.cvLogout.setOnClickListener(v -> logout());
     }
 
     private void fetchProfileData() {
@@ -62,40 +52,21 @@ public class ProfileFragment extends Fragment {
         if (userId == null) return;
 
         profileRepository.getProfile(userId).observe(getViewLifecycleOwner(), result -> {
-            if (result.status == NetworkResult.Status.LOADING) {
-                binding.progressBar.setVisibility(View.VISIBLE);
-                binding.tvError.setVisibility(View.GONE);
-            } else if (result.status == NetworkResult.Status.SUCCESS && result.data != null) {
-                binding.progressBar.setVisibility(View.GONE);
+            if (result.status == NetworkResult.Status.SUCCESS && result.data != null) {
                 binding.tvFullName.setText(result.data.getFullName());
-                binding.tvPhone.setText(result.data.getPhone());
+                binding.tvEmail.setText(result.data.getPhone()); // using phone as email is not in Profile model currently
                 
                 Glide.with(this)
                         .load(result.data.getAvatarUrl())
                         .placeholder(android.R.drawable.ic_menu_gallery)
                         .circleCrop()
                         .into(binding.ivAvatar);
-                binding.tvError.setVisibility(View.GONE);
             } else if (result.status == NetworkResult.Status.ERROR) {
-                binding.progressBar.setVisibility(View.GONE);
                 // If profile not found, maybe show basic info from session if available
-                // or a "Complete your profile" message
                 binding.tvFullName.setText("Bloom User");
-                binding.tvPhone.setText(SessionManager.getInstance(requireContext()).getUserId());
-                binding.tvError.setText(result.message != null ? result.message : "Failed to load profile details.");
-                binding.tvError.setVisibility(View.VISIBLE);
-            }
-        });
-
-        addressRepository.getAddresses(userId).observe(getViewLifecycleOwner(), result -> {
-            if (result.status == NetworkResult.Status.SUCCESS) {
-                if (result.data != null && !result.data.isEmpty()) {
-                    addressAdapter.setAddresses(result.data);
-                    binding.rvAddresses.setVisibility(View.VISIBLE);
-                    binding.tvEmptyAddresses.setVisibility(View.GONE);
-                } else {
-                    binding.rvAddresses.setVisibility(View.GONE);
-                    binding.tvEmptyAddresses.setVisibility(View.VISIBLE);
+                binding.tvEmail.setText(SessionManager.getInstance(requireContext()).getUserId());
+                if (result.message != null) {
+                    Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -14,22 +14,20 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.bloom.R;
 
 import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.local.LocationHelper;
 import com.bloom.customer.data.model.Product;
 import com.bloom.customer.ui.auth.LoginActivity;
+import com.bloom.customer.ui.common.FragmentStatusBar;
 import com.bloom.customer.ui.location.ManualLocationActivity;
-import com.bloom.customer.ui.lux.LuxActivity;
 import com.bloom.customer.ui.notifications.NotificationActivity;
 import com.bloom.customer.ui.product.ProductDetailActivity;
-import com.bloom.customer.ui.search.SearchActivity;
 import com.bloom.customer.ui.shop.ShopDetailActivity;
 import com.bloom.customer.util.NetworkResult;
 import com.bloom.databinding.FragmentHomeBinding;
@@ -77,18 +75,9 @@ public class HomeFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         locationHelper = new LocationHelper(requireContext());
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.topBar, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-            v.setPadding(
-                    v.getPaddingLeft(),
-                    insets.top,
-                    v.getPaddingRight(),
-                    v.getPaddingBottom()
-            );
-
-            return windowInsets;
-        });
+        // Push the topBar down by the status bar height so the cream background
+        // (#FFF8F7) fills the transparent status bar area seamlessly.
+        FragmentStatusBar.applyTopInset(this, binding.topBar);
 
         setupRecyclerView();
         setupObservers();
@@ -221,7 +210,10 @@ public class HomeFragment extends Fragment {
         });
 
         binding.luxPromo.setOnClickListener(v -> {
-            startActivity(new Intent(requireContext(), LuxActivity.class));
+            if (requireActivity() != null) {
+                View navLux = requireActivity().findViewById(R.id.navLux);
+                if (navLux != null) navLux.performClick();
+            }
         });
 
         binding.chipAll.setOnClickListener(v -> openSearch(null));
@@ -239,18 +231,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void openSearch(String category) {
-        Intent intent = new Intent(requireContext(), SearchActivity.class);
-        if (category != null) {
-            intent.putExtra("category", category);
+        if (requireActivity() != null) {
+            View navSearch = requireActivity().findViewById(R.id.navSearch);
+            if (navSearch != null) navSearch.performClick();
         }
-        if (viewModel.hasManualLocation()) {
-            intent.putExtra("lat", viewModel.getManualLat());
-            intent.putExtra("lng", viewModel.getManualLng());
-        } else if (viewModel.getUserLocation().getValue() != null) {
-            intent.putExtra("lat", viewModel.getUserLocation().getValue().getLatitude());
-            intent.putExtra("lng", viewModel.getUserLocation().getValue().getLongitude());
-        }
-        startActivity(intent);
     }
 
     private void checkLocationPermission() {
