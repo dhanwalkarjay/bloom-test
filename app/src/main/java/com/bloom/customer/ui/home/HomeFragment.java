@@ -190,8 +190,12 @@ public class HomeFragment extends Fragment {
 
         cartRepository.getCartItems().observe(getViewLifecycleOwner(), items -> {
             if (items != null && !items.isEmpty()) {
+                int totalCount = 0;
+                for (com.bloom.customer.data.model.CartItem item : items) {
+                    totalCount += item.getQuantity();
+                }
                 binding.tvCartBadge.setVisibility(View.VISIBLE);
-                binding.tvCartBadge.setText(String.valueOf(items.size()));
+                binding.tvCartBadge.setText(String.valueOf(totalCount));
             } else {
                 binding.tvCartBadge.setVisibility(View.GONE);
             }

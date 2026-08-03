@@ -18,27 +18,25 @@
     <LinearLayout
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_78sdp"
+        android:layout_height="60dp"
         android:background="@drawable/bg_home_bottom_nav"
-        android:elevation="@dimen/_12sdp"
+        android:elevation="4dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/_16sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_16sdp"
-        android:paddingBottom="@dimen/_8sdp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- Home -->
         <FrameLayout
             android:id="@+id/navHome"
             android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_height="match_parent"
             android:layout_weight="1">
             <View
                 android:id="@+id/navHomeBg"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_home_nav_active"
                 android:alpha="0"
@@ -51,8 +49,8 @@
                 android:orientation="vertical">
                 <ImageView
                     android:id="@+id/ivNavHome"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/ic_home_home"
                     app:tint="@color/home_on_surface_variant" />
                 <TextView
@@ -62,7 +60,7 @@
                     android:fontFamily="@font/dm_sans"
                     android:text="Home"
                     android:textColor="@color/home_on_surface_variant"
-                    android:textSize="9sp" />
+                    android:textSize="8sp" />
             </LinearLayout>
         </FrameLayout>
 
@@ -70,13 +68,13 @@
         <FrameLayout
             android:id="@+id/navLux"
             android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
             android:layout_weight="1">
             <View
                 android:id="@+id/navLuxBg"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_home_nav_active"
                 android:alpha="0"
@@ -89,8 +87,8 @@
                 android:orientation="vertical">
                 <ImageView
                     android:id="@+id/ivNavLux"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/ic_home_flare"
                     app:tint="@color/home_on_surface_variant" />
                 <TextView
@@ -100,7 +98,7 @@
                     android:fontFamily="@font/dm_sans"
                     android:text="LUX"
                     android:textColor="@color/home_on_surface_variant"
-                    android:textSize="9sp" />
+                    android:textSize="8sp" />
             </LinearLayout>
         </FrameLayout>
 
@@ -108,13 +106,13 @@
         <FrameLayout
             android:id="@+id/navSearch"
             android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
             android:layout_weight="1">
             <View
                 android:id="@+id/navSearchBg"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_home_nav_active"
                 android:alpha="0"
@@ -127,8 +125,8 @@
                 android:orientation="vertical">
                 <ImageView
                     android:id="@+id/ivNavSearch"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/ic_home_search"
                     app:tint="@color/home_on_surface_variant" />
                 <TextView
@@ -138,7 +136,7 @@
                     android:fontFamily="@font/dm_sans"
                     android:text="Search"
                     android:textColor="@color/home_on_surface_variant"
-                    android:textSize="9sp" />
+                    android:textSize="8sp" />
             </LinearLayout>
         </FrameLayout>
 
@@ -146,13 +144,13 @@
         <FrameLayout
             android:id="@+id/navOrders"
             android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
             android:layout_weight="1">
             <View
                 android:id="@+id/navOrdersBg"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_home_nav_active"
                 android:alpha="0"
@@ -165,8 +163,8 @@
                 android:orientation="vertical">
                 <ImageView
                     android:id="@+id/ivNavOrders"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/ic_home_bag"
                     app:tint="@color/home_on_surface_variant" />
                 <TextView
@@ -176,7 +174,7 @@
                     android:fontFamily="@font/dm_sans"
                     android:text="Orders"
                     android:textColor="@color/home_on_surface_variant"
-                    android:textSize="9sp" />
+                    android:textSize="8sp" />
             </LinearLayout>
         </FrameLayout>
 
@@ -184,13 +182,13 @@
         <FrameLayout
             android:id="@+id/navProfile"
             android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
             android:layout_weight="1">
             <View
                 android:id="@+id/navProfileBg"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_home_nav_active"
                 android:alpha="0"
@@ -203,8 +201,8 @@
                 android:orientation="vertical">
                 <ImageView
                     android:id="@+id/ivNavProfile"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/ic_home_person"
                     app:tint="@color/home_on_surface_variant" />
                 <TextView
@@ -214,7 +212,7 @@
                     android:fontFamily="@font/dm_sans"
                     android:text="Profile"
                     android:textColor="@color/home_on_surface_variant"
-                    android:textSize="9sp" />
+                    android:textSize="8sp" />
             </LinearLayout>
         </FrameLayout>
 
