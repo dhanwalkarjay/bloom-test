@@ -73,7 +73,19 @@ public class CartRepository {
             return;
         }
 
-        currentItems.add(item);
+        // Check if item already exists in cart (same product and size)
+        boolean found = false;
+        for (CartItem existingItem : currentItems) {
+            if (existingItem.getProduct().getId().equals(item.getProduct().getId())) {
+                existingItem.setQuantity(item.getQuantity());
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            currentItems.add(item);
+        }
         saveCart(currentItems, itemShopId);
     }
 
@@ -81,6 +93,20 @@ public class CartRepository {
         List<CartItem> currentItems = cartLiveData.getValue();
         if (currentItems != null && position < currentItems.size()) {
             currentItems.remove(position);
+            String shopId = currentItems.isEmpty() ? null : getCartShopId();
+            saveCart(currentItems, shopId);
+        }
+    }
+
+    public void removeFromCartByProductId(String productId) {
+        List<CartItem> currentItems = cartLiveData.getValue();
+        if (currentItems != null) {
+            for (int i = 0; i < currentItems.size(); i++) {
+                if (currentItems.get(i).getProduct().getId().equals(productId)) {
+                    currentItems.remove(i);
+                    break;
+                }
+            }
             String shopId = currentItems.isEmpty() ? null : getCartShopId();
             saveCart(currentItems, shopId);
         }

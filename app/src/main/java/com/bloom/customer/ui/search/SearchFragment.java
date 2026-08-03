@@ -75,14 +75,14 @@ public class SearchFragment extends Fragment {
 
     private void setupSearchObservation() {
         sharedViewModel.getSearchCategory().observe(getViewLifecycleOwner(), category -> {
-            if (category != null) {
+            if (category != null && !category.isEmpty()) {
                 binding.etSearch.setText(category);
                 performSearch(null, category);
             }
         });
         
         sharedViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
-            if (query != null) {
+            if (query != null && !query.isEmpty()) {
                 binding.etSearch.setText(query);
                 performSearch(query, null);
             }
@@ -91,6 +91,19 @@ public class SearchFragment extends Fragment {
 
     private void setupListeners() {
         binding.btnCart.setOnClickListener(v -> startActivity(new Intent(requireContext(), CartActivity.class)));
+
+        binding.etSearch.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                performSearch(s.toString().trim(), null);
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
 
         binding.etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -124,6 +137,15 @@ public class SearchFragment extends Fragment {
     }
 
     private void performSearch(String query, String category) {
+        if ((query == null || query.isEmpty()) && (category == null || category.isEmpty())) {
+            if (productAdapter != null) {
+                productAdapter.setProducts(new ArrayList<>(), true);
+            }
+            binding.resultsSection.setVisibility(View.GONE);
+            binding.emptyState.setVisibility(View.GONE);
+            return;
+        }
+
         double lat = 0, lng = 0;
         if (homeViewModel.hasManualLocation()) {
             lat = homeViewModel.getManualLat();
