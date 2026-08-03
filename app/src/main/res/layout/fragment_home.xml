@@ -15,9 +15,9 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="64dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:minHeight="56dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:background="@color/home_background"
         android:elevation="4dp"
         android:gravity="center_vertical"
@@ -70,9 +70,10 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:maxLines="1"
+                        android:maxWidth="160dp"
                         android:text="New York, NY"
                         android:textColor="@color/home_on_surface"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -296,18 +297,18 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnShopCollection"
                             android:layout_width="wrap_content"
-                            android:layout_height="52dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_height="44dp"
+                            android:layout_marginTop="16dp"
                             android:backgroundTint="@color/home_primary"
                             android:fontFamily="@font/plus_jakarta_sans"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
-                            android:paddingStart="24dp"
-                            android:paddingEnd="24dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
                             android:text="Shop Collection"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
-                            android:textSize="15sp"
+                            android:textSize="13sp"
                             android:textStyle="bold"
                             app:cornerRadius="999dp" />
 

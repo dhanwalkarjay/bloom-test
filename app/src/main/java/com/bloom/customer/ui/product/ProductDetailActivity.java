@@ -2,6 +2,8 @@ package com.bloom.customer.ui.product;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.graphics.Color;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -61,11 +63,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                     insets.bottom
             );
             
-            if (originalBottomBarHeight > 0) {
-                binding.bottomActionBar.getLayoutParams().height = originalBottomBarHeight + insets.bottom;
-                binding.bottomActionBar.requestLayout();
-            }
-
             return windowInsets;
         });
 
@@ -80,6 +77,31 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         setupUI();
         setupListeners();
+        checkIfInCart();
+    }
+
+    private void checkIfInCart() {
+        cartRepository.getCartItems().observe(this, items -> {
+            boolean found = false;
+            if (items != null) {
+                for (CartItem item : items) {
+                    if (item.getProduct().getId().equals(product.getId())) {
+                        quantity = item.getQuantity();
+                        updateQuantityText();
+                        binding.btnAddToCart.setVisibility(View.GONE);
+                        binding.llQuantityContainer.setVisibility(View.VISIBLE);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if (!found) {
+                quantity = 1;
+                updateQuantityText();
+                binding.btnAddToCart.setVisibility(View.VISIBLE);
+                binding.llQuantityContainer.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void setupUI() {
@@ -95,6 +117,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             binding.btnAddToCart.setEnabled(false);
             binding.btnAddToCart.setText(R.string.shop_closed);
             binding.btnAddToCart.setBackgroundColor(getColor(android.R.color.darker_gray));
+            binding.btnBuyNow.setEnabled(false);
+            binding.btnBuyNow.setBackgroundColor(getColor(android.R.color.darker_gray));
         }
         
         updateQuantityText();
@@ -111,6 +135,10 @@ public class ProductDetailActivity extends AppCompatActivity {
             if (quantity > 1) {
                 quantity--;
                 updateQuantityText();
+                updateCartQuantity();
+            } else {
+                // Remove from cart when reaching 0
+                cartRepository.removeFromCartByProductId(product.getId());
             }
         });
 
@@ -118,17 +146,31 @@ public class ProductDetailActivity extends AppCompatActivity {
             if (quantity < 10) {
                 quantity++;
                 updateQuantityText();
+                updateCartQuantity();
             }
         });
 
         binding.btnAddToCart.setOnClickListener(v -> {
             CartItem cartItem = new CartItem(product);
-            cartItem.setQuantity(quantity);
+            cartItem.setQuantity(1);
             cartItem.setSize("Regular");
             cartItem.setCardMessage("");
 
             handleAddToCart(cartItem);
         });
+
+        binding.btnBuyNow.setOnClickListener(v -> {
+            CartItem cartItem = new CartItem(product);
+            cartItem.setQuantity(quantity);
+            handleAddToCart(cartItem);
+            startActivity(new Intent(this, com.bloom.customer.ui.cart.CartActivity.class));
+        });
+    }
+
+    private void updateCartQuantity() {
+        CartItem cartItem = new CartItem(product);
+        cartItem.setQuantity(quantity);
+        cartRepository.addToCart(cartItem);
     }
 
     private void updateQuantityText() {
@@ -143,7 +185,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         } else {
             cartRepository.addToCart(item);
             Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
-            finish();
+            // stay on screen
         }
     }
 
@@ -155,7 +197,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                     cartRepository.clearCart();
                     cartRepository.addToCart(item);
                     Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
-                    finish();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
