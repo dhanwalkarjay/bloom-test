@@ -35,8 +35,8 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Light-rose (#FCF0F3) background fills transparent status bar; dark icons set by HomeActivity.
-        FragmentStatusBar.applyTopInset(this, binding.appBarLayout);
+        // Use the explicit toolbar container for top inset to ensure it's not hidden
+        FragmentStatusBar.applyTopInset(this, binding.profileToolbar);
 
         profileRepository = new ProfileRepository(requireContext());
         setupListeners();
@@ -45,9 +45,19 @@ public class ProfileFragment extends Fragment {
 
     private void setupListeners() {
         binding.cvLogout.setOnClickListener(v -> logout());
+        binding.llSavedAddresses.setOnClickListener(v -> Toast.makeText(requireContext(), "Coming soon", Toast.LENGTH_SHORT).show());
     }
 
     private void fetchProfileData() {
+        if (!SessionManager.getInstance(requireContext()).isLoggedIn()) {
+            binding.tvFullName.setText("Guest User");
+            binding.tvEmail.setText("Log in to see your profile");
+            binding.cvLogout.setVisibility(View.GONE);
+            return;
+        } else {
+            binding.cvLogout.setVisibility(View.VISIBLE);
+        }
+
         String userId = SessionManager.getInstance(requireContext()).getUserId();
         if (userId == null) return;
 

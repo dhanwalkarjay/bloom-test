@@ -147,26 +147,23 @@ public class HomeActivity extends AppCompatActivity {
         selectNavItem(selectedItem);
         setStatusBarIconStyle(isLightBackground);
 
-        // Post the heavy fragment transaction to the next frame so the button animation responds INSTANTLY without dropping frames
-        new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
 
-            Fragment current = fm.findFragmentByTag(previousTag);
-            if (current != null) {
-                ft.hide(current);
-            }
+        Fragment current = fm.findFragmentByTag(previousTag);
+        if (current != null) {
+            ft.hide(current);
+        }
 
-            Fragment target = fm.findFragmentByTag(targetTag);
-            if (target == null) {
-                target = createFragmentByTag(targetTag);
-                ft.add(R.id.nav_host_fragment, target, targetTag);
-            } else {
-                ft.show(target);
-            }
+        Fragment target = fm.findFragmentByTag(targetTag);
+        if (target == null) {
+            target = createFragmentByTag(targetTag);
+            ft.add(R.id.nav_host_fragment, target, targetTag);
+        } else {
+            ft.show(target);
+        }
 
-            ft.commitAllowingStateLoss();
-        });
+        ft.commitAllowingStateLoss();
     }
 
     private Fragment createFragmentByTag(String tag) {

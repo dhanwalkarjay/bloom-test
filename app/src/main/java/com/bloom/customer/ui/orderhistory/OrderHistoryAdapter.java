@@ -18,7 +18,6 @@ import java.util.List;
 public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.OrderViewHolder> {
 
     private final List<Order> orders = new ArrayList<>();
-    private final List<String> expandedOrderIds = new ArrayList<>();
     private OnOrderHistoryClickListener listener;
 
     public interface OnOrderHistoryClickListener {
@@ -68,11 +67,20 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             binding.tvDate.setText(order.getCreatedAt().substring(0, 10));
             binding.tvTotal.setText(String.format("₹%.2f", order.getTotalAmount()));
             
-            // Hide shop name if we want to focus on product
-            binding.tvShopName.setVisibility(View.GONE);
+            // Show first product name as main title
+            if (order.getItems() != null && !order.getItems().isEmpty()) {
+                String firstItemName = order.getItems().get(0).getProduct() != null ? 
+                    order.getItems().get(0).getProduct().getTitle() : "Bouquet";
+                binding.tvShopName.setText(firstItemName);
+                binding.tvShopName.setVisibility(View.VISIBLE);
+            } else {
+                binding.tvShopName.setText("Order #" + order.getId().substring(0, 5));
+                binding.tvShopName.setVisibility(View.VISIBLE);
+            }
 
             // Itemized list logic
             binding.llItems.removeAllViews();
+            if (order.getItems() != null) {
                 for (OrderItem item : order.getItems()) {
                     TextView tv = new TextView(itemView.getContext());
                     String productName = item.getProduct() != null ? item.getProduct().getTitle() : "Product";
@@ -83,9 +91,10 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
                     tv.setPadding(0, 4, 0, 4);
                     binding.llItems.addView(tv);
                 }
+            }
 
-            boolean isExpanded = expandedOrderIds.contains(order.getId());
-            binding.llItems.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+            // Always show items for better visibility as requested
+            binding.llItems.setVisibility(View.VISIBLE);
 
             // Show Leave Review only if Delivered
             if ("Delivered".equalsIgnoreCase(order.getStatus())) {
@@ -98,12 +107,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             }
 
             itemView.setOnClickListener(v -> {
-                if (isExpanded) {
-                    expandedOrderIds.remove(order.getId());
-                } else {
-                    expandedOrderIds.add(order.getId());
-                }
-                notifyItemChanged(getAdapterPosition());
+                // Click could open order details if needed
             });
         }
     }

@@ -3,23 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/_16sdp"
+    android:layout_marginBottom="12dp"
     app:cardBackgroundColor="@color/cart_surface"
-    app:cardCornerRadius="@dimen/_16sdp"
-    app:cardElevation="@dimen/_2sdp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
     app:strokeColor="@color/cart_outline_variant"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/_124sdp"
-        android:padding="@dimen/_16sdp">
+        android:padding="12dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProductImage"
-            android:layout_width="@dimen/_96sdp"
-            android:layout_height="@dimen/_96sdp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:background="@drawable/bg_cart_image_placeholder"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,10 +28,10 @@
 
         <ImageButton
             android:id="@+id/btnRemove"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="@dimen/_8sdp"
+            android:padding="6dp"
             android:src="@drawable/ic_delete_outline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -49,7 +48,7 @@
             android:maxLines="1"
             android:text="Sunrise Roses"
             android:textColor="@color/cart_on_surface"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/btnRemove"
             app:layout_constraintStart_toEndOf="@id/ivProductImage"
@@ -60,12 +59,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:fontFamily="@font/work_sans"
-            android:maxLines="2"
+            android:maxLines="1"
             android:text="Standard arrangement"
             android:textColor="@color/cart_on_surface_variant"
-            android:textSize="12sp"
+            android:textSize="11sp"
             app:layout_constraintEnd_toEndOf="@id/tvProductName"
             app:layout_constraintStart_toStartOf="@id/tvProductName"
             app:layout_constraintTop_toBottomOf="@id/tvProductName" />
@@ -74,18 +74,21 @@
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="$58.00"
             android:textColor="@color/cart_primary"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/ivProductImage"
-            app:layout_constraintStart_toStartOf="@id/tvProductName" />
+            app:layout_constraintStart_toStartOf="@id/tvProductName"
+            app:layout_constraintTop_toBottomOf="@id/tvCustomization"
+            app:layout_constraintVertical_bias="1.0" />
 
         <LinearLayout
             android:id="@+id/quantityStepper"
-            android:layout_width="90dp"
-            android:layout_height="32dp"
+            android:layout_width="80dp"
+            android:layout_height="28dp"
             android:background="@drawable/bg_cart_quantity_pill"
             android:gravity="center"
             android:orientation="horizontal"
@@ -94,37 +97,37 @@
 
             <TextView
                 android:id="@+id/btnMinus"
-                android:layout_width="30dp"
+                android:layout_width="24dp"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/work_sans"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:text="−"
                 android:textColor="@color/cart_on_surface_variant"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvQuantity"
-                android:layout_width="30dp"
+                android:layout_width="24dp"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:text="1"
                 android:textColor="@color/cart_on_surface"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/btnPlus"
-                android:layout_width="30dp"
+                android:layout_width="24dp"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/work_sans"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:text="+"
                 android:textColor="@color/cart_on_surface_variant"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
