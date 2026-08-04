@@ -17,8 +17,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProductImage"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@drawable/bg_cart_image_placeholder"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -31,6 +31,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Remove"
             android:padding="6dp"
             android:src="@drawable/ic_delete_outline"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +60,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:fontFamily="@font/work_sans"
             android:maxLines="1"
@@ -74,11 +74,11 @@
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="$58.00"
             android:textColor="@color/cart_primary"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/ivProductImage"
             app:layout_constraintStart_toStartOf="@id/tvProductName"
@@ -87,8 +87,8 @@
 
         <LinearLayout
             android:id="@+id/quantityStepper"
-            android:layout_width="80dp"
-            android:layout_height="28dp"
+            android:layout_width="84dp"
+            android:layout_height="30dp"
             android:background="@drawable/bg_cart_quantity_pill"
             android:gravity="center"
             android:orientation="horizontal"
@@ -97,7 +97,7 @@
 
             <TextView
                 android:id="@+id/btnMinus"
-                android:layout_width="24dp"
+                android:layout_width="28dp"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/work_sans"
                 android:gravity="center"
@@ -108,7 +108,7 @@
 
             <TextView
                 android:id="@+id/tvQuantity"
-                android:layout_width="24dp"
+                android:layout_width="28dp"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:gravity="center"
@@ -120,7 +120,7 @@
 
             <TextView
                 android:id="@+id/btnPlus"
-                android:layout_width="24dp"
+                android:layout_width="28dp"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/work_sans"
                 android:gravity="center"

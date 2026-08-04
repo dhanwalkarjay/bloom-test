@@ -13,15 +13,19 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
-import android.graphics.Color;
 
 import com.bloom.R;
+import com.bloom.customer.data.model.Addon;
 import com.bloom.customer.data.model.CartItem;
 import com.bloom.customer.data.model.Product;
 import com.bloom.customer.data.repository.CartRepository;
+import com.bloom.customer.data.repository.ProductRepository;
+import com.bloom.customer.util.NetworkResult;
 import com.bloom.databinding.ActivityProductDetailBinding;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 /**
  * Activity for displaying product details and customization.
@@ -31,6 +35,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private ActivityProductDetailBinding binding;
     private CartRepository cartRepository;
+    private ProductRepository productRepository;
+    private AddonAdapter addonAdapter;
     private Product product;
     private boolean isShopOpen = true;
     private int quantity = 1;
@@ -73,11 +79,28 @@ public class ProductDetailActivity extends AppCompatActivity {
         product = new Gson().fromJson(productJson, Product.class);
         isShopOpen = getIntent().getBooleanExtra("is_shop_open", true);
 
-        cartRepository = new CartRepository(this);
+        cartRepository = CartRepository.getInstance(this);
+        productRepository = new ProductRepository(this);
 
         setupUI();
         setupListeners();
+        setupAddonsRecyclerView();
         checkIfInCart();
+        fetchAddons();
+    }
+
+    private void setupAddonsRecyclerView() {
+        addonAdapter = new AddonAdapter();
+        binding.rvAddons.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false));
+        binding.rvAddons.setAdapter(addonAdapter);
+    }
+
+    private void fetchAddons() {
+        productRepository.getAddons().observe(this, result -> {
+            if (result.status == NetworkResult.Status.SUCCESS) {
+                addonAdapter.setAddons(result.data);
+            }
+        });
     }
 
     private void checkIfInCart() {
@@ -155,6 +178,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             cartItem.setQuantity(1);
             cartItem.setSize("Regular");
             cartItem.setCardMessage("");
+            cartItem.setAddons(addonAdapter.getSelectedAddons());
 
             handleAddToCart(cartItem);
         });
@@ -162,6 +186,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.btnBuyNow.setOnClickListener(v -> {
             CartItem cartItem = new CartItem(product);
             cartItem.setQuantity(quantity);
+            cartItem.setAddons(addonAdapter.getSelectedAddons());
             handleAddToCart(cartItem);
             startActivity(new Intent(this, com.bloom.customer.ui.cart.CartActivity.class));
         });
@@ -170,6 +195,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void updateCartQuantity() {
         CartItem cartItem = new CartItem(product);
         cartItem.setQuantity(quantity);
+        cartItem.setAddons(addonAdapter.getSelectedAddons());
         cartRepository.addToCart(cartItem);
     }
 

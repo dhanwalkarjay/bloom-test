@@ -85,9 +85,9 @@ public class OrderRepository {
     }
 
     private void createOrderItems(List<OrderItem> items, MutableLiveData<NetworkResult<Order>> result, Order createdOrder) {
-        api.createOrderItems(items).enqueue(new Callback<Void>() {
+        api.createOrderItems(items).enqueue(new Callback<List<OrderItem>>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<List<OrderItem>> call, Response<List<OrderItem>> response) {
                 if (response.isSuccessful()) {
                     result.setValue(NetworkResult.success(createdOrder));
                 } else {
@@ -96,7 +96,7 @@ public class OrderRepository {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<List<OrderItem>> call, Throwable t) {
                 result.setValue(NetworkResult.error("Failed to save order items: " + t.getMessage(), null));
             }
         });

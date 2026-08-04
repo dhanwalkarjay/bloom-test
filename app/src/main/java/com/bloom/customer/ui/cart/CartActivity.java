@@ -31,7 +31,7 @@ public class CartActivity extends AppCompatActivity {
         binding = ActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        cartRepository = new CartRepository(this);
+        cartRepository = CartRepository.getInstance(this);
 
         setupToolbar();
         setupRecyclerView();

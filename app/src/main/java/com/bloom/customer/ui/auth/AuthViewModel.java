@@ -39,4 +39,8 @@ public class AuthViewModel extends AndroidViewModel {
     public LiveData<NetworkResult<Void>> sendOtp(String phone) {
         return authRepository.sendOtp(phone);
     }
+
+    public LiveData<NetworkResult<Void>> updatePassword(String phone, String password) {
+        return authRepository.updatePassword(phone, password);
+    }
 }

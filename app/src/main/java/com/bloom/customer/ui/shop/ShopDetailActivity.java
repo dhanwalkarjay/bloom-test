@@ -40,7 +40,7 @@ public class ShopDetailActivity extends AppCompatActivity {
         shop = new Gson().fromJson(shopJson, Shop.class);
 
         viewModel = new ViewModelProvider(this).get(ShopDetailViewModel.class);
-        cartRepository = new CartRepository(this);
+        cartRepository = com.bloom.customer.data.repository.CartRepository.getInstance(this);
 
         setupUI();
         setupRecyclerView();

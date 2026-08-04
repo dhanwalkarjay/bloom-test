@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cvAddon"
+    android:layout_width="120dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/cart_outline_variant"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/ivAddonImage"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/tvAddonName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Addon"
+            android:textColor="@color/cart_on_surface"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvAddonPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="$5.00"
+            android:textColor="@color/bloom_primary"
+            android:textSize="11sp" />
+
+        <CheckBox
+            android:id="@+id/cbSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:buttonTint="@color/bloom_primary"
+            android:clickable="false"
+            android:focusable="false" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

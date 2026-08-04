@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFBF9"
+    android:background="@color/bloom_background"
     tools:context=".customer.ui.product.ProductDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFBF9"
+        android:background="@color/bloom_background"
         app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
@@ -30,19 +30,21 @@
                     android:layout_height="48dp"
                     android:layout_marginStart="4dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Back"
                     android:padding="12dp"
                     android:src="@drawable/ic_arrow_back"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#8B2F44" />
+                    app:tint="@color/cart_on_surface" />
 
                 <TextView
+                    android:id="@+id/tvHeaderTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/playfair_display"
                     android:text="Bloom"
-                    android:textColor="#8B2F44"
+                    android:textColor="@color/cart_on_surface"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -56,18 +58,20 @@
                     android:layout_height="48dp"
                     android:layout_marginEnd="4dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Cart"
                     android:padding="12dp"
                     android:src="@drawable/ic_cart"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#8B2F44" />
+                    app:tint="@color/cart_on_surface" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/productScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -83,23 +87,23 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="280dp">
+                android:layout_height="320dp">
 
                 <ImageView
                     android:id="@+id/ivProductImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:background="#EEEEEE" />
+                    android:background="#F5F5F5"
+                    android:scaleType="centerCrop" />
 
                 <ImageButton
                     android:id="@+id/btnFavorite"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="end"
+                    android:layout_margin="16dp"
                     android:background="@drawable/bg_circle_translucent"
+                    android:contentDescription="Favorite"
                     android:src="@drawable/ic_search_heart"
                     app:tint="@android:color/white" />
             </FrameLayout>
@@ -107,13 +111,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-20dp"
+                android:layout_marginTop="-24dp"
                 android:background="@drawable/bg_search_bottom_nav"
-                android:backgroundTint="#FFFBF9"
+                android:backgroundTint="@color/bloom_background"
                 android:orientation="vertical"
-                android:paddingStart="20dp"
-                android:paddingTop="20dp"
-                android:paddingEnd="20dp"
+                android:paddingStart="24dp"
+                android:paddingTop="28dp"
+                android:paddingEnd="24dp"
                 android:paddingBottom="40dp">
 
                 <LinearLayout
@@ -129,8 +133,8 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Sunrise Roses"
-                        android:textColor="#24181A"
-                        android:textSize="18sp"
+                        android:textColor="@color/cart_on_surface"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -139,8 +143,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="$58.00"
-                        android:textColor="#8B2F44"
-                        android:textSize="16sp"
+                        android:textColor="@color/bloom_primary"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -150,100 +154,109 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
+
                     <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:src="@drawable/ic_search_star"
                         app:tint="#F4B400" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:text="4.8 (124 reviews)"
-                        android:textSize="12sp"
-                        android:textColor="#574143" />
+                        android:textColor="@color/cart_on_surface_variant"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/work_sans"
-                    android:lineSpacingMultiplier="1.2"
-                    android:text="A radiant collection of premium roses in warm hues."
-                    android:textColor="#574143"
-                    android:textSize="12sp" />
+                    android:lineSpacingMultiplier="1.4"
+                    android:text="A radiant collection of premium roses in warm sunset hues, perfect for brightening any space."
+                    android:textColor="@color/cart_on_surface_variant"
+                    android:textSize="14sp" />
 
+                <!-- Options -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="28dp"
                     android:text="Select Size"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="#24181A"/>
+                    android:textColor="@color/cart_on_surface"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Regular"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="6dp"
                         android:background="@drawable/bg_home_chip_active"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="8dp"
+                        android:text="Regular"
                         android:textColor="@android:color/white"
-                        android:textSize="12sp"/>
+                        android:textSize="13sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="Deluxe"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="6dp"
+                        android:layout_marginStart="12dp"
                         android:background="@drawable/bg_home_chip_inactive"
-                        android:textColor="#574143"
-                        android:textSize="12sp"/>
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="8dp"
+                        android:text="Deluxe"
+                        android:textColor="@color/cart_on_surface_variant"
+                        android:textSize="13sp" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Includes"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="#24181A"/>
+                    android:layout_marginTop="28dp"
+                    android:text="Delivery Information"
+                    android:textColor="@color/cart_on_surface"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="• 12 Premium Roses\n• Seasonal Greenery\n• Signature Bloom Wrap\n• Hand-written card"
-                    android:textSize="12sp"
-                    android:textColor="#574143"
-                    android:lineSpacingExtra="4dp"/>
+                    android:layout_marginTop="8dp"
+                    android:text="• Estimated delivery: 2-3 hours\n• Same day delivery available for orders before 4 PM\n• Hand-delivered in signature Bloom wrap"
+                    android:textColor="@color/cart_on_surface_variant"
+                    android:textSize="13sp"
+                    android:lineSpacingExtra="4dp" />
 
+                <!-- Add-ons Section -->
                 <TextView
+                    android:id="@+id/tvAddonsLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Delivery Information"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="#24181A"/>
+                    android:layout_marginTop="28dp"
+                    android:text="Add something extra?"
+                    android:textColor="@color/cart_on_surface"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
-                <TextView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvAddons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Estimated delivery: 2-3 hours\nSame day delivery available for orders before 4 PM."
-                    android:textSize="12sp"
-                    android:textColor="#574143"/>
+                    android:layout_marginTop="12dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_addon" />
 
             </LinearLayout>
         </LinearLayout>
@@ -255,7 +268,7 @@
         android:layout_height="80dp"
         android:layout_gravity="bottom"
         android:background="@android:color/white"
-        android:elevation="8dp"
+        android:elevation="12dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="16dp"
@@ -263,7 +276,7 @@
 
         <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="44dp"
+            android:layout_height="48dp"
             android:layout_weight="1">
 
             <com.google.android.material.button.MaterialButton
@@ -271,15 +284,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="#FDD8DF"
-                android:text="Add to Cart"
-                android:textAllCaps="false"
-                android:textColor="@color/home_primary"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                app:cornerRadius="22dp"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-                android:visibility="visible" />
+                android:text="Add to Cart"
+                android:textAllCaps="false"
+                android:textColor="@color/bloom_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:cornerRadius="24dp" />
 
             <LinearLayout
                 android:id="@+id/llQuantityContainer"
@@ -292,11 +305,12 @@
 
                 <ImageButton
                     android:id="@+id/btnMinus"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Decrease"
                     android:src="@drawable/ic_delete_outline"
-                    app:tint="#24181A" />
+                    app:tint="@color/cart_on_surface" />
 
                 <TextView
                     android:id="@+id/tvQuantity"
@@ -305,35 +319,37 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="1"
-                    android:textColor="#24181A"
-                    android:textSize="14sp"
+                    android:textColor="@color/cart_on_surface"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <ImageButton
                     android:id="@+id/btnPlus"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Increase"
                     android:src="@drawable/ic_home_add"
-                    app:tint="#24181A" />
+                    app:tint="@color/cart_on_surface" />
             </LinearLayout>
         </FrameLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBuyNow"
             android:layout_width="0dp"
-            android:layout_height="44dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
-            android:layout_marginStart="12dp"
-            android:backgroundTint="@color/home_primary"
+            android:backgroundTint="@color/bloom_primary"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:text="Buy Now"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            app:cornerRadius="22dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp" />
+            app:cornerRadius="24dp" />
+
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
