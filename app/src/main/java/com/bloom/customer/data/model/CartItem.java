@@ -29,15 +29,27 @@ public class CartItem {
     public String getCardMessage() { return cardMessage; }
     public void setCardMessage(String cardMessage) { this.cardMessage = cardMessage; }
 
+    private java.util.List<Addon> addons = new java.util.ArrayList<>();
+
+    public java.util.List<Addon> getAddons() { return addons; }
+    public void setAddons(java.util.List<Addon> addons) { this.addons = addons; }
+
     /**
      * Calculates the total price for this cart item.
      */
     public double getTotalPrice() {
-        double total = product.getPrice();
+        double unitPrice = product.getPrice();
         
         // Size pricing logic
-        if ("Large".equals(size)) total *= 2.0;
+        if ("Large".equals(size)) unitPrice *= 2.0;
 
-        return total * quantity;
+        double addonsPrice = 0;
+        if (addons != null) {
+            for (Addon addon : addons) {
+                addonsPrice += addon.getPrice();
+            }
+        }
+
+        return (unitPrice + addonsPrice) * quantity;
     }
 }

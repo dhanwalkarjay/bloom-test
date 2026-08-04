@@ -36,6 +36,9 @@ public interface SupabaseAPI {
     @POST(Constants.REST_ENDPOINT + "rpc/nearby_shops")
     Call<List<Shop>> getNearbyShops(@Body Map<String, Object> body);
 
+    @GET(Constants.REST_ENDPOINT + "shops")
+    Call<List<Shop>> getShopById(@Query("id") String id);
+
     /**
      * Get products for a specific florist/shop.
      */
@@ -92,11 +95,14 @@ public interface SupabaseAPI {
     @GET(Constants.REST_ENDPOINT + "addresses")
     Call<List<Address>> getAddresses(@Query("user_id") String userId);
 
+    @GET(Constants.REST_ENDPOINT + "addresses")
+    Call<List<Address>> getAddressById(@Query("id") String id);
+
     /**
      * Add a new address.
      */
     @POST(Constants.REST_ENDPOINT + "addresses")
-    Call<Void> addAddress(@Body Address address);
+    Call<List<Address>> addAddress(@Body Address address);
 
     /**
      * Update an address.
@@ -114,7 +120,7 @@ public interface SupabaseAPI {
      * Add items to an order.
      */
     @POST(Constants.REST_ENDPOINT + "order_items")
-    Call<Void> createOrderItems(@Body List<OrderItem> items);
+    Call<List<OrderItem>> createOrderItems(@Body List<OrderItem> items);
 
     /**
      * Get orders for the current user.

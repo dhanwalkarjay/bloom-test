@@ -32,6 +32,9 @@ public class Address {
     @SerializedName("recipient_phone")
     private String recipientPhone;
 
+    @SerializedName("is_default")
+    private boolean isDefault;
+
     // Getters and Setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -56,6 +59,9 @@ public class Address {
 
     public String getRecipientPhone() { return recipientPhone; }
     public void setRecipientPhone(String recipientPhone) { this.recipientPhone = recipientPhone; }
+
+    public boolean isDefault() { return isDefault; }
+    public void setDefault(boolean aDefault) { isDefault = aDefault; }
 
     // Backward-compatible getter for AddressAdapter
     public String getAddressLine() { return fullAddress; }

@@ -115,6 +115,10 @@ public class AddAddressActivity extends AppCompatActivity {
         address.setLongitude(selectedLatLng.longitude);
         address.setLabel(detail.isEmpty() ? "Home" : detail);
         address.setUserId(com.bloom.customer.data.local.SessionManager.getInstance(this).getUserId());
+        
+        // Ensure required fields are not null for RLS/Constraints if any
+        address.setRecipientName("Me"); // Default for now
+        address.setRecipientPhone(""); 
 
         repository.addAddress(address).observe(this, result -> {
             if (result.status == NetworkResult.Status.SUCCESS) {

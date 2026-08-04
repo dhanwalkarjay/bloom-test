@@ -56,18 +56,26 @@ public class AddressRepository {
         MutableLiveData<NetworkResult<Void>> result = new MutableLiveData<>();
         result.setValue(NetworkResult.loading(null));
 
-        api.addAddress(address).enqueue(new Callback<Void>() {
+        api.addAddress(address).enqueue(new Callback<List<Address>>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<List<Address>> call, Response<List<Address>> response) {
                 if (response.isSuccessful()) {
                     result.setValue(NetworkResult.success(null));
                 } else {
-                    result.setValue(NetworkResult.error("Failed to add address", null));
+                    String errorMsg = "Failed to add address: " + response.code();
+                    try {
+                        if (response.errorBody() != null) {
+                            errorMsg += " - " + response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    result.setValue(NetworkResult.error(errorMsg, null));
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<List<Address>> call, Throwable t) {
                 result.setValue(NetworkResult.error(t.getMessage(), null));
             }
         });
@@ -94,6 +102,29 @@ public class AddressRepository {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                result.setValue(NetworkResult.error(t.getMessage(), null));
+            }
+        });
+
+        return result;
+    }
+
+    public LiveData<NetworkResult<Address>> getAddressById(String addressId) {
+        MutableLiveData<NetworkResult<Address>> result = new MutableLiveData<>();
+        result.setValue(NetworkResult.loading(null));
+
+        api.getAddressById("eq." + addressId).enqueue(new Callback<List<Address>>() {
+            @Override
+            public void onResponse(Call<List<Address>> call, Response<List<Address>> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    result.setValue(NetworkResult.success(response.body().get(0)));
+                } else {
+                    result.setValue(NetworkResult.error("Address not found", null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Address>> call, Throwable t) {
                 result.setValue(NetworkResult.error(t.getMessage(), null));
             }
         });
