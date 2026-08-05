@@ -13,6 +13,7 @@
         android:layout_height="48dp"
         android:layout_margin="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Close"
         android:src="@drawable/ic_delete_outline"
         app:layout_anchor="@id/productScrollView"
         app:layout_anchorGravity="top|end"

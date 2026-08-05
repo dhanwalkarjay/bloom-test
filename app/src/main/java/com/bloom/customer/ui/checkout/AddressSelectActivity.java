@@ -20,7 +20,7 @@ import java.util.List;
 public class AddressSelectActivity extends AppCompatActivity {
 
     private ActivityAddressSelectBinding binding;
-    private AddressRepository repository;
+    private CheckoutViewModel viewModel;
     private AddressAdapter adapter;
 
     @Override
@@ -29,7 +29,7 @@ public class AddressSelectActivity extends AppCompatActivity {
         binding = ActivityAddressSelectBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        repository = new AddressRepository(this);
+        viewModel = new ViewModelProvider(this).get(CheckoutViewModel.class);
         
         setupToolbar();
         setupRecyclerView();
@@ -76,15 +76,13 @@ public class AddressSelectActivity extends AppCompatActivity {
     }
 
     private void fetchAddresses() {
-        String userId = SessionManager.getInstance(this).getUserId();
-        
-        if (userId == null) {
+        if (!SessionManager.getInstance(this).isLoggedIn()) {
             binding.emptyState.setVisibility(View.VISIBLE);
             binding.rvAddresses.setVisibility(View.GONE);
             return;
         }
 
-        repository.getAddresses(userId).observe(this, result -> {
+        viewModel.getAddresses().observe(this, result -> {
             if (result.status == NetworkResult.Status.LOADING) {
                 binding.progressBar.setVisibility(View.VISIBLE);
                 binding.rvAddresses.setVisibility(View.GONE);

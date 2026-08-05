@@ -1,4 +1,4 @@
-package com.bloom.customer.ui.search;
+package com.bloom.customer.ui.explore;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.bloom.customer.data.model.Product;
 import com.bloom.customer.data.model.ProductSearchResult;
-import com.bloom.customer.data.repository.ProductRepository;
 import com.bloom.customer.ui.cart.CartActivity;
 import com.bloom.customer.ui.common.FragmentStatusBar;
 import com.bloom.customer.ui.home.HomeViewModel;
@@ -30,12 +28,12 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFragment extends Fragment {
+public class ExploreFragment extends Fragment {
 
     private FragmentSearchBinding binding;
     private MainSharedViewModel sharedViewModel;
     private HomeViewModel homeViewModel;
-    private ProductRepository productRepository;
+    private ExploreViewModel viewModel;
     private ProductGridAdapter productAdapter;
 
     @Nullable
@@ -51,7 +49,7 @@ public class SearchFragment extends Fragment {
 
         sharedViewModel = new ViewModelProvider(requireActivity()).get(MainSharedViewModel.class);
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        productRepository = new ProductRepository(requireContext());
+        viewModel = new ViewModelProvider(this).get(ExploreViewModel.class);
 
         FragmentStatusBar.applyTopInset(this, binding.topBar);
         
@@ -159,7 +157,7 @@ public class SearchFragment extends Fragment {
         binding.resultsSection.setVisibility(View.GONE);
         binding.emptyState.setVisibility(View.GONE);
 
-        productRepository.searchProductsNearby(lat, lng, query, category).observe(getViewLifecycleOwner(), result -> {
+        viewModel.searchProducts(lat, lng, query, category).observe(getViewLifecycleOwner(), result -> {
             binding.progressBar.setVisibility(View.GONE);
             if (result.status == NetworkResult.Status.SUCCESS) {
                 if (result.data != null && !result.data.isEmpty()) {

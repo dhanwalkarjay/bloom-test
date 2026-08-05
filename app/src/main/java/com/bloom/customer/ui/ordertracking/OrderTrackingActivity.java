@@ -1,17 +1,16 @@
 package com.bloom.customer.ui.ordertracking;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.bloom.customer.data.api.RealtimeService;
 import com.bloom.databinding.ActivityOrderTrackingBinding;
 
 public class OrderTrackingActivity extends AppCompatActivity {
 
     private ActivityOrderTrackingBinding binding;
-    private RealtimeService realtimeService;
+    private OrderTrackingViewModel viewModel;
     private String orderId;
 
     @Override
@@ -22,16 +21,22 @@ public class OrderTrackingActivity extends AppCompatActivity {
 
         orderId = getIntent().getStringExtra("order_id");
 
+        viewModel = new ViewModelProvider(this).get(OrderTrackingViewModel.class);
+
         binding.btnBack.setOnClickListener(v -> finish());
 
-        realtimeService = new RealtimeService();
-        startTracking();
+        setupObservers();
+        
+        if (orderId != null) {
+            viewModel.startTracking(orderId);
+        }
     }
 
-    private void startTracking() {
-        if (orderId == null) return;
-        realtimeService.startTracking(orderId, (id, newStatus) -> {
-            runOnUiThread(() -> updateUI(newStatus));
+    private void setupObservers() {
+        viewModel.getOrderStatus().observe(this, status -> {
+            if (status != null) {
+                updateUI(status);
+            }
         });
     }
 
@@ -39,14 +44,8 @@ public class OrderTrackingActivity extends AppCompatActivity {
         // Simplified highlight logic
         if ("Delivered".equalsIgnoreCase(status)) {
             binding.ivStatus5.setAlpha(1.0f);
-        } else if (status.contains("Out")) {
+        } else if (status.toLowerCase().contains("out")) {
             binding.ivStatus4.setAlpha(1.0f);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        realtimeService.stopTracking();
     }
 }
