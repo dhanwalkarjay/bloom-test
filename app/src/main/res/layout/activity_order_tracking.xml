@@ -486,6 +486,7 @@
                 android:layout_height="48dp"
                 android:background="@drawable/bg_circle_translucent"
                 android:backgroundTint="#B6EDC2"
+                android:contentDescription="Call Courier"
                 android:src="@android:drawable/ic_menu_call"
                 app:tint="#4A7C59" />
 
@@ -495,6 +496,7 @@
                 android:layout_marginStart="10dp"
                 android:background="@drawable/bg_circle_translucent"
                 android:backgroundTint="#FEE9EE"
+                android:contentDescription="Message Courier"
                 android:src="@android:drawable/stat_notify_chat"
                 app:tint="#A82D47" />
 

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.core.content.ContextCompat;
 import android.graphics.Color;
 
@@ -15,6 +16,7 @@ import com.bloom.databinding.ActivityDeliverySlotBinding;
 public class DeliverySlotActivity extends AppCompatActivity {
 
     private ActivityDeliverySlotBinding binding;
+    private CheckoutViewModel viewModel;
     private String selectedSlot = "SAME-DAY";
 
     @Override
@@ -22,6 +24,8 @@ public class DeliverySlotActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityDeliverySlotBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        viewModel = new ViewModelProvider(this).get(CheckoutViewModel.class);
 
         binding.btnBack.setOnClickListener(v -> finish());
 

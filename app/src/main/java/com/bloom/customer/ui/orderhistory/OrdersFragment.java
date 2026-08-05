@@ -10,11 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bloom.R;
 import com.bloom.customer.data.local.SessionManager;
-import com.bloom.customer.data.repository.OrderRepository;
 import com.bloom.customer.ui.cart.CartActivity;
 import com.bloom.customer.ui.common.FragmentStatusBar;
 import com.bloom.customer.util.NetworkResult;
@@ -23,7 +23,7 @@ import com.bloom.databinding.FragmentOrdersBinding;
 public class OrdersFragment extends Fragment {
 
     private FragmentOrdersBinding binding;
-    private OrderRepository orderRepository;
+    private OrderHistoryViewModel viewModel;
     private OrderHistoryAdapter adapter;
     private boolean isPastSelected = false;
 
@@ -39,7 +39,7 @@ public class OrdersFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FragmentStatusBar.applyTopInset(this, binding.topBar);
         
-        orderRepository = new OrderRepository(requireContext());
+        viewModel = new ViewModelProvider(this).get(OrderHistoryViewModel.class);
         setupRecyclerView();
         setupListeners();
         fetchOrders();
@@ -85,7 +85,7 @@ public class OrdersFragment extends Fragment {
         binding.rvOrderHistory.setVisibility(View.GONE);
         binding.emptyState.setVisibility(View.GONE);
 
-        orderRepository.getOrderHistory(userId).observe(getViewLifecycleOwner(), result -> {
+        viewModel.getOrderHistory(userId).observe(getViewLifecycleOwner(), result -> {
             binding.swipeRefresh.setRefreshing(false);
             binding.progressBar.setVisibility(View.GONE);
             if (result.status == NetworkResult.Status.SUCCESS) {

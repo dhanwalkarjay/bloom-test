@@ -29,7 +29,11 @@ public class AddressRepository {
         this.api = RetrofitClient.getClient(context).create(SupabaseAPI.class);
     }
 
-    public LiveData<NetworkResult<List<Address>>> getAddresses(String userId) {
+    /**
+     * Fetches all addresses for the authenticated user.
+     * Server-side RLS automatically filters results based on the session token.
+     */
+    public LiveData<NetworkResult<List<Address>>> getAddresses() {
         MutableLiveData<NetworkResult<List<Address>>> result = new MutableLiveData<>();
         result.setValue(NetworkResult.loading(null));
 

@@ -22,7 +22,11 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 
         orderId = getIntent().getStringExtra("order_id");
         
-        binding.tvOrderId.setText("Order ID: #" + (orderId != null ? orderId.substring(0, 8) : "BLM-892415"));
+        String displayId = "BLM-892415";
+        if (orderId != null && !orderId.isEmpty()) {
+            displayId = orderId.length() > 8 ? orderId.substring(0, 8) : orderId;
+        }
+        binding.tvOrderId.setText("Order ID: #" + displayId);
 
         binding.btnClose.setOnClickListener(v -> goHome());
         binding.btnGoHome.setOnClickListener(v -> goHome());

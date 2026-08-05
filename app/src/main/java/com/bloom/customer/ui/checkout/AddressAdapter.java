@@ -70,7 +70,12 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         void bind(Address address, boolean isSelected) {
             binding.tvAddressLabel.setText(address.getLabel());
             binding.tvAddressLine.setText(address.getAddressLine());
-            binding.tvRecipient.setText("Alex Johnson, (555) 123-4567"); // Mocking for UI match
+            
+            String recipient = address.getRecipientName();
+            if (address.getRecipientPhone() != null && !address.getRecipientPhone().isEmpty()) {
+                recipient += ", " + address.getRecipientPhone();
+            }
+            binding.tvRecipient.setText(recipient);
 
             // Visual selection state
             if (isSelected) {

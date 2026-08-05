@@ -6,9 +6,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.bloom.customer.data.repository.CartRepository;
+import com.bloom.customer.data.model.CartItem;
+import com.bloom.customer.util.CurrencyFormatter;
 import com.bloom.databinding.ActivityCartBinding;
 
 import java.util.List;
@@ -22,7 +24,7 @@ public class CartActivity extends AppCompatActivity {
     private static final double DELIVERY_FEE = 5.00;
 
     private ActivityCartBinding binding;
-    private CartRepository cartRepository;
+    private CartViewModel viewModel;
     private CartAdapter adapter;
 
     @Override
@@ -31,7 +33,7 @@ public class CartActivity extends AppCompatActivity {
         binding = ActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        cartRepository = CartRepository.getInstance(this);
+        viewModel = new ViewModelProvider(this).get(CartViewModel.class);
 
         setupToolbar();
         setupRecyclerView();
@@ -55,22 +57,22 @@ public class CartActivity extends AppCompatActivity {
         adapter.setListener(new CartAdapter.OnCartItemInteractionListener() {
             @Override
             public void onRemove(int position) {
-                cartRepository.removeFromCart(position);
+                viewModel.removeFromCart(position);
             }
 
             @Override
             public void onUpdateQuantity(int position, int newQuantity) {
-                List<com.bloom.customer.data.model.CartItem> currentItems = cartRepository.getCartItems().getValue();
+                List<CartItem> currentItems = viewModel.getCartItems().getValue();
                 if (currentItems != null && position < currentItems.size()) {
                     currentItems.get(position).setQuantity(newQuantity);
-                    cartRepository.updateCart(currentItems);
+                    viewModel.updateCart(currentItems);
                 }
             }
         });
     }
 
     private void setupObservers() {
-        cartRepository.getCartItems().observe(this, items -> {
+        viewModel.getCartItems().observe(this, items -> {
             if (items == null || items.isEmpty()) {
                 binding.cartScrollView.setVisibility(View.GONE);
                 binding.bottomBar.setVisibility(View.GONE);
@@ -97,15 +99,11 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void updateSummary() {
-        double subtotal = cartRepository.getCartTotal();
+        double subtotal = viewModel.getCartTotal();
         double total = subtotal + DELIVERY_FEE;
 
-        binding.tvSubtotalAmount.setText(formatCurrency(subtotal));
-        binding.tvDeliveryFeeAmount.setText(formatCurrency(DELIVERY_FEE));
-        binding.tvTotalAmount.setText(formatCurrency(total));
-    }
-
-    private String formatCurrency(double amount) {
-        return "₹" + String.format("%.2f", amount);
+        binding.tvSubtotalAmount.setText(CurrencyFormatter.format(subtotal));
+        binding.tvDeliveryFeeAmount.setText(CurrencyFormatter.format(DELIVERY_FEE));
+        binding.tvTotalAmount.setText(CurrencyFormatter.format(total));
     }
 }

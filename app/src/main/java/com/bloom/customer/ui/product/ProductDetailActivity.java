@@ -13,19 +13,16 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bloom.R;
-import com.bloom.customer.data.model.Addon;
 import com.bloom.customer.data.model.CartItem;
 import com.bloom.customer.data.model.Product;
-import com.bloom.customer.data.repository.CartRepository;
-import com.bloom.customer.data.repository.ProductRepository;
+import com.bloom.customer.util.CurrencyFormatter;
 import com.bloom.customer.util.NetworkResult;
 import com.bloom.databinding.ActivityProductDetailBinding;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-
-import java.util.List;
 
 /**
  * Activity for displaying product details and customization.
@@ -34,8 +31,7 @@ import java.util.List;
 public class ProductDetailActivity extends AppCompatActivity {
 
     private ActivityProductDetailBinding binding;
-    private CartRepository cartRepository;
-    private ProductRepository productRepository;
+    private ProductDetailViewModel viewModel;
     private AddonAdapter addonAdapter;
     private Product product;
     private boolean isShopOpen = true;
@@ -55,7 +51,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding = ActivityProductDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        int originalBottomBarHeight = binding.bottomActionBar.getLayoutParams().height;
+        viewModel = new ViewModelProvider(this).get(ProductDetailViewModel.class);
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, windowInsets) -> {
             Insets insets = windowInsets.getInsets(
@@ -81,9 +77,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         product = new Gson().fromJson(productJson, Product.class);
         isShopOpen = getIntent().getBooleanExtra("is_shop_open", true);
 
-        cartRepository = CartRepository.getInstance(this);
-        productRepository = new ProductRepository(this);
-
         setupUI();
         setupListeners();
         setupAddonsRecyclerView();
@@ -93,7 +86,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void setupCartBadgeObserver() {
-        cartRepository.getCartItems().observe(this, items -> {
+        viewModel.getCartItems().observe(this, items -> {
             int totalCount = 0;
             if (items != null) {
                 for (CartItem item : items) {
@@ -116,7 +109,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void fetchAddons() {
-        productRepository.getAddons().observe(this, result -> {
+        viewModel.getAddons().observe(this, result -> {
             if (result.status == NetworkResult.Status.SUCCESS) {
                 addonAdapter.setAddons(result.data);
             }
@@ -124,7 +117,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void checkIfInCart() {
-        cartRepository.getCartItems().observe(this, items -> {
+        viewModel.getCartItems().observe(this, items -> {
             boolean found = false;
             if (items != null) {
                 for (CartItem item : items) {
@@ -149,7 +142,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void setupUI() {
         binding.tvProductName.setText(product.getName());
-        binding.tvPrice.setText("₹" + String.format("%.2f", product.getPrice()));
+        binding.tvPrice.setText(CurrencyFormatter.format(product.getPrice()));
         binding.tvDescription.setText(product.getDescription());
 
         Glide.with(this)
@@ -181,7 +174,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 updateCartQuantity();
             } else {
                 // Remove from cart when reaching 0
-                cartRepository.removeFromCartByProductId(product.getId());
+                viewModel.removeFromCart(product.getId());
             }
         });
 
@@ -220,7 +213,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         CartItem cartItem = new CartItem(product);
         cartItem.setQuantity(quantity);
         cartItem.setAddons(addonAdapter.getSelectedAddons());
-        cartRepository.addToCart(cartItem);
+        viewModel.addToCart(cartItem);
     }
 
     private void updateQuantityText() {
@@ -228,12 +221,12 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void handleAddToCart(CartItem item) {
-        String currentShopId = cartRepository.getCartShopId();
+        String currentShopId = viewModel.getCartShopId();
         
         if (currentShopId != null && !currentShopId.equals(product.getShopId())) {
             showClearCartDialog(item);
         } else {
-            cartRepository.addToCart(item);
+            viewModel.addToCart(item);
             Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
         }
     }
@@ -243,8 +236,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                 .setTitle("Clear Cart?")
                 .setMessage("Your cart contains items from another shop. Clear cart to add this item?")
                 .setPositiveButton("Clear & Add", (dialog, which) -> {
-                    cartRepository.clearCart();
-                    cartRepository.addToCart(item);
+                    viewModel.clearCart();
+                    viewModel.addToCart(item);
                     Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton("Cancel", null)
