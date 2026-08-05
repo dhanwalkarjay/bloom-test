@@ -46,6 +46,9 @@ public class ProfileFragment extends Fragment {
     private void setupListeners() {
         binding.cvLogout.setOnClickListener(v -> logout());
         binding.llSavedAddresses.setOnClickListener(v -> Toast.makeText(requireContext(), "Coming soon", Toast.LENGTH_SHORT).show());
+        binding.llSupport.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), com.bloom.customer.ui.support.SupportActivity.class));
+        });
     }
 
     private void fetchProfileData() {

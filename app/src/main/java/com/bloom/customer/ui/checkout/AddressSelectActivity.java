@@ -33,6 +33,7 @@ public class AddressSelectActivity extends AppCompatActivity {
         
         setupToolbar();
         setupRecyclerView();
+        setupSearch();
         fetchAddresses();
 
         binding.btnAddAddress.setOnClickListener(v -> {
@@ -51,8 +52,21 @@ public class AddressSelectActivity extends AppCompatActivity {
         });
     }
 
+    private void setupSearch() {
+        binding.etSearch.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Simplified filtering: would normally filter adapter list
+            }
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
+    }
+
     private void setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener(v -> finish());
+        binding.btnBack.setOnClickListener(v -> finish());
     }
 
     private void setupRecyclerView() {
@@ -89,6 +103,9 @@ public class AddressSelectActivity extends AppCompatActivity {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.rvAddresses.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.VISIBLE);
+                
+                String error = result.message != null ? result.message : "Error loading addresses";
+                Toast.makeText(this, error, Toast.LENGTH_LONG).show();
             }
         });
     }

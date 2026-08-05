@@ -24,11 +24,19 @@ public class CartRepository {
     private static final String KEY_CART_ITEMS = "cart_items";
     private static final String KEY_CART_SHOP_ID = "cart_shop_id";
 
+    private static CartRepository instance;
     private final SharedPreferences sharedPreferences;
     private final Gson gson;
     private final MutableLiveData<List<CartItem>> cartLiveData = new MutableLiveData<>(new ArrayList<>());
 
-    public CartRepository(Context context) {
+    public static synchronized CartRepository getInstance(Context context) {
+        if (instance == null) {
+            instance = new CartRepository(context.getApplicationContext());
+        }
+        return instance;
+    }
+
+    private CartRepository(Context context) {
         this.sharedPreferences = context.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
         this.gson = new Gson();
         loadCart();
@@ -43,11 +51,18 @@ public class CartRepository {
     }
 
     private void loadCart() {
-        String json = sharedPreferences.getString(KEY_CART_ITEMS, null);
-        if (json != null) {
-            Type type = new TypeToken<ArrayList<CartItem>>() {}.getType();
-            List<CartItem> items = gson.fromJson(json, type);
-            cartLiveData.setValue(items != null ? items : new ArrayList<>());
+        try {
+            String json = sharedPreferences.getString(KEY_CART_ITEMS, null);
+            if (json != null) {
+                Type type = new TypeToken<ArrayList<CartItem>>() {}.getType();
+                List<CartItem> items = gson.fromJson(json, type);
+                cartLiveData.setValue(items != null ? items : new ArrayList<>());
+            } else {
+                cartLiveData.setValue(new ArrayList<>());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            cartLiveData.setValue(new ArrayList<>());
         }
     }
 
@@ -130,5 +145,16 @@ public class CartRepository {
             }
         }
         return total;
+    }
+
+    public int getCartCount() {
+        List<CartItem> items = cartLiveData.getValue();
+        int count = 0;
+        if (items != null) {
+            for (CartItem item : items) {
+                count += item.getQuantity();
+            }
+        }
+        return count;
     }
 }

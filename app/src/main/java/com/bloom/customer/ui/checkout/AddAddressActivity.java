@@ -25,6 +25,7 @@ public class AddAddressActivity extends AppCompatActivity {
     private ActivityAddAddressBinding binding;
     private AddressRepository repository;
     private LatLng selectedLatLng;
+    private String selectedCity = "Unknown";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,11 +93,23 @@ public class AddAddressActivity extends AppCompatActivity {
             if (addresses != null && !addresses.isEmpty()) {
                 Address address = addresses.get(0);
                 binding.tvSelectedAddress.setText(address.getAddressLine(0));
+                
+                // Extract city
+                String locality = address.getLocality();
+                if (locality != null) {
+                    selectedCity = locality;
+                } else if (address.getSubAdminArea() != null) {
+                    selectedCity = address.getSubAdminArea();
+                } else {
+                    selectedCity = "Unknown";
+                }
             } else {
                 binding.tvSelectedAddress.setText(String.format("%.4f, %.4f", lat, lng));
+                selectedCity = "Unknown";
             }
         } catch (IOException e) {
             binding.tvSelectedAddress.setText(String.format("%.4f, %.4f", lat, lng));
+            selectedCity = "Unknown";
         }
     }
 
@@ -114,7 +127,12 @@ public class AddAddressActivity extends AppCompatActivity {
         address.setLatitude(selectedLatLng.latitude);
         address.setLongitude(selectedLatLng.longitude);
         address.setLabel(detail.isEmpty() ? "Home" : detail);
+        address.setCity(selectedCity);
         address.setUserId(com.bloom.customer.data.local.SessionManager.getInstance(this).getUserId());
+        
+        // Ensure required fields are not null for RLS/Constraints if any
+        address.setRecipientName("Me"); // Default for now
+        address.setRecipientPhone(""); 
 
         repository.addAddress(address).observe(this, result -> {
             if (result.status == NetworkResult.Status.SUCCESS) {

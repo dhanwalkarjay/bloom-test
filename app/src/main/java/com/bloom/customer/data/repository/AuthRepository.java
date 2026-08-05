@@ -149,4 +149,29 @@ public class AuthRepository {
         });
         return result;
     }
+
+    public LiveData<NetworkResult<Void>> updatePassword(String phone, String password) {
+        MutableLiveData<NetworkResult<Void>> result = new MutableLiveData<>();
+        result.setValue(NetworkResult.loading(null));
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("password", password);
+
+        authApi.updateUser(body).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    result.setValue(NetworkResult.success(null));
+                } else {
+                    result.setValue(NetworkResult.error("Update failed", null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                result.setValue(NetworkResult.error(t.getMessage(), null));
+            }
+        });
+        return result;
+    }
 }

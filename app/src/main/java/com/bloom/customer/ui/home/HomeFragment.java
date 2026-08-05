@@ -47,6 +47,7 @@ public class HomeFragment extends Fragment {
     private FeaturedProductAdapter bestsellerAdapter;
     private FeaturedProductAdapter newArrivalsAdapter;
     private com.bloom.customer.data.repository.CartRepository cartRepository;
+    private com.bloom.customer.data.repository.FeatureFlagRepository featureFlagRepository;
     private LocationHelper locationHelper;
 
     private final ActivityResultLauncher<Intent> manualLocationLauncher = registerForActivityResult(
@@ -78,7 +79,8 @@ public class HomeFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         sharedViewModel = new ViewModelProvider(requireActivity()).get(MainSharedViewModel.class);
-        cartRepository = new com.bloom.customer.data.repository.CartRepository(requireContext());
+        cartRepository = com.bloom.customer.data.repository.CartRepository.getInstance(requireContext());
+        featureFlagRepository = new com.bloom.customer.data.repository.FeatureFlagRepository(requireContext());
         locationHelper = new LocationHelper(requireContext());
 
         // Push the topBar down by the status bar height so the cream background
@@ -88,8 +90,30 @@ public class HomeFragment extends Fragment {
         setupRecyclerView();
         setupObservers();
         setupListeners();
+        fetchFeatureFlags();
 
         updateGuestUI();
+    }
+
+    private void fetchFeatureFlags() {
+        featureFlagRepository.getFeatureFlags().observe(getViewLifecycleOwner(), result -> {
+            if (result.status == NetworkResult.Status.SUCCESS && result.data != null) {
+                for (com.bloom.customer.data.model.FeatureFlag flag : result.data) {
+                    if ("create_your_own".equals(flag.getKey())) {
+                        boolean isEnabled = flag.isEnabled();
+                        binding.cvCreateOwn.setAlpha(isEnabled ? 1.0f : 0.6f);
+                        binding.tvComingSoon.setVisibility(isEnabled ? View.GONE : View.VISIBLE);
+                        binding.cvCreateOwn.setOnClickListener(v -> {
+                            if (isEnabled) {
+                                Toast.makeText(requireContext(), "Opening Creation Studio", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 
     private void updateGuestUI() {
@@ -189,13 +213,10 @@ public class HomeFragment extends Fragment {
         });
 
         cartRepository.getCartItems().observe(getViewLifecycleOwner(), items -> {
-            if (items != null && !items.isEmpty()) {
-                int totalCount = 0;
-                for (com.bloom.customer.data.model.CartItem item : items) {
-                    totalCount += item.getQuantity();
-                }
+            int count = cartRepository.getCartCount();
+            if (count > 0) {
                 binding.tvCartBadge.setVisibility(View.VISIBLE);
-                binding.tvCartBadge.setText(String.valueOf(totalCount));
+                binding.tvCartBadge.setText(String.valueOf(count));
             } else {
                 binding.tvCartBadge.setVisibility(View.GONE);
             }

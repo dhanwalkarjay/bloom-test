@@ -40,7 +40,7 @@ public class ShopDetailActivity extends AppCompatActivity {
         shop = new Gson().fromJson(shopJson, Shop.class);
 
         viewModel = new ViewModelProvider(this).get(ShopDetailViewModel.class);
-        cartRepository = new CartRepository(this);
+        cartRepository = com.bloom.customer.data.repository.CartRepository.getInstance(this);
 
         setupUI();
         setupRecyclerView();
@@ -60,6 +60,10 @@ public class ShopDetailActivity extends AppCompatActivity {
         binding.toolbar.setNavigationOnClickListener(v -> finish());
         
         binding.btnViewCart.setOnClickListener(v -> {
+            startActivity(new Intent(this, CartActivity.class));
+        });
+
+        binding.btnCartTop.setOnClickListener(v -> {
             startActivity(new Intent(this, CartActivity.class));
         });
     }
@@ -103,11 +107,21 @@ public class ShopDetailActivity extends AppCompatActivity {
         });
 
         cartRepository.getCartItems().observe(this, items -> {
-            if (items != null && !items.isEmpty()) {
+            int totalCount = 0;
+            if (items != null) {
+                for (com.bloom.customer.data.model.CartItem item : items) {
+                    totalCount += item.getQuantity();
+                }
+            }
+            if (totalCount > 0) {
                 binding.btnViewCart.setVisibility(View.VISIBLE);
-                binding.btnViewCart.setText("View Cart (" + items.size() + " items)");
+                binding.btnViewCart.setText("View Cart (" + totalCount + " items)");
+                
+                binding.tvCartBadge.setVisibility(View.VISIBLE);
+                binding.tvCartBadge.setText(String.valueOf(totalCount));
             } else {
                 binding.btnViewCart.setVisibility(View.GONE);
+                binding.tvCartBadge.setVisibility(View.GONE);
             }
         });
     }

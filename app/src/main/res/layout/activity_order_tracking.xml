@@ -1,193 +1,504 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFBF7">
+    android:background="@color/cart_background"
+    tools:ignore="HardcodedText,SmallSp">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="Track Order"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIconTint="#000000" />
+        android:layout_height="56dp"
+        android:background="@color/cart_background"
+        app:contentInsetStart="0dp"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardOrderInfo"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Back"
+                android:padding="12dp"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#8B2F44" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Track Delivery"
+                android:textColor="#8B2F44"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="16dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_home_person"
+                    android:contentDescription="User"
+                    app:tint="#999999" />
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_20sdp"
-        app:cardCornerRadius="@dimen/_16sdp"
-        app:cardElevation="@dimen/_4sdp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/cvCourierInfo"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/_20sdp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvOrderId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Order #12345"
-                android:textSize="@dimen/_14ssp"
-                android:textColor="#666666" />
+            <!-- Map Placeholder -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="320dp">
 
-            <TextView
-                android:id="@+id/tvShopName"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/container"
+                    android:alpha="0.2"
+                    android:contentDescription="Map" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="#FEE9EE"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="10dp">
+                        <View
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/bg_home_notification_dot" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/dm_sans"
+                            android:text="ARRIVING IN 12 MINS"
+                            android:textColor="#A82D47"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
+
+            <!-- Timeline -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:text="Rose Garden Florist"
-                android:textSize="@dimen/_20ssp"
-                android:textStyle="bold"
-                android:textColor="#333333" />
+                android:orientation="vertical"
+                android:padding="28dp">
+
+                <!-- Step 1 -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="21dp"
+                        android:layout_marginTop="36dp"
+                        android:background="#A82D47" />
+                    <ImageView
+                        android:id="@+id/ivStatus1"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_home_notification_dot"
+                        android:backgroundTint="#A82D47"
+                        android:padding="13dp"
+                        app:srcCompat="@android:drawable/checkbox_on_background" />
+                    <TextView
+                        android:id="@+id/tvStatus1Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_toEndOf="@id/ivStatus1"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="Order Placed"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvStatus1Title"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_toEndOf="@id/ivStatus1"
+                        android:fontFamily="@font/work_sans"
+                        android:text="We've received your order"
+                        android:textColor="#666666"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/work_sans"
+                        android:text="09:15 AM"
+                        android:textColor="#999999"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <!-- Step 2 -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp">
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="21dp"
+                        android:layout_marginTop="36dp"
+                        android:background="#A82D47" />
+                    <ImageView
+                        android:id="@+id/ivStatus2"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_home_notification_dot"
+                        android:backgroundTint="#A82D47"
+                        android:padding="13dp"
+                        app:srcCompat="@android:drawable/checkbox_on_background" />
+                    <TextView
+                        android:id="@+id/tvStatus2Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_toEndOf="@id/ivStatus2"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="Confirmed"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvStatus2Title"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_toEndOf="@id/ivStatus2"
+                        android:fontFamily="@font/work_sans"
+                        android:text="Seller has accepted your request"
+                        android:textColor="#666666"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/work_sans"
+                        android:text="09:22 AM"
+                        android:textColor="#999999"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <!-- Step 3 -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp">
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="21dp"
+                        android:layout_marginTop="36dp"
+                        android:background="#A82D47" />
+                    <ImageView
+                        android:id="@+id/ivStatus3"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_home_notification_dot"
+                        android:backgroundTint="#A82D47"
+                        android:padding="11dp"
+                        android:src="@drawable/ic_home_flare"
+                        app:tint="#FFFFFF" />
+                    <TextView
+                        android:id="@+id/tvStatus3Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_toEndOf="@id/ivStatus3"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="Preparing Your Bouquet"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvStatus3Title"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_toEndOf="@id/ivStatus3"
+                        android:fontFamily="@font/work_sans"
+                        android:text="Florist is hand-picking fresh blooms"
+                        android:textColor="#666666"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/work_sans"
+                        android:text="09:45 AM"
+                        android:textColor="#999999"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <!-- Step 4 Highlighted -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    app:cardBackgroundColor="#FEE9EE"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#F4DDDE"
+                    app:strokeWidth="1.2dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp">
+                        <ImageView
+                            android:id="@+id/ivStatus4"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_home_notification_dot"
+                            android:backgroundTint="#A82D47"
+                            android:padding="11dp"
+                            android:src="@drawable/ic_home_bag"
+                            app:tint="#FFFFFF" />
+                        <TextView
+                            android:id="@+id/tvStatus4Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="18dp"
+                            android:layout_toEndOf="@id/ivStatus4"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:text="Out for Delivery"
+                            android:textColor="#A82D47"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tvStatus4Title"
+                            android:layout_marginStart="18dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_toEndOf="@id/ivStatus4"
+                            android:fontFamily="@font/work_sans"
+                            android:text="David R. is nearby with your\nflowers"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/dm_sans"
+                            android:text="JUST NOW"
+                            android:textColor="#A82D47"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_below="@id/ivStatus4"
+                            android:layout_marginTop="20dp"
+                            android:background="#FFFFFF"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="20dp">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/dm_sans"
+                                android:text="DELIVERY OTP:"
+                                android:textColor="#999999"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/plus_jakarta_sans"
+                                android:letterSpacing="0.2"
+                                android:text="123 456"
+                                android:textColor="#A82D47"
+                                android:textSize="28sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Step 5 -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:alpha="0.4">
+                    <ImageView
+                        android:id="@+id/ivStatus5"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_home_notification_dot"
+                        android:backgroundTint="#FEE9EE"
+                        android:padding="13dp"
+                        android:src="@drawable/ic_home_bag"
+                        app:tint="#A82D47" />
+                    <TextView
+                        android:id="@+id/tvStatus5Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_toEndOf="@id/ivStatus5"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="Delivered"
+                        android:textColor="#999999"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvStatus5Title"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_toEndOf="@id/ivStatus5"
+                        android:fontFamily="@font/work_sans"
+                        android:text="Expect a knock at your door soon"
+                        android:textColor="#999999"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="120dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvCourierInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_home_person"
+                app:shapeAppearanceOverlay="@style/Bloom.HomeRounded16"
+                app:tint="#999999" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/dm_sans"
+                    android:text="DELIVERY PARTNER"
+                    android:textColor="#999999"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvCourierName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="David R."
+                    android:textColor="#333333"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/work_sans"
+                    android:text="4.9 (250+ deliveries)"
+                    android:textColor="#666666"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_circle_translucent"
+                android:backgroundTint="#B6EDC2"
+                android:src="@android:drawable/ic_menu_call"
+                app:tint="#4A7C59" />
+
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_circle_translucent"
+                android:backgroundTint="#FEE9EE"
+                android:src="@android:drawable/stat_notify_chat"
+                app:tint="#A82D47" />
+
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/_32sdp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/cardOrderInfo"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <!-- Timeline Items -->
-        <LinearLayout
-            android:id="@+id/statusPlaced"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:alpha="1.0">
-            <ImageView
-                android:id="@+id/dotPlaced"
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:src="@android:drawable/presence_online"
-                app:tint="#4A7C59" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_24sdp"
-                android:text="Order Placed"
-                android:textSize="@dimen/_16ssp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="@dimen/_2sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:background="#EEEEEE" />
-
-        <LinearLayout
-            android:id="@+id/statusConfirmed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:alpha="0.5">
-            <ImageView
-                android:id="@+id/dotConfirmed"
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:src="@android:drawable/presence_online"
-                app:tint="#CCCCCC" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_24sdp"
-                android:text="Confirmed"
-                android:textSize="@dimen/_16ssp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="@dimen/_2sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:background="#EEEEEE" />
-
-        <LinearLayout
-            android:id="@+id/statusPreparing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:alpha="0.5">
-            <ImageView
-                android:id="@+id/dotPreparing"
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:src="@android:drawable/presence_online"
-                app:tint="#CCCCCC" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_24sdp"
-                android:text="Preparing"
-                android:textSize="@dimen/_16ssp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="@dimen/_2sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:background="#EEEEEE" />
-
-        <LinearLayout
-            android:id="@+id/statusOut"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:alpha="0.5">
-            <ImageView
-                android:id="@+id/dotOut"
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:src="@android:drawable/presence_online"
-                app:tint="#CCCCCC" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_24sdp"
-                android:text="Out for Delivery"
-                android:textSize="@dimen/_16ssp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="@dimen/_2sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:background="#EEEEEE" />
-
-        <LinearLayout
-            android:id="@+id/statusDelivered"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:alpha="0.5">
-            <ImageView
-                android:id="@+id/dotDelivered"
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:src="@android:drawable/presence_online"
-                app:tint="#CCCCCC" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_24sdp"
-                android:text="Delivered"
-                android:textSize="@dimen/_16ssp" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -51,9 +51,17 @@ public class OtpVerifyActivity extends AppCompatActivity {
             } else if (result.status == NetworkResult.Status.SUCCESS) {
                 setLoading(false);
                 binding.tvError.setVisibility(View.GONE);
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                
+                boolean isRecovery = getIntent().getBooleanExtra("is_recovery", false);
+                if (isRecovery) {
+                    Intent intent = new Intent(this, ResetPasswordActivity.class);
+                    intent.putExtra("phone", phone);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
                 finish();
             } else if (result.status == NetworkResult.Status.ERROR) {
                 setLoading(false);
