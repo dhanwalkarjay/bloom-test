@@ -66,4 +66,27 @@ public class ShopRepository {
 
         return result;
     }
+
+    public LiveData<NetworkResult<Shop>> getShopById(String shopId) {
+        MutableLiveData<NetworkResult<Shop>> result = new MutableLiveData<>();
+        result.setValue(NetworkResult.loading(null));
+
+        shopApi.getShopById("eq." + shopId).enqueue(new Callback<List<Shop>>() {
+            @Override
+            public void onResponse(Call<List<Shop>> call, Response<List<Shop>> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    result.setValue(NetworkResult.success(response.body().get(0)));
+                } else {
+                    result.setValue(NetworkResult.error("Shop not found", null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Shop>> call, Throwable t) {
+                result.setValue(NetworkResult.error(t.getMessage(), null));
+            }
+        });
+
+        return result;
+    }
 }

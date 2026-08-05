@@ -65,4 +65,8 @@ public class RetrofitClient {
         }
         return retrofit;
     }
+
+    public static synchronized void resetClient() {
+        retrofit = null;
+    }
 }

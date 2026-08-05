@@ -31,7 +31,7 @@ public class CartActivity extends AppCompatActivity {
         binding = ActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        cartRepository = new CartRepository(this);
+        cartRepository = CartRepository.getInstance(this);
 
         setupToolbar();
         setupRecyclerView();
@@ -106,6 +106,6 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private String formatCurrency(double amount) {
-        return "$" + String.format("%.2f", amount);
+        return "₹" + String.format("%.2f", amount);
     }
 }

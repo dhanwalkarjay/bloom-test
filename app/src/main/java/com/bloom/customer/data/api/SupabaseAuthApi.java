@@ -12,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface SupabaseAuthApi {
@@ -30,4 +31,7 @@ public interface SupabaseAuthApi {
             @Query("grant_type") String grantType,
             @Body Map<String, Object> body
     );
+
+    @PUT(Constants.AUTH_ENDPOINT + "user")
+    Call<Void> updateUser(@Body Map<String, Object> body);
 }

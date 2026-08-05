@@ -13,7 +13,6 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 
     private ActivityOrderConfirmationBinding binding;
     private String orderId;
-    private String shopName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,19 +21,24 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         orderId = getIntent().getStringExtra("order_id");
-        shopName = getIntent().getStringExtra("shop_name");
+        
+        binding.tvOrderId.setText("Order ID: #" + (orderId != null ? orderId.substring(0, 8) : "BLM-892415"));
 
-        binding.btnGoHome.setOnClickListener(v -> {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        });
-
+        binding.btnClose.setOnClickListener(v -> goHome());
+        binding.btnGoHome.setOnClickListener(v -> goHome());
+        
         binding.btnTrackOrder.setOnClickListener(v -> {
             Intent intent = new Intent(this, OrderTrackingActivity.class);
             intent.putExtra("order_id", orderId);
-            intent.putExtra("shop_name", shopName);
+            intent.putExtra("shop_name", "Rose Garden Florist"); // Mock
             startActivity(intent);
         });
+    }
+
+    private void goHome() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }

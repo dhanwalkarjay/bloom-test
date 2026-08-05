@@ -4,8 +4,10 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bloom.R;
 import com.bloom.customer.data.model.Address;
 import com.bloom.databinding.ItemAddressBinding;
 
@@ -66,9 +68,18 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         }
 
         void bind(Address address, boolean isSelected) {
+            binding.tvAddressLabel.setText(address.getLabel());
             binding.tvAddressLine.setText(address.getAddressLine());
-            binding.tvCity.setText(address.getCity());
-            binding.rbSelected.setChecked(isSelected);
+            binding.tvRecipient.setText("Alex Johnson, (555) 123-4567"); // Mocking for UI match
+
+            // Visual selection state
+            if (isSelected) {
+                binding.cvAddress.setStrokeColor(ContextCompat.getColor(itemView.getContext(), R.color.orders_primary));
+                binding.cvAddress.setStrokeWidth(4);
+            } else {
+                binding.cvAddress.setStrokeColor(ContextCompat.getColor(itemView.getContext(), R.color.orders_outline_variant));
+                binding.cvAddress.setStrokeWidth(2);
+            }
 
             itemView.setOnClickListener(v -> {
                 selectedPosition = getAdapterPosition();

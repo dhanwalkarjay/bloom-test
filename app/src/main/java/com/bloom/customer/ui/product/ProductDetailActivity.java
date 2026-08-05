@@ -13,15 +13,19 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
-import android.graphics.Color;
 
 import com.bloom.R;
+import com.bloom.customer.data.model.Addon;
 import com.bloom.customer.data.model.CartItem;
 import com.bloom.customer.data.model.Product;
 import com.bloom.customer.data.repository.CartRepository;
+import com.bloom.customer.data.repository.ProductRepository;
+import com.bloom.customer.util.NetworkResult;
 import com.bloom.databinding.ActivityProductDetailBinding;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 /**
  * Activity for displaying product details and customization.
@@ -31,6 +35,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private ActivityProductDetailBinding binding;
     private CartRepository cartRepository;
+    private ProductRepository productRepository;
+    private AddonAdapter addonAdapter;
     private Product product;
     private boolean isShopOpen = true;
     private int quantity = 1;
@@ -56,6 +62,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                     WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
             );
 
+            binding.appBarLayout.setPadding(0, insets.top, 0, 0);
+
             binding.bottomActionBar.setPadding(
                     binding.bottomActionBar.getPaddingLeft(),
                     binding.bottomActionBar.getPaddingTop(),
@@ -73,11 +81,46 @@ public class ProductDetailActivity extends AppCompatActivity {
         product = new Gson().fromJson(productJson, Product.class);
         isShopOpen = getIntent().getBooleanExtra("is_shop_open", true);
 
-        cartRepository = new CartRepository(this);
+        cartRepository = CartRepository.getInstance(this);
+        productRepository = new ProductRepository(this);
 
         setupUI();
         setupListeners();
+        setupAddonsRecyclerView();
         checkIfInCart();
+        setupCartBadgeObserver();
+        fetchAddons();
+    }
+
+    private void setupCartBadgeObserver() {
+        cartRepository.getCartItems().observe(this, items -> {
+            int totalCount = 0;
+            if (items != null) {
+                for (CartItem item : items) {
+                    totalCount += item.getQuantity();
+                }
+            }
+            if (totalCount > 0) {
+                binding.tvCartBadge.setVisibility(View.VISIBLE);
+                binding.tvCartBadge.setText(String.valueOf(totalCount));
+            } else {
+                binding.tvCartBadge.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void setupAddonsRecyclerView() {
+        addonAdapter = new AddonAdapter();
+        binding.rvAddons.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false));
+        binding.rvAddons.setAdapter(addonAdapter);
+    }
+
+    private void fetchAddons() {
+        productRepository.getAddons().observe(this, result -> {
+            if (result.status == NetworkResult.Status.SUCCESS) {
+                addonAdapter.setAddons(result.data);
+            }
+        });
     }
 
     private void checkIfInCart() {
@@ -106,7 +149,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void setupUI() {
         binding.tvProductName.setText(product.getName());
-        binding.tvPrice.setText("$" + product.getPrice());
+        binding.tvPrice.setText("₹" + String.format("%.2f", product.getPrice()));
         binding.tvDescription.setText(product.getDescription());
 
         Glide.with(this)
@@ -155,21 +198,28 @@ public class ProductDetailActivity extends AppCompatActivity {
             cartItem.setQuantity(1);
             cartItem.setSize("Regular");
             cartItem.setCardMessage("");
+            cartItem.setAddons(addonAdapter.getSelectedAddons());
 
             handleAddToCart(cartItem);
+            // After adding, checkIfInCart will trigger via observer and show quantity selector
         });
 
         binding.btnBuyNow.setOnClickListener(v -> {
             CartItem cartItem = new CartItem(product);
             cartItem.setQuantity(quantity);
+            cartItem.setAddons(addonAdapter.getSelectedAddons());
             handleAddToCart(cartItem);
-            startActivity(new Intent(this, com.bloom.customer.ui.cart.CartActivity.class));
+            
+            // Redirect to cart immediately
+            Intent intent = new Intent(this, com.bloom.customer.ui.cart.CartActivity.class);
+            startActivity(intent);
         });
     }
 
     private void updateCartQuantity() {
         CartItem cartItem = new CartItem(product);
         cartItem.setQuantity(quantity);
+        cartItem.setAddons(addonAdapter.getSelectedAddons());
         cartRepository.addToCart(cartItem);
     }
 
@@ -185,7 +235,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         } else {
             cartRepository.addToCart(item);
             Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
-            // stay on screen
         }
     }
 
