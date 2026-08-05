@@ -32,6 +32,9 @@ public class Address {
     @SerializedName("recipient_phone")
     private String recipientPhone;
 
+    @SerializedName("city")
+    private String city;
+
     @SerializedName("is_default")
     private boolean isDefault;
 
@@ -60,10 +63,12 @@ public class Address {
     public String getRecipientPhone() { return recipientPhone; }
     public void setRecipientPhone(String recipientPhone) { this.recipientPhone = recipientPhone; }
 
+    public String getCity() { return city != null ? city : ""; }
+    public void setCity(String city) { this.city = city; }
+
     public boolean isDefault() { return isDefault; }
     public void setDefault(boolean aDefault) { isDefault = aDefault; }
 
     // Backward-compatible getter for AddressAdapter
     public String getAddressLine() { return fullAddress; }
-    public String getCity() { return label != null ? label : ""; }
 }

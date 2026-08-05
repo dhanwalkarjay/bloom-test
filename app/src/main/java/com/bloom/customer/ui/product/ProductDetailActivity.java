@@ -62,6 +62,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                     WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
             );
 
+            binding.appBarLayout.setPadding(0, insets.top, 0, 0);
+
             binding.bottomActionBar.setPadding(
                     binding.bottomActionBar.getPaddingLeft(),
                     binding.bottomActionBar.getPaddingTop(),
@@ -86,7 +88,25 @@ public class ProductDetailActivity extends AppCompatActivity {
         setupListeners();
         setupAddonsRecyclerView();
         checkIfInCart();
+        setupCartBadgeObserver();
         fetchAddons();
+    }
+
+    private void setupCartBadgeObserver() {
+        cartRepository.getCartItems().observe(this, items -> {
+            int totalCount = 0;
+            if (items != null) {
+                for (CartItem item : items) {
+                    totalCount += item.getQuantity();
+                }
+            }
+            if (totalCount > 0) {
+                binding.tvCartBadge.setVisibility(View.VISIBLE);
+                binding.tvCartBadge.setText(String.valueOf(totalCount));
+            } else {
+                binding.tvCartBadge.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void setupAddonsRecyclerView() {
@@ -129,7 +149,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void setupUI() {
         binding.tvProductName.setText(product.getName());
-        binding.tvPrice.setText("$" + product.getPrice());
+        binding.tvPrice.setText("₹" + String.format("%.2f", product.getPrice()));
         binding.tvDescription.setText(product.getDescription());
 
         Glide.with(this)
@@ -181,6 +201,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             cartItem.setAddons(addonAdapter.getSelectedAddons());
 
             handleAddToCart(cartItem);
+            // After adding, checkIfInCart will trigger via observer and show quantity selector
         });
 
         binding.btnBuyNow.setOnClickListener(v -> {
@@ -188,7 +209,10 @@ public class ProductDetailActivity extends AppCompatActivity {
             cartItem.setQuantity(quantity);
             cartItem.setAddons(addonAdapter.getSelectedAddons());
             handleAddToCart(cartItem);
-            startActivity(new Intent(this, com.bloom.customer.ui.cart.CartActivity.class));
+            
+            // Redirect to cart immediately
+            Intent intent = new Intent(this, com.bloom.customer.ui.cart.CartActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -211,7 +235,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         } else {
             cartRepository.addToCart(item);
             Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
-            // stay on screen
         }
     }
 

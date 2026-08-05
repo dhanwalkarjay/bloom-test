@@ -13,8 +13,8 @@ public class Order {
     @SerializedName("user_id")
     private String userId;
 
-    @SerializedName("florist_id")
-    private String floristId;
+    @SerializedName("shop_id")
+    private String shopId;
 
     @SerializedName("address_id")
     private String addressId;
@@ -46,8 +46,8 @@ public class Order {
     @SerializedName("payment_status")
     private String paymentStatus; // default 'pending'
 
-    @SerializedName("delivery_slot_type")
-    private String deliverySlotType;
+    @SerializedName("delivery_slot")
+    private String deliverySlot;
 
     @SerializedName("razorpay_order_id")
     private String razorpayOrderId;
@@ -86,11 +86,11 @@ public class Order {
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
 
-    public String getFloristId() { return floristId; }
-    public void setFloristId(String floristId) { this.floristId = floristId; }
+    public String getShopId() { return shopId; }
+    public void setShopId(String shopId) { this.shopId = shopId; }
 
-    public String getShopId() { return floristId; }
-    public void setShopId(String shopId) { this.floristId = shopId; }
+    public String getFloristId() { return shopId; }
+    public void setFloristId(String floristId) { this.shopId = floristId; }
 
     public String getAddressId() { return addressId; }
     public void setAddressId(String addressId) { this.addressId = addressId; }
@@ -122,8 +122,8 @@ public class Order {
     public String getPaymentStatus() { return paymentStatus; }
     public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }
 
-    public String getDeliverySlot() { return deliverySlotType; }
-    public void setDeliverySlot(String deliverySlot) { this.deliverySlotType = deliverySlot; }
+    public String getDeliverySlot() { return deliverySlot; }
+    public void setDeliverySlot(String deliverySlot) { this.deliverySlot = deliverySlot; }
 
     public String getRazorpayOrderId() { return razorpayOrderId; }
     public void setRazorpayOrderId(String razorpayOrderId) { this.razorpayOrderId = razorpayOrderId; }

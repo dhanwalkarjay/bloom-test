@@ -3,10 +3,13 @@ package com.bloom.customer.ui.checkout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import com.bloom.R;
 import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.model.CartItem;
 import com.bloom.customer.data.model.Order;
@@ -24,10 +27,6 @@ import com.bloom.databinding.ActivityPaymentBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Activity for order payment.
- * Implements Cash on Delivery (COD) logic.
- */
 public class PaymentActivity extends AppCompatActivity {
 
     private ActivityPaymentBinding binding;
@@ -39,6 +38,7 @@ public class PaymentActivity extends AppCompatActivity {
     private double deliveryFee = 50.0;
     private String addressId;
     private String deliverySlot;
+    private String selectedMethod = "CARD";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +55,59 @@ public class PaymentActivity extends AppCompatActivity {
         deliverySlot = getIntent().getStringExtra("delivery_slot");
 
         setupToolbar();
+        setupMethods();
         fetchDetailsAndCalculate();
 
-        binding.btnPayOnline.setVisibility(View.GONE); // Razorpay skipped for now
-        binding.btnPayCod.setOnClickListener(v -> handlePlaceOrder());
+        binding.btnPayNow.setOnClickListener(v -> handlePlaceOrder());
     }
 
     private void setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener(v -> finish());
+        binding.btnBack.setOnClickListener(v -> finish());
+    }
+
+    private void setupMethods() {
+        binding.cardCard.setOnClickListener(v -> selectMethod("CARD"));
+        binding.cardWallet.setOnClickListener(v -> selectMethod("WALLET"));
+        binding.cardBank.setOnClickListener(v -> selectMethod("BANK"));
+        binding.cardCod.setOnClickListener(v -> selectMethod("COD"));
+    }
+
+    private void selectMethod(String method) {
+        selectedMethod = method;
+        
+        resetMethodUI(binding.cardCard, binding.rbCard);
+        resetMethodUI(binding.cardWallet, binding.rbWallet);
+        resetMethodUI(binding.cardBank, binding.rbBank);
+        resetMethodUI(binding.cardCod, binding.rbCod);
+        
+        switch (method) {
+            case "CARD":
+                highlightMethod(binding.cardCard, binding.rbCard);
+                break;
+            case "WALLET":
+                highlightMethod(binding.cardWallet, binding.rbWallet);
+                break;
+            case "BANK":
+                highlightMethod(binding.cardBank, binding.rbBank);
+                break;
+            case "COD":
+                highlightMethod(binding.cardCod, binding.rbCod);
+                break;
+        }
+    }
+
+    private void resetMethodUI(com.google.android.material.card.MaterialCardView card, android.widget.RadioButton rb) {
+        card.setStrokeColor(ContextCompat.getColor(this, R.color.orders_outline_variant));
+        card.setStrokeWidth(2);
+        rb.setChecked(false);
+        rb.setButtonTintList(android.content.res.ColorStateList.valueOf(ContextCompat.getColor(this, R.color.orders_on_surface_variant)));
+    }
+
+    private void highlightMethod(com.google.android.material.card.MaterialCardView card, android.widget.RadioButton rb) {
+        card.setStrokeColor(ContextCompat.getColor(this, R.color.orders_primary));
+        card.setStrokeWidth(4);
+        rb.setChecked(true);
+        rb.setButtonTintList(android.content.res.ColorStateList.valueOf(ContextCompat.getColor(this, R.color.orders_primary)));
     }
 
     private void fetchDetailsAndCalculate() {
@@ -89,22 +134,36 @@ public class PaymentActivity extends AppCompatActivity {
                 results
         );
         double distanceKm = results[0] / 1000.0;
-        deliveryFee = Math.max(20.0, distanceKm * 10.0); // ₹10 per km, min ₹20
-
+        deliveryFee = Math.max(20.0, distanceKm * 10.0);
         updateSummary();
     }
 
     private void updateSummary() {
         double subtotal = cartRepository.getCartTotal();
-        totalAmount = subtotal + deliveryFee;
-
-        binding.tvSubtotal.setText(String.format("₹%.2f", subtotal));
-        binding.tvDeliveryFee.setText(String.format("₹%.2f", deliveryFee));
+        totalAmount = subtotal + deliveryFee + 10.0; // Including platform fee
         binding.tvTotalAmount.setText(String.format("₹%.2f", totalAmount));
-    }
+        
+        // Breakdown in accordion
+        View breakdown = binding.getRoot().findViewById(R.id.llOrderDetails);
+        if (breakdown != null) {
+            TextView tvSub = breakdown.findViewById(R.id.tvSubtotal);
+            TextView tvDel = breakdown.findViewById(R.id.tvDeliveryFee);
+            if (tvSub != null) tvSub.setText(String.format("₹%.2f", subtotal));
+            if (tvDel != null) tvDel.setText(String.format("₹%.2f", deliveryFee));
+        }
 
-    private void calculateSummary() {
-        updateSummary();
+        List<CartItem> items = cartRepository.getCartItems().getValue();
+        if (items != null && !items.isEmpty()) {
+            String briefText = items.size() + "x '" + items.get(0).getProduct().getName() + "'";
+            if (items.size() > 1) briefText += " + " + (items.size() - 1) + " items";
+            binding.tvOrderSummaryBrief.setText(briefText);
+        }
+
+        binding.llOrderSummaryClickable.setOnClickListener(v -> {
+            boolean isVisible = binding.llOrderDetails.getVisibility() == View.VISIBLE;
+            binding.llOrderDetails.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+            binding.ivSummaryArrow.animate().rotation(isVisible ? 0 : 180).start();
+        });
     }
 
     private void handlePlaceOrder() {
@@ -115,7 +174,7 @@ public class PaymentActivity extends AppCompatActivity {
         order.setTotalAmount(totalAmount);
         order.setDeliverySlot(deliverySlot);
         order.setStatus("placed");
-        order.setPaymentStatus("pending");
+        order.setPaymentStatus(selectedMethod.equals("COD") ? "pending" : "paid");
         order.setBouquetSubtotal(cartRepository.getCartTotal());
         order.setDeliveryFee(deliveryFee);
 
@@ -135,13 +194,12 @@ public class PaymentActivity extends AppCompatActivity {
         }
         order.setItems(orderItems);
 
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.btnPayNow.setEnabled(false);
+
         orderRepository.placeOrder(order).observe(this, result -> {
-            if (result.status == NetworkResult.Status.LOADING) {
-                setLoading(true);
-                binding.tvError.setVisibility(View.GONE);
-            } else if (result.status == NetworkResult.Status.SUCCESS) {
-                setLoading(false);
-                binding.tvError.setVisibility(View.GONE);
+            binding.progressBar.setVisibility(View.GONE);
+            if (result.status == NetworkResult.Status.SUCCESS) {
                 cartRepository.clearCart();
                 Intent intent = new Intent(this, OrderConfirmationActivity.class);
                 intent.putExtra("order_id", result.data != null ? result.data.getId() : "");
@@ -149,15 +207,9 @@ public class PaymentActivity extends AppCompatActivity {
                 startActivity(intent);
                 finishAffinity();
             } else if (result.status == NetworkResult.Status.ERROR) {
-                setLoading(false);
-                binding.tvError.setText(result.message != null ? result.message : "Failed to place order. Please try again.");
-                binding.tvError.setVisibility(View.VISIBLE);
+                binding.btnPayNow.setEnabled(true);
+                Toast.makeText(this, result.message, Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    private void setLoading(boolean isLoading) {
-        binding.progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        binding.btnPayCod.setEnabled(!isLoading);
     }
 }

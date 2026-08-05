@@ -31,11 +31,11 @@ public class OrderRepository {
         MutableLiveData<NetworkResult<Order>> result = new MutableLiveData<>();
         result.setValue(NetworkResult.loading(null));
 
-        api.createOrder(order).enqueue(new Callback<Order>() {
+        api.createOrder(order).enqueue(new Callback<List<Order>>() {
             @Override
-            public void onResponse(Call<Order> call, Response<Order> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Order createdOrder = response.body();
+            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    Order createdOrder = response.body().get(0);
                     
                     // Assign the returned ID to all items
                     for (OrderItem item : order.getItems()) {
@@ -45,12 +45,20 @@ public class OrderRepository {
                     // Now push the items
                     createOrderItems(order.getItems(), result, createdOrder);
                 } else {
-                    result.setValue(NetworkResult.error("Failed to create order record", null));
+                    String error = "Failed to create order: " + response.code();
+                    try {
+                        if (response.errorBody() != null) {
+                            error += " - " + response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    result.setValue(NetworkResult.error(error, null));
                 }
             }
 
             @Override
-            public void onFailure(Call<Order> call, Throwable t) {
+            public void onFailure(Call<List<Order>> call, Throwable t) {
                 result.setValue(NetworkResult.error(t.getMessage(), null));
             }
         });
@@ -85,18 +93,26 @@ public class OrderRepository {
     }
 
     private void createOrderItems(List<OrderItem> items, MutableLiveData<NetworkResult<Order>> result, Order createdOrder) {
-        api.createOrderItems(items).enqueue(new Callback<List<OrderItem>>() {
+        api.createOrderItems(items).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<List<OrderItem>> call, Response<List<OrderItem>> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     result.setValue(NetworkResult.success(createdOrder));
                 } else {
-                    result.setValue(NetworkResult.error("Order created, but items failed to save", null));
+                    String error = "Order created, but items failed: " + response.code();
+                    try {
+                        if (response.errorBody() != null) {
+                            error += " - " + response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    result.setValue(NetworkResult.error(error, null));
                 }
             }
 
             @Override
-            public void onFailure(Call<List<OrderItem>> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 result.setValue(NetworkResult.error("Failed to save order items: " + t.getMessage(), null));
             }
         });

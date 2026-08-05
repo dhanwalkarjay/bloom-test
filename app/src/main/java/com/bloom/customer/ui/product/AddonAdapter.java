@@ -56,7 +56,7 @@ public class AddonAdapter extends RecyclerView.Adapter<AddonAdapter.ViewHolder> 
 
         void bind(Addon addon) {
             binding.tvAddonName.setText(addon.getName());
-            binding.tvAddonPrice.setText("$" + String.format("%.2f", addon.getPrice()));
+            binding.tvAddonPrice.setText("₹" + String.format("%.2f", addon.getPrice()));
             
             Glide.with(binding.ivAddonImage.getContext())
                     .load(addon.getImageUrl())
