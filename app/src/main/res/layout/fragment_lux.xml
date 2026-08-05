@@ -229,7 +229,7 @@
                         android:includeFontPadding="false"
                         android:letterSpacing="0.01"
                         android:lineHeight="@dimen/_26ssp"
-                        android:text="$285.00"
+                        android:text="₹285.00"
                         android:textColor="@color/lux_accent"
                         android:textSize="@dimen/_18ssp" />
 
@@ -322,7 +322,7 @@
                         android:includeFontPadding="false"
                         android:letterSpacing="0.01"
                         android:lineHeight="@dimen/_26ssp"
-                        android:text="$340.00"
+                        android:text="₹340.00"
                         android:textColor="@color/lux_accent"
                         android:textSize="@dimen/_18ssp" />
 
@@ -415,7 +415,7 @@
                         android:includeFontPadding="false"
                         android:letterSpacing="0.01"
                         android:lineHeight="@dimen/_26ssp"
-                        android:text="$215.00"
+                        android:text="₹215.00"
                         android:textColor="@color/lux_accent"
                         android:textSize="@dimen/_18ssp" />
 

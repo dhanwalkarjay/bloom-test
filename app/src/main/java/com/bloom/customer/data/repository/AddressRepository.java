@@ -33,7 +33,7 @@ public class AddressRepository {
         MutableLiveData<NetworkResult<List<Address>>> result = new MutableLiveData<>();
         result.setValue(NetworkResult.loading(null));
 
-        api.getAddresses(userId).enqueue(new Callback<List<Address>>() {
+        api.getAddresses().enqueue(new Callback<List<Address>>() {
             @Override
             public void onResponse(Call<List<Address>> call, Response<List<Address>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -56,9 +56,9 @@ public class AddressRepository {
         MutableLiveData<NetworkResult<Void>> result = new MutableLiveData<>();
         result.setValue(NetworkResult.loading(null));
 
-        api.addAddress(address).enqueue(new Callback<List<Address>>() {
+        api.addAddress(address).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<List<Address>> call, Response<List<Address>> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     result.setValue(NetworkResult.success(null));
                 } else {
@@ -75,7 +75,7 @@ public class AddressRepository {
             }
 
             @Override
-            public void onFailure(Call<List<Address>> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 result.setValue(NetworkResult.error(t.getMessage(), null));
             }
         });

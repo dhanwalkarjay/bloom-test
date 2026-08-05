@@ -19,6 +19,7 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -91,9 +92,10 @@ public interface SupabaseAPI {
 
     /**
      * Get saved addresses for the current user.
+     * RLS on the server will automatically filter these to the authenticated user.
      */
     @GET(Constants.REST_ENDPOINT + "addresses")
-    Call<List<Address>> getAddresses(@Query("user_id") String userId);
+    Call<List<Address>> getAddresses();
 
     @GET(Constants.REST_ENDPOINT + "addresses")
     Call<List<Address>> getAddressById(@Query("id") String id);
@@ -102,7 +104,7 @@ public interface SupabaseAPI {
      * Add a new address.
      */
     @POST(Constants.REST_ENDPOINT + "addresses")
-    Call<List<Address>> addAddress(@Body Address address);
+    Call<Void> addAddress(@Body Address address);
 
     /**
      * Update an address.
@@ -113,14 +115,15 @@ public interface SupabaseAPI {
     /**
      * Create a new order.
      */
+    @Headers("Prefer: return=representation")
     @POST(Constants.REST_ENDPOINT + "orders")
-    Call<Order> createOrder(@Body Order order);
+    Call<List<Order>> createOrder(@Body Order order);
 
     /**
      * Add items to an order.
      */
     @POST(Constants.REST_ENDPOINT + "order_items")
-    Call<List<OrderItem>> createOrderItems(@Body List<OrderItem> items);
+    Call<Void> createOrderItems(@Body List<OrderItem> items);
 
     /**
      * Get orders for the current user.

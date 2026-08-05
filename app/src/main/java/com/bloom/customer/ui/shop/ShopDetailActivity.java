@@ -62,6 +62,10 @@ public class ShopDetailActivity extends AppCompatActivity {
         binding.btnViewCart.setOnClickListener(v -> {
             startActivity(new Intent(this, CartActivity.class));
         });
+
+        binding.btnCartTop.setOnClickListener(v -> {
+            startActivity(new Intent(this, CartActivity.class));
+        });
     }
 
     private void setupRecyclerView() {
@@ -103,11 +107,21 @@ public class ShopDetailActivity extends AppCompatActivity {
         });
 
         cartRepository.getCartItems().observe(this, items -> {
-            if (items != null && !items.isEmpty()) {
+            int totalCount = 0;
+            if (items != null) {
+                for (com.bloom.customer.data.model.CartItem item : items) {
+                    totalCount += item.getQuantity();
+                }
+            }
+            if (totalCount > 0) {
                 binding.btnViewCart.setVisibility(View.VISIBLE);
-                binding.btnViewCart.setText("View Cart (" + items.size() + " items)");
+                binding.btnViewCart.setText("View Cart (" + totalCount + " items)");
+                
+                binding.tvCartBadge.setVisibility(View.VISIBLE);
+                binding.tvCartBadge.setText(String.valueOf(totalCount));
             } else {
                 binding.btnViewCart.setVisibility(View.GONE);
+                binding.tvCartBadge.setVisibility(View.GONE);
             }
         });
     }

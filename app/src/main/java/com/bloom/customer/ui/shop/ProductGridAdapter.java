@@ -69,7 +69,7 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
 
         void bind(Product product) {
             binding.tvProductName.setText(product.getName());
-            binding.tvPrice.setText("$" + product.getPrice());
+            binding.tvPrice.setText("₹" + product.getPrice());
             binding.tvLuxBadge.setVisibility(product.isLux() ? View.VISIBLE : View.GONE);
 
             Glide.with(binding.ivProductImage.getContext())

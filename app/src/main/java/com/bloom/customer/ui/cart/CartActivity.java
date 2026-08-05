@@ -106,6 +106,6 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private String formatCurrency(double amount) {
-        return "$" + String.format("%.2f", amount);
+        return "₹" + String.format("%.2f", amount);
     }
 }
