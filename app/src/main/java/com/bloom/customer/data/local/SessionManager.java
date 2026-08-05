@@ -20,9 +20,15 @@ import java.security.GeneralSecurityException;
 public class SessionManager {
 
     private static SessionManager instance;
-    private final SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
+    private final Context context;
 
     private SessionManager(Context context) {
+        this.context = context.getApplicationContext();
+        initPrefs();
+    }
+
+    private void initPrefs() {
         try {
             String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
             sharedPreferences = EncryptedSharedPreferences.create(
@@ -45,27 +51,62 @@ public class SessionManager {
     }
 
     public void saveSession(String accessToken, String refreshToken, String userId) {
-        sharedPreferences.edit()
-                .putString(Constants.KEY_ACCESS_TOKEN, accessToken)
-                .putString(Constants.KEY_REFRESH_TOKEN, refreshToken)
-                .putString(Constants.KEY_USER_ID, userId)
-                .apply();
+        try {
+            sharedPreferences.edit()
+                    .putString(Constants.KEY_ACCESS_TOKEN, accessToken)
+                    .putString(Constants.KEY_REFRESH_TOKEN, refreshToken)
+                    .putString(Constants.KEY_USER_ID, userId)
+                    .apply();
+        } catch (Exception e) {
+            forceClearPrefs();
+            try {
+                sharedPreferences.edit()
+                        .putString(Constants.KEY_ACCESS_TOKEN, accessToken)
+                        .putString(Constants.KEY_REFRESH_TOKEN, refreshToken)
+                        .putString(Constants.KEY_USER_ID, userId)
+                        .apply();
+            } catch (Exception ignored) {}
+        }
     }
 
     public String getAccessToken() {
-        return sharedPreferences.getString(Constants.KEY_ACCESS_TOKEN, null);
+        try {
+            return sharedPreferences.getString(Constants.KEY_ACCESS_TOKEN, null);
+        } catch (Exception e) {
+            forceClearPrefs();
+            return null;
+        }
     }
 
     public String getRefreshToken() {
-        return sharedPreferences.getString(Constants.KEY_REFRESH_TOKEN, null);
+        try {
+            return sharedPreferences.getString(Constants.KEY_REFRESH_TOKEN, null);
+        } catch (Exception e) {
+            forceClearPrefs();
+            return null;
+        }
     }
 
     public String getUserId() {
-        return sharedPreferences.getString(Constants.KEY_USER_ID, null);
+        try {
+            return sharedPreferences.getString(Constants.KEY_USER_ID, null);
+        } catch (Exception e) {
+            forceClearPrefs();
+            return null;
+        }
     }
 
     public void clearSession() {
-        sharedPreferences.edit().clear().apply();
+        try {
+            sharedPreferences.edit().clear().apply();
+        } catch (Exception e) {
+            forceClearPrefs();
+        }
+    }
+
+    private void forceClearPrefs() {
+        context.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE).edit().clear().apply();
+        initPrefs();
     }
 
     public boolean isLoggedIn() {

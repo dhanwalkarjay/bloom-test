@@ -31,13 +31,13 @@
             android:layout_height="wrap_content"
             android:text="No saved addresses"
             android:textColor="#333333"
-            android:textSize="@dimen/_18ssp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginTop="8dp"
             android:text="Add a new address to continue."
             android:textColor="#666666" />
     </LinearLayout>
@@ -56,7 +56,7 @@
         android:id="@+id/rvAddresses"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="@dimen/_16sdp"
+        android:padding="16dp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toTopOf="@id/btnAddAddress" />
@@ -65,25 +65,25 @@
         android:id="@+id/btnAddAddress"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_56sdp"
-        android:layout_margin="@dimen/_16sdp"
+        android:layout_height="56dp"
+        android:layout_margin="16dp"
         android:text="+ Add New Address"
         android:textAllCaps="false"
         android:textColor="#E85D75"
         app:strokeColor="#E85D75"
-        app:cornerRadius="@dimen/_12sdp"
+        app:cornerRadius="12dp"
         app:layout_constraintBottom_toTopOf="@id/btnContinue" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnContinue"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_56sdp"
-        android:layout_margin="@dimen/_16sdp"
+        android:layout_height="56dp"
+        android:layout_margin="16dp"
         android:text="Continue"
         android:textAllCaps="false"
         android:backgroundTint="#E85D75"
         android:textColor="@android:color/white"
-        app:cornerRadius="@dimen/_12sdp"
+        app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,10 +36,8 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.material)
 
-    // Scalable sizes for responsive design
     implementation("com.intuit.sdp:sdp-android:1.1.1")
     implementation("com.intuit.ssp:ssp-android:1.1.1")
-
     // Networking
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
@@ -54,6 +52,7 @@ dependencies {
 
     // UI & Images
     implementation(libs.glide)
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
     // Location & Maps
     implementation(libs.play.services.location)

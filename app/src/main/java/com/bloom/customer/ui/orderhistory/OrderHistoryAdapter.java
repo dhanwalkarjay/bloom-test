@@ -96,12 +96,22 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             }
 
             itemView.setOnClickListener(v -> {
-                if (isExpanded) {
-                    expandedOrderIds.remove(order.getId());
+                String status = order.getStatus();
+                if (status != null && !status.equalsIgnoreCase("Delivered") && !status.equalsIgnoreCase("Cancelled") && !status.equalsIgnoreCase("Completed")) {
+                    android.content.Intent intent = new android.content.Intent(itemView.getContext(), com.bloom.customer.ui.ordertracking.OrderTrackingActivity.class);
+                    intent.putExtra("order_id", order.getId());
+                    if (order.getShop() != null) {
+                        intent.putExtra("shop_name", order.getShop().getName());
+                    }
+                    itemView.getContext().startActivity(intent);
                 } else {
-                    expandedOrderIds.add(order.getId());
+                    if (isExpanded) {
+                        expandedOrderIds.remove(order.getId());
+                    } else {
+                        expandedOrderIds.add(order.getId());
+                    }
+                    notifyItemChanged(getAdapterPosition());
                 }
-                notifyItemChanged(getAdapterPosition());
             });
         }
     }

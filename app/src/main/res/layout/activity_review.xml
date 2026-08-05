@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/_24sdp"
+        android:padding="24dp"
         android:gravity="center_horizontal"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="How was the bouquet?"
-            android:textSize="@dimen/_22ssp"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#333333" />
 
@@ -34,7 +34,7 @@
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_32sdp"
+            android:layout_marginTop="32dp"
             android:numStars="5"
             android:stepSize="1"
             android:progressTint="#D4AF37" />
@@ -43,13 +43,13 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_32sdp"
+            android:layout_marginTop="32dp"
             android:hint="Write your feedback (optional)">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etComment"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_120sdp"
+                android:layout_height="120dp"
                 android:gravity="top"
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -57,21 +57,21 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSubmit"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_56sdp"
-            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_height="56dp"
+            android:layout_marginTop="40dp"
             android:text="Submit Review"
             android:textAllCaps="false"
             android:backgroundTint="#E85D75"
-            app:cornerRadius="@dimen/_12sdp" />
+            app:cornerRadius="12dp" />
 
         <TextView
             android:id="@+id/tvError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginTop="16dp"
             android:text=""
             android:textColor="#D32F2F"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="14sp"
             android:textAlignment="center"
             android:visibility="gone" />
 

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.bloom.R;
 import com.bloom.customer.ui.cart.CartActivity;
 import com.bloom.customer.ui.common.FragmentStatusBar;
+import com.bloom.customer.ui.ordertracking.OrderTrackingActivity;
 import com.bloom.databinding.FragmentOrdersBinding;
 
 public class OrdersFragment extends Fragment {
@@ -98,6 +99,7 @@ public class OrdersFragment extends Fragment {
 
     private void showOrderDetails(String orderId) {
         Toast.makeText(requireContext(), "Order details for " + orderId, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getContext(), OrderTrackingActivity.class));
     }
 
     @Override
