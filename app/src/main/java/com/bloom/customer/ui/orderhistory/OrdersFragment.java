@@ -49,6 +49,25 @@ public class OrdersFragment extends Fragment {
         adapter = new OrderHistoryAdapter();
         binding.rvOrderHistory.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvOrderHistory.setAdapter(adapter);
+
+        adapter.setListener(new OrderHistoryAdapter.OnOrderHistoryClickListener() {
+            @Override
+            public void onReviewClick(com.bloom.customer.data.model.Order order) {
+                Intent intent = new Intent(requireContext(), RateOrderActivity.class);
+                intent.putExtra("order_id", order.getId());
+                if (order.getItems() != null && !order.getItems().isEmpty()) {
+                    intent.putExtra("product_name", order.getItems().get(0).getProduct().getTitle());
+                }
+                startActivity(intent);
+            }
+
+            @Override
+            public void onOrderClick(com.bloom.customer.data.model.Order order) {
+                Intent intent = new Intent(requireContext(), com.bloom.customer.ui.ordertracking.OrderTrackingActivity.class);
+                intent.putExtra("order_id", order.getId());
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupListeners() {
@@ -90,8 +109,25 @@ public class OrdersFragment extends Fragment {
             binding.progressBar.setVisibility(View.GONE);
             if (result.status == NetworkResult.Status.SUCCESS) {
                 if (result.data != null && !result.data.isEmpty()) {
-                    adapter.setOrders(result.data);
-                    binding.rvOrderHistory.setVisibility(View.VISIBLE);
+                    java.util.List<com.bloom.customer.data.model.Order> filtered = new java.util.ArrayList<>();
+                    for (com.bloom.customer.data.model.Order o : result.data) {
+                        String status = o.getStatus() != null ? o.getStatus() : "placed";
+                        boolean isDelivered = "Delivered".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status);
+                        if (isPastSelected) {
+                            if (isDelivered) filtered.add(o);
+                        } else {
+                            if (!isDelivered) filtered.add(o);
+                        }
+                    }
+                    
+                    if (filtered.isEmpty()) {
+                        binding.rvOrderHistory.setVisibility(View.GONE);
+                        binding.emptyState.setVisibility(View.VISIBLE);
+                    } else {
+                        adapter.setOrders(filtered);
+                        binding.rvOrderHistory.setVisibility(View.VISIBLE);
+                        binding.emptyState.setVisibility(View.GONE);
+                    }
                 } else {
                     binding.emptyState.setVisibility(View.VISIBLE);
                 }

@@ -18,13 +18,14 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     private final List<Address> addresses = new ArrayList<>();
     private int selectedPosition = -1;
-    private OnAddressSelectedListener listener;
+    private OnAddressInteractionListener listener;
 
-    public interface OnAddressSelectedListener {
+    public interface OnAddressInteractionListener {
         void onAddressSelected(Address address);
+        void onAddressDelete(Address address);
     }
 
-    public void setListener(OnAddressSelectedListener listener) {
+    public void setListener(OnAddressInteractionListener listener) {
         this.listener = listener;
     }
 
@@ -90,6 +91,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
                 selectedPosition = getAdapterPosition();
                 notifyDataSetChanged();
                 if (listener != null) listener.onAddressSelected(address);
+            });
+
+            binding.btnDelete.setOnClickListener(v -> {
+                if (listener != null) listener.onAddressDelete(address);
             });
         }
     }

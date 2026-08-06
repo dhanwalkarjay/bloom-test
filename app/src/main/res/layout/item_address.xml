@@ -41,6 +41,19 @@
             app:layout_constraintTop_toTopOf="@id/ivAddressIcon" />
 
         <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Delete Address"
+            android:padding="6dp"
+            android:src="@drawable/ic_delete_outline"
+            app:layout_constraintEnd_toStartOf="@id/btnEdit"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#999999" />
+
+        <ImageButton
             android:id="@+id/btnEdit"
             android:layout_width="32dp"
             android:layout_height="32dp"

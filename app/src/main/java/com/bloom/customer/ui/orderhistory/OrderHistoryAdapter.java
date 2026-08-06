@@ -1,16 +1,19 @@
 package com.bloom.customer.ui.orderhistory;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bloom.customer.data.model.Order;
 import com.bloom.customer.data.model.OrderItem;
+import com.bloom.customer.util.CurrencyFormatter;
 import com.bloom.databinding.ItemOrderHistoryBinding;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
     public interface OnOrderHistoryClickListener {
         void onReviewClick(Order order);
+        void onOrderClick(Order order);
     }
 
     public void setListener(OnOrderHistoryClickListener listener) {
@@ -63,52 +67,64 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         }
 
         void bind(Order order) {
-            binding.tvStatus.setText(order.getStatus());
-            binding.tvDate.setText(order.getCreatedAt().substring(0, 10));
-            binding.tvTotal.setText(String.format("₹%.2f", order.getTotalAmount()));
+            String status = order.getStatus() != null ? order.getStatus() : "placed";
+            binding.tvStatus.setText(status.toUpperCase());
+            updateStatusStyle(status);
+
+            binding.tvDate.setText("Ordered on " + (order.getCreatedAt() != null ? order.getCreatedAt().substring(0, 10) : ""));
+            binding.tvTotal.setText(CurrencyFormatter.format(order.getTotalAmount()));
             
-            // Show first product name as main title
             if (order.getItems() != null && !order.getItems().isEmpty()) {
-                String firstItemName = order.getItems().get(0).getProduct() != null ? 
-                    order.getItems().get(0).getProduct().getTitle() : "Bouquet";
-                binding.tvShopName.setText(firstItemName);
-                binding.tvShopName.setVisibility(View.VISIBLE);
-            } else {
-                binding.tvShopName.setText("Order #" + order.getId().substring(0, 5));
-                binding.tvShopName.setVisibility(View.VISIBLE);
-            }
-
-            // Itemized list logic
-            binding.llItems.removeAllViews();
-            if (order.getItems() != null) {
-                for (OrderItem item : order.getItems()) {
-                    TextView tv = new TextView(itemView.getContext());
-                    String productName = item.getProduct() != null ? item.getProduct().getTitle() : "Product";
-                    tv.setText(String.format("• %dx %s (%s)", 
-                        item.getQuantity(), productName, item.getSize()));
-                    tv.setTextColor(0xFF24181A);
-                    tv.setTextSize(13);
-                    tv.setPadding(0, 4, 0, 4);
-                    binding.llItems.addView(tv);
+                OrderItem firstItem = order.getItems().get(0);
+                binding.tvShopName.setText(firstItem.getProduct() != null ? firstItem.getProduct().getTitle() : "Bouquet");
+                
+                if (firstItem.getProduct() != null && firstItem.getProduct().getImages() != null) {
+                    Glide.with(itemView.getContext())
+                        .load(firstItem.getProduct().getImages())
+                        .into(binding.ivProduct);
                 }
+            } else {
+                binding.tvShopName.setText("Order #" + (order.getId() != null ? order.getId().substring(0, 5) : "---"));
             }
-
-            // Always show items for better visibility as requested
-            binding.llItems.setVisibility(View.VISIBLE);
 
             // Show Leave Review only if Delivered
-            if ("Delivered".equalsIgnoreCase(order.getStatus())) {
+            if ("Delivered".equalsIgnoreCase(status)) {
                 binding.btnLeaveReview.setVisibility(View.VISIBLE);
+                binding.btnTrackOrder.setVisibility(View.GONE);
                 binding.btnLeaveReview.setOnClickListener(v -> {
                     if (listener != null) listener.onReviewClick(order);
                 });
             } else {
                 binding.btnLeaveReview.setVisibility(View.GONE);
+                binding.btnTrackOrder.setVisibility(View.VISIBLE);
+                binding.btnTrackOrder.setOnClickListener(v -> {
+                    if (listener != null) listener.onOrderClick(order);
+                });
             }
 
             itemView.setOnClickListener(v -> {
-                // Click could open order details if needed
+                if (listener != null) listener.onOrderClick(order);
             });
+        }
+
+        private void updateStatusStyle(String status) {
+            String lower = status.toLowerCase();
+            int bgColor = Color.parseColor("#FFF9C4"); // Default yellow
+            int textColor = Color.parseColor("#FBC02D");
+
+            if (lower.contains("deliver")) {
+                bgColor = Color.parseColor("#E8F5E9");
+                textColor = Color.parseColor("#2E7D32");
+            } else if (lower.contains("cancel")) {
+                bgColor = Color.parseColor("#FFEBEE");
+                textColor = Color.parseColor("#C62828");
+            } else if (lower.contains("out")) {
+                bgColor = Color.parseColor("#E3F2FD");
+                textColor = Color.parseColor("#1565C0");
+            }
+
+            binding.tvStatus.setBackgroundTintList(ColorStateList.valueOf(bgColor));
+            binding.tvStatus.setTextColor(textColor);
         }
     }
 }

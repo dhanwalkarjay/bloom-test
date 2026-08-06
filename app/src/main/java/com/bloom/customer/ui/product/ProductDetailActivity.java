@@ -149,7 +149,24 @@ public class ProductDetailActivity extends AppCompatActivity {
                 .load(product.getImageUrl())
                 .into(binding.ivProductImage);
 
-        if (!isShopOpen) {
+        // Task 1: Enforce Dynamic Delivery Radius
+        double distance = getIntent().getDoubleExtra("distance", 0);
+        String shopJson = getIntent().getStringExtra("shop_json");
+        double allowedRadiusKm = 5.0; // Default
+        
+        if (shopJson != null) {
+            com.bloom.customer.data.model.Shop shop = new Gson().fromJson(shopJson, com.bloom.customer.data.model.Shop.class);
+            if (shop != null && shop.getDeliveryRadiusKm() > 0) {
+                allowedRadiusKm = shop.getDeliveryRadiusKm();
+            }
+        }
+
+        if (distance > allowedRadiusKm * 1000) { // Convert KM to Meters
+            binding.flAction.setVisibility(View.GONE);
+            binding.btnBuyNow.setVisibility(View.GONE);
+            binding.tvOutOfRadius.setVisibility(View.VISIBLE);
+            binding.tvOutOfRadius.setText("Shop delivery radius is " + allowedRadiusKm + "km. You are at " + String.format("%.1f", distance/1000) + "km.");
+        } else if (!isShopOpen) {
             binding.btnAddToCart.setEnabled(false);
             binding.btnAddToCart.setText(R.string.shop_closed);
             binding.btnAddToCart.setBackgroundColor(getColor(android.R.color.darker_gray));

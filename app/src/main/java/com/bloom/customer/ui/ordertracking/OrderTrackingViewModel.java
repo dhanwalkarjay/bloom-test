@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bloom.customer.data.api.RealtimeService;
+import com.bloom.customer.util.NetworkResult;
 
 public class OrderTrackingViewModel extends AndroidViewModel {
 
@@ -28,6 +29,10 @@ public class OrderTrackingViewModel extends AndroidViewModel {
         realtimeService.startTracking(orderId, (id, newStatus) -> {
             orderStatus.postValue(newStatus);
         });
+    }
+
+    public LiveData<NetworkResult<Void>> cancelOrder(String orderId) {
+        return new com.bloom.customer.data.repository.OrderRepository(getApplication()).cancelOrder(orderId);
     }
 
     @Override

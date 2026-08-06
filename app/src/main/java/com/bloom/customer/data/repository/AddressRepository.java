@@ -135,4 +135,27 @@ public class AddressRepository {
 
         return result;
     }
+
+    public LiveData<NetworkResult<Void>> deleteAddress(String addressId) {
+        MutableLiveData<NetworkResult<Void>> result = new MutableLiveData<>();
+        result.setValue(NetworkResult.loading(null));
+
+        api.deleteAddress("id.eq." + addressId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    result.setValue(NetworkResult.success(null));
+                } else {
+                    result.setValue(NetworkResult.error("Failed to delete address", null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                result.setValue(NetworkResult.error(t.getMessage(), null));
+            }
+        });
+
+        return result;
+    }
 }
