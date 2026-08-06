@@ -45,8 +45,10 @@
         <activity android:name=".customer.ui.checkout.PaymentActivity" />
         <activity android:name=".customer.ui.orderconfirmation.OrderConfirmationActivity" />
         <activity android:name=".customer.ui.ordertracking.OrderTrackingActivity" />
-        <activity android:name=".customer.ui.reviews.ReviewActivity" />
         <activity android:name=".customer.ui.notifications.NotificationActivity" />
+        <activity android:name=".customer.ui.orderhistory.RateOrderActivity" />
+        <activity android:name=".customer.ui.support.HelpCenterActivity" />
+        <activity android:name=".customer.ui.support.SupportActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

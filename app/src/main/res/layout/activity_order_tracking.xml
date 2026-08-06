@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -79,18 +79,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Map Placeholder -->
+            <!-- Map Section -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="320dp">
 
-                <ImageView
+                <WebView
+                    android:id="@+id/mapWebView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/container"
-                    android:alpha="0.2"
-                    android:contentDescription="Map" />
+                    android:background="@drawable/bg_home_hero_overlay"
+                    android:alpha="0.1" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
@@ -134,9 +137,11 @@
 
                 <!-- Step 1 -->
                 <RelativeLayout
+                    android:id="@+id/rlStep1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <View
+                        android:id="@+id/line1"
                         android:layout_width="2dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="21dp"
@@ -159,9 +164,10 @@
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Order Placed"
                         android:textColor="#333333"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
                     <TextView
+                        android:id="@+id/tvStatus1Desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tvStatus1Title"
@@ -171,25 +177,28 @@
                         android:fontFamily="@font/work_sans"
                         android:text="We've received your order"
                         android:textColor="#666666"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                     <TextView
+                        android:id="@+id/tvStatus1Time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/work_sans"
                         android:text="09:15 AM"
                         android:textColor="#999999"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
                 </RelativeLayout>
 
                 <!-- Step 2 -->
                 <RelativeLayout
+                    android:id="@+id/rlStep2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp">
+                    android:layout_marginTop="20dp">
                     <View
+                        android:id="@+id/line2"
                         android:layout_width="2dp"
-                        android:layout_height="60dp"
+                        android:layout_height="50dp"
                         android:layout_marginStart="21dp"
                         android:layout_marginTop="36dp"
                         android:background="#A82D47" />
@@ -210,9 +219,10 @@
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Confirmed"
                         android:textColor="#333333"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
                     <TextView
+                        android:id="@+id/tvStatus2Desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tvStatus2Title"
@@ -222,25 +232,28 @@
                         android:fontFamily="@font/work_sans"
                         android:text="Seller has accepted your request"
                         android:textColor="#666666"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                     <TextView
+                        android:id="@+id/tvStatus2Time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/work_sans"
                         android:text="09:22 AM"
                         android:textColor="#999999"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
                 </RelativeLayout>
 
                 <!-- Step 3 -->
                 <RelativeLayout
+                    android:id="@+id/rlStep3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp">
+                    android:layout_marginTop="20dp">
                     <View
+                        android:id="@+id/line3"
                         android:layout_width="2dp"
-                        android:layout_height="60dp"
+                        android:layout_height="50dp"
                         android:layout_marginStart="21dp"
                         android:layout_marginTop="36dp"
                         android:background="#A82D47" />
@@ -262,9 +275,10 @@
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Preparing Your Bouquet"
                         android:textColor="#333333"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
                     <TextView
+                        android:id="@+id/tvStatus3Desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tvStatus3Title"
@@ -274,24 +288,26 @@
                         android:fontFamily="@font/work_sans"
                         android:text="Florist is hand-picking fresh blooms"
                         android:textColor="#666666"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                     <TextView
+                        android:id="@+id/tvStatus3Time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/work_sans"
                         android:text="09:45 AM"
                         android:textColor="#999999"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
                 </RelativeLayout>
 
                 <!-- Step 4 Highlighted -->
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvStep4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="20dp"
                     app:cardBackgroundColor="#FEE9EE"
-                    app:cardCornerRadius="20dp"
+                    app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
                     app:strokeColor="#F4DDDE"
                     app:strokeWidth="1.2dp">
@@ -299,7 +315,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="20dp">
+                        android:padding="16dp">
                         <ImageView
                             android:id="@+id/ivStatus4"
                             android:layout_width="44dp"
@@ -318,7 +334,7 @@
                             android:fontFamily="@font/plus_jakarta_sans"
                             android:text="Out for Delivery"
                             android:textColor="#A82D47"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -328,9 +344,9 @@
                             android:layout_marginTop="4dp"
                             android:layout_toEndOf="@id/ivStatus4"
                             android:fontFamily="@font/work_sans"
-                            android:text="David R. is nearby with your\nflowers"
+                            android:text="David R. is nearby with your flowers"
                             android:textColor="#666666"
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -338,18 +354,18 @@
                             android:fontFamily="@font/dm_sans"
                             android:text="JUST NOW"
                             android:textColor="#A82D47"
-                            android:textSize="11sp"
+                            android:textSize="10sp"
                             android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="64dp"
+                            android:layout_height="56dp"
                             android:layout_below="@id/ivStatus4"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="16dp"
                             android:background="#FFFFFF"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingHorizontal="20dp">
+                            android:paddingHorizontal="16dp">
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -357,16 +373,17 @@
                                 android:fontFamily="@font/dm_sans"
                                 android:text="DELIVERY OTP:"
                                 android:textColor="#999999"
-                                android:textSize="11sp"
+                                android:textSize="10sp"
                                 android:textStyle="bold" />
                             <TextView
+                                android:id="@+id/tvOtp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/plus_jakarta_sans"
                                 android:letterSpacing="0.2"
-                                android:text="123 456"
+                                android:text="--- ---"
                                 android:textColor="#A82D47"
-                                android:textSize="28sp"
+                                android:textSize="20sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </RelativeLayout>
@@ -374,9 +391,10 @@
 
                 <!-- Step 5 -->
                 <RelativeLayout
+                    android:id="@+id/rlStep5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="20dp"
                     android:alpha="0.4">
                     <ImageView
                         android:id="@+id/ivStatus5"
@@ -396,9 +414,10 @@
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Delivered"
                         android:textColor="#999999"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
                     <TextView
+                        android:id="@+id/tvStatus5Desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tvStatus5Title"
@@ -408,8 +427,20 @@
                         android:fontFamily="@font/work_sans"
                         android:text="Expect a knock at your door soon"
                         android:textColor="#999999"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                 </RelativeLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCancelOrder"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="32dp"
+                    android:text="Cancel Order"
+                    android:textAllCaps="false"
+                    android:textColor="#AF314A"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -425,9 +456,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:visibility="gone"
         app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="28dp"
-        app:cardElevation="10dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
@@ -435,20 +467,20 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="20dp">
+            android:padding="12dp">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_home_person"
-                app:shapeAppearanceOverlay="@style/Bloom.HomeRounded16"
+                app:shapeAppearanceOverlay="@style/Bloom.HomeRounded12"
                 app:tint="#999999" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
+                android:layout_marginStart="12dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -458,7 +490,7 @@
                     android:fontFamily="@font/dm_sans"
                     android:text="DELIVERY PARTNER"
                     android:textColor="#999999"
-                    android:textSize="10sp"
+                    android:textSize="8sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -468,22 +500,22 @@
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:text="David R."
                     android:textColor="#333333"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
                     android:fontFamily="@font/work_sans"
                     android:text="4.9 (250+ deliveries)"
                     android:textColor="#666666"
-                    android:textSize="13sp" />
+                    android:textSize="11sp" />
             </LinearLayout>
 
             <ImageButton
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:id="@+id/btnCall"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="@drawable/bg_circle_translucent"
                 android:backgroundTint="#B6EDC2"
                 android:contentDescription="Call Courier"
@@ -491,9 +523,10 @@
                 app:tint="#4A7C59" />
 
             <ImageButton
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="10dp"
+                android:id="@+id/btnChat"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/bg_circle_translucent"
                 android:backgroundTint="#FEE9EE"
                 android:contentDescription="Message Courier"
@@ -503,4 +536,4 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

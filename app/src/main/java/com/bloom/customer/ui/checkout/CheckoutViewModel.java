@@ -46,6 +46,10 @@ public class CheckoutViewModel extends AndroidViewModel {
         return addressRepository.getAddressById(id);
     }
 
+    public LiveData<NetworkResult<Void>> deleteAddress(String id) {
+        return addressRepository.deleteAddress(id);
+    }
+
     public LiveData<NetworkResult<Shop>> getShopById(String id) {
         return shopRepository.getShopById(id);
     }

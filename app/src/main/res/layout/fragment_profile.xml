@@ -1,146 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FCF0F3">
+    android:background="#FFF8F7">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:elevation="0dp">
+        android:layout_height="56dp"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/profileToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:paddingStart="16dp"
-            android:paddingTop="12dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="12dp">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bloom"
-                android:textColor="#AF314A"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:fontFamily="serif"
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="12dp"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:tint="#AF314A" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/playfair_display"
+                android:text="Bloom"
+                android:textColor="#AF314A"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cvSmallAvatar"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:layout_marginEnd="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/ivSmallAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@android:drawable/ic_menu_gallery"
-                    app:tint="#CCCCCC" />
+                    android:src="@drawable/ic_home_person" />
             </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingBottom="100dp">
 
-            <!-- Profile Info -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <FrameLayout
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_marginTop="24dp">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cvAvatar"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:cardCornerRadius="50dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="60dp"
                     app:cardElevation="0dp"
-                    app:strokeWidth="2dp"
-                    app:strokeColor="#FDD8DF"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    app:strokeColor="#FEE9EE"
+                    app:strokeWidth="4dp">
 
                     <ImageView
                         android:id="@+id/ivAvatar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:src="@android:drawable/ic_menu_gallery"
-                        app:tint="#CCCCCC" />
+                        android:src="@drawable/ic_home_person" />
                 </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:id="@+id/tvFullName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Bloom User"
-                    android:textColor="#222222"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/cvAvatar"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="4dp"
+                    app:cardBackgroundColor="#AF314A"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp">
 
-                <TextView
-                    android:id="@+id/tvPhone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="+91 0000000000"
-                    android:textColor="#777777"
-                    android:textSize="13sp"
-                    app:layout_constraintTop_toBottomOf="@id/tvFullName"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:src="@android:drawable/ic_menu_edit"
+                        app:tint="@android:color/white" />
+                </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
 
-                <TextView
-                    android:id="@+id/tvEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="user@example.com"
-                    android:textColor="#999999"
-                    android:textSize="12sp"
-                    app:layout_constraintTop_toBottomOf="@id/tvPhone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+            <TextView
+                android:id="@+id/tvFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Test User"
+                android:textColor="#333333"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/work_sans"
+                android:text="test@bloom.com"
+                android:textColor="#666666"
+                android:textSize="14sp" />
 
-            <!-- Menu Groups -->
+            <!-- First Group -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="32dp"
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
@@ -148,87 +150,128 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-                    <LinearLayout
-                        android:id="@+id/llSavedAddresses"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="20dp"
-                        android:background="?attr/selectableItemBackground">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Saved Addresses"
-                            android:textColor="#333333"
-                            android:textSize="14sp" />
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@android:drawable/ic_media_play"
-                            app:tint="#999999" />
-                    </LinearLayout>
+                    <include
+                        android:id="@+id/itemAddresses"
+                        layout="@layout/item_profile_menu"
+                        app:icon="@drawable/ic_home_location"
+                        app:title="Saved Addresses" />
 
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginHorizontal="20dp" />
+                    <include
+                        android:id="@+id/itemPayment"
+                        layout="@layout/item_profile_menu"
+                        app:icon="@drawable/ic_orders_payments"
+                        app:title="Payment Methods" />
 
-                    <LinearLayout
-                        android:id="@+id/llSupport"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="20dp"
-                        android:background="?attr/selectableItemBackground">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Support &amp; FAQ"
-                            android:textColor="#333333"
-                            android:textSize="14sp" />
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@android:drawable/ic_media_play"
-                            app:tint="#999999" />
-                    </LinearLayout>
+                    <include
+                        android:id="@+id/itemLanguage"
+                        layout="@layout/item_profile_menu"
+                        app:icon="@drawable/ic_search_tune"
+                        app:subtitle="English"
+                        app:title="Language" />
 
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginHorizontal="20dp" />
-
-                    <LinearLayout
-                        android:id="@+id/cvLogout"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="20dp"
-                        android:background="?attr/selectableItemBackground">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Logout"
-                            android:textColor="#AF314A"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                    <include
+                        android:id="@+id/itemCurrency"
+                        layout="@layout/item_profile_menu"
+                        app:icon="@drawable/ic_orders_payments"
+                        app:subtitle="INR"
+                        app:title="Currency" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <TextView
+            <!-- Second Group -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <include
+                        android:id="@+id/itemNotifications"
+                        layout="@layout/item_profile_menu"
+                        app:icon="@drawable/ic_home_notification"
+                        app:title="Notifications" />
+
+                    <include
+                        android:id="@+id/itemHistory"
+                        layout="@layout/item_profile_menu"
+                        app:icon="@drawable/ic_orders_receipt"
+                        app:title="Order History" />
+
+                    <include
+                        android:id="@+id/itemHelp"
+                        layout="@layout/item_profile_menu"
+                        app:icon="@drawable/ic_lux_menu"
+                        app:title="Help &amp; Support" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow_forward"
+                        android:rotation="180"
+                        app:tint="#AF314A" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="Logout"
+                        android:textColor="#AF314A"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_arrow_forward"
+                        app:tint="#AF314A" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Version 1.0.0"
+                android:fontFamily="@font/work_sans"
+                android:text="Version 0.0.1 (2026)"
                 android:textColor="#999999"
-                android:textSize="11sp"
-                android:textAlignment="center" />
+                android:textSize="12sp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

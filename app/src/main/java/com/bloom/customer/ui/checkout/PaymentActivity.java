@@ -133,6 +133,20 @@ public class PaymentActivity extends AppCompatActivity {
                 results
         );
         double distanceKm = results[0] / 1000.0;
+        
+        // Strict Dynamic Radius Enforcement
+        double allowedRadius = shop.getDeliveryRadiusKm() > 0 ? shop.getDeliveryRadiusKm() : 5.0;
+        
+        if (distanceKm > allowedRadius) {
+            binding.btnPayNow.setEnabled(false);
+            binding.btnPayNow.setText(String.format("Shop radius is %.1fkm. You are at %.1fkm", allowedRadius, distanceKm));
+            binding.btnPayNow.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.GRAY));
+        } else {
+            binding.btnPayNow.setEnabled(true);
+            binding.btnPayNow.setText("Pay Now");
+            binding.btnPayNow.setBackgroundTintList(android.content.res.ColorStateList.valueOf(ContextCompat.getColor(this, R.color.orders_primary)));
+        }
+
         deliveryFee = Math.max(20.0, distanceKm * 10.0);
         updateSummary();
     }
@@ -163,6 +177,15 @@ public class PaymentActivity extends AppCompatActivity {
             binding.llOrderDetails.setVisibility(isVisible ? View.GONE : View.VISIBLE);
             binding.ivSummaryArrow.animate().rotation(isVisible ? 0 : 180).start();
         });
+    }
+
+    private String getPaymentMethodName() {
+        switch (selectedMethod) {
+            case "WALLET": return "Digital Wallet";
+            case "BANK": return "Bank Transfer";
+            case "COD": return "Cash on Delivery";
+            default: return "Credit/Debit Card";
+        }
     }
 
     private void handlePlaceOrder() {
@@ -203,6 +226,7 @@ public class PaymentActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, OrderConfirmationActivity.class);
                 intent.putExtra("order_id", result.data != null ? result.data.getId() : "");
                 intent.putExtra("shop_name", "Florist");
+                intent.putExtra("payment_method", getPaymentMethodName());
                 startActivity(intent);
                 finishAffinity();
             } else if (result.status == NetworkResult.Status.ERROR) {

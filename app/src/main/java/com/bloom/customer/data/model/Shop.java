@@ -42,6 +42,12 @@ public class Shop {
     @SerializedName("longitude")
     private double longitude;
 
+    @SerializedName("delivery_radius_km")
+    private double deliveryRadiusKm;
+
+    @SerializedName("closes_at")
+    private String closesAt;
+
     // Note: location is geography in DB, returned distance via RPC
     @SerializedName("distance")
     private double distance;
@@ -76,6 +82,12 @@ public class Shop {
 
     public double getLongitude() { return longitude; }
     public void setLongitude(double longitude) { this.longitude = longitude; }
+
+    public double getDeliveryRadiusKm() { return deliveryRadiusKm; }
+    public void setDeliveryRadiusKm(double deliveryRadiusKm) { this.deliveryRadiusKm = deliveryRadiusKm; }
+
+    public String getClosesAt() { return closesAt; }
+    public void setClosesAt(String closesAt) { this.closesAt = closesAt; }
 
     public double getDistance() { return distance; }
     public void setDistance(double distance) { this.distance = distance; }

@@ -36,6 +36,11 @@ public class AddressSelectActivity extends AppCompatActivity {
         setupSearch();
         fetchAddresses();
 
+        boolean isSelectionMode = getIntent().getBooleanExtra("selection_mode", true);
+        if (!isSelectionMode) {
+            binding.btnContinue.setVisibility(View.GONE);
+        }
+
         binding.btnAddAddress.setOnClickListener(v -> {
             startActivity(new Intent(this, AddAddressActivity.class));
         });
@@ -73,6 +78,36 @@ public class AddressSelectActivity extends AppCompatActivity {
         adapter = new AddressAdapter();
         binding.rvAddresses.setLayoutManager(new LinearLayoutManager(this));
         binding.rvAddresses.setAdapter(adapter);
+
+        adapter.setListener(new AddressAdapter.OnAddressInteractionListener() {
+            @Override
+            public void onAddressSelected(Address address) {
+                // Already handled by adapter visual state
+            }
+
+            @Override
+            public void onAddressDelete(Address address) {
+                deleteAddress(address);
+            }
+        });
+    }
+
+    private void deleteAddress(Address address) {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Delete Address")
+                .setMessage("Are you sure you want to delete this address?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    viewModel.deleteAddress(address.getId()).observe(this, result -> {
+                        if (result.status == com.bloom.customer.util.NetworkResult.Status.SUCCESS) {
+                            Toast.makeText(this, "Address deleted", Toast.LENGTH_SHORT).show();
+                            fetchAddresses();
+                        } else if (result.status == com.bloom.customer.util.NetworkResult.Status.ERROR) {
+                            Toast.makeText(this, result.message, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     private void fetchAddresses() {
