@@ -32,6 +32,12 @@ public interface SupabaseAuthApi {
             @Body Map<String, Object> body
     );
 
+    @POST(Constants.AUTH_ENDPOINT + "token")
+    Call<AuthResponse> refreshToken(
+            @Query("grant_type") String grantType,
+            @Body Map<String, Object> body
+    );
+
     @PUT(Constants.AUTH_ENDPOINT + "user")
     Call<Void> updateUser(@Body Map<String, Object> body);
 }

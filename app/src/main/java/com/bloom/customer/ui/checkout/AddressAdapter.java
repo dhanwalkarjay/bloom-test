@@ -18,13 +18,14 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     private final List<Address> addresses = new ArrayList<>();
     private int selectedPosition = -1;
-    private OnAddressSelectedListener listener;
+    private OnAddressInteractionListener listener;
 
-    public interface OnAddressSelectedListener {
+    public interface OnAddressInteractionListener {
         void onAddressSelected(Address address);
+        void onAddressDelete(Address address);
     }
 
-    public void setListener(OnAddressSelectedListener listener) {
+    public void setListener(OnAddressInteractionListener listener) {
         this.listener = listener;
     }
 
@@ -70,7 +71,12 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         void bind(Address address, boolean isSelected) {
             binding.tvAddressLabel.setText(address.getLabel());
             binding.tvAddressLine.setText(address.getAddressLine());
-            binding.tvRecipient.setText("Alex Johnson, (555) 123-4567"); // Mocking for UI match
+            
+            String recipient = address.getRecipientName();
+            if (address.getRecipientPhone() != null && !address.getRecipientPhone().isEmpty()) {
+                recipient += ", " + address.getRecipientPhone();
+            }
+            binding.tvRecipient.setText(recipient);
 
             // Visual selection state
             if (isSelected) {
@@ -85,6 +91,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
                 selectedPosition = getAdapterPosition();
                 notifyDataSetChanged();
                 if (listener != null) listener.onAddressSelected(address);
+            });
+
+            binding.btnDelete.setOnClickListener(v -> {
+                if (listener != null) listener.onAddressDelete(address);
             });
         }
     }

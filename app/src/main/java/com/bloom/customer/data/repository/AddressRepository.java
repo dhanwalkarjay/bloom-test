@@ -29,7 +29,11 @@ public class AddressRepository {
         this.api = RetrofitClient.getClient(context).create(SupabaseAPI.class);
     }
 
-    public LiveData<NetworkResult<List<Address>>> getAddresses(String userId) {
+    /**
+     * Fetches all addresses for the authenticated user.
+     * Server-side RLS automatically filters results based on the session token.
+     */
+    public LiveData<NetworkResult<List<Address>>> getAddresses() {
         MutableLiveData<NetworkResult<List<Address>>> result = new MutableLiveData<>();
         result.setValue(NetworkResult.loading(null));
 
@@ -125,6 +129,29 @@ public class AddressRepository {
 
             @Override
             public void onFailure(Call<List<Address>> call, Throwable t) {
+                result.setValue(NetworkResult.error(t.getMessage(), null));
+            }
+        });
+
+        return result;
+    }
+
+    public LiveData<NetworkResult<Void>> deleteAddress(String addressId) {
+        MutableLiveData<NetworkResult<Void>> result = new MutableLiveData<>();
+        result.setValue(NetworkResult.loading(null));
+
+        api.deleteAddress("id.eq." + addressId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    result.setValue(NetworkResult.success(null));
+                } else {
+                    result.setValue(NetworkResult.error("Failed to delete address", null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
                 result.setValue(NetworkResult.error(t.getMessage(), null));
             }
         });

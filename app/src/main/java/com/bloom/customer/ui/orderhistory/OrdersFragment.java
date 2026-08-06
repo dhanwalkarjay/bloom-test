@@ -10,11 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bloom.R;
 import com.bloom.customer.data.local.SessionManager;
-import com.bloom.customer.data.repository.OrderRepository;
 import com.bloom.customer.ui.cart.CartActivity;
 import com.bloom.customer.ui.common.FragmentStatusBar;
 import com.bloom.customer.util.NetworkResult;
@@ -23,7 +23,7 @@ import com.bloom.databinding.FragmentOrdersBinding;
 public class OrdersFragment extends Fragment {
 
     private FragmentOrdersBinding binding;
-    private OrderRepository orderRepository;
+    private OrderHistoryViewModel viewModel;
     private OrderHistoryAdapter adapter;
     private boolean isPastSelected = false;
 
@@ -39,7 +39,7 @@ public class OrdersFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FragmentStatusBar.applyTopInset(this, binding.topBar);
         
-        orderRepository = new OrderRepository(requireContext());
+        viewModel = new ViewModelProvider(this).get(OrderHistoryViewModel.class);
         setupRecyclerView();
         setupListeners();
         fetchOrders();
@@ -49,6 +49,25 @@ public class OrdersFragment extends Fragment {
         adapter = new OrderHistoryAdapter();
         binding.rvOrderHistory.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvOrderHistory.setAdapter(adapter);
+
+        adapter.setListener(new OrderHistoryAdapter.OnOrderHistoryClickListener() {
+            @Override
+            public void onReviewClick(com.bloom.customer.data.model.Order order) {
+                Intent intent = new Intent(requireContext(), RateOrderActivity.class);
+                intent.putExtra("order_id", order.getId());
+                if (order.getItems() != null && !order.getItems().isEmpty()) {
+                    intent.putExtra("product_name", order.getItems().get(0).getProduct().getTitle());
+                }
+                startActivity(intent);
+            }
+
+            @Override
+            public void onOrderClick(com.bloom.customer.data.model.Order order) {
+                Intent intent = new Intent(requireContext(), com.bloom.customer.ui.ordertracking.OrderTrackingActivity.class);
+                intent.putExtra("order_id", order.getId());
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupListeners() {
@@ -85,13 +104,30 @@ public class OrdersFragment extends Fragment {
         binding.rvOrderHistory.setVisibility(View.GONE);
         binding.emptyState.setVisibility(View.GONE);
 
-        orderRepository.getOrderHistory(userId).observe(getViewLifecycleOwner(), result -> {
+        viewModel.getOrderHistory(userId).observe(getViewLifecycleOwner(), result -> {
             binding.swipeRefresh.setRefreshing(false);
             binding.progressBar.setVisibility(View.GONE);
             if (result.status == NetworkResult.Status.SUCCESS) {
                 if (result.data != null && !result.data.isEmpty()) {
-                    adapter.setOrders(result.data);
-                    binding.rvOrderHistory.setVisibility(View.VISIBLE);
+                    java.util.List<com.bloom.customer.data.model.Order> filtered = new java.util.ArrayList<>();
+                    for (com.bloom.customer.data.model.Order o : result.data) {
+                        String status = o.getStatus() != null ? o.getStatus() : "placed";
+                        boolean isDelivered = "Delivered".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status);
+                        if (isPastSelected) {
+                            if (isDelivered) filtered.add(o);
+                        } else {
+                            if (!isDelivered) filtered.add(o);
+                        }
+                    }
+                    
+                    if (filtered.isEmpty()) {
+                        binding.rvOrderHistory.setVisibility(View.GONE);
+                        binding.emptyState.setVisibility(View.VISIBLE);
+                    } else {
+                        adapter.setOrders(filtered);
+                        binding.rvOrderHistory.setVisibility(View.VISIBLE);
+                        binding.emptyState.setVisibility(View.GONE);
+                    }
                 } else {
                     binding.emptyState.setVisibility(View.VISIBLE);
                 }

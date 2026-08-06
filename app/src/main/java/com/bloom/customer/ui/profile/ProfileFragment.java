@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bloom.R;
 import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.repository.ProfileRepository;
 import com.bloom.customer.ui.auth.LoginActivity;
@@ -35,20 +38,75 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Use the explicit toolbar container for top inset to ensure it's not hidden
-        FragmentStatusBar.applyTopInset(this, binding.profileToolbar);
+        FragmentStatusBar.applyTopInset(this, binding.toolbar);
 
         profileRepository = new ProfileRepository(requireContext());
-        setupListeners();
+        setupMenu();
         fetchProfileData();
     }
 
-    private void setupListeners() {
-        binding.cvLogout.setOnClickListener(v -> logout());
-        binding.llSavedAddresses.setOnClickListener(v -> Toast.makeText(requireContext(), "Coming soon", Toast.LENGTH_SHORT).show());
-        binding.llSupport.setOnClickListener(v -> {
-            startActivity(new Intent(requireContext(), com.bloom.customer.ui.support.SupportActivity.class));
+    private void setupMenu() {
+        // First Group
+        setupMenuItem(binding.itemAddresses.getRoot(), R.drawable.ic_home_location, "Saved Addresses", null, v -> {
+            Intent intent = new Intent(requireContext(), com.bloom.customer.ui.checkout.AddressSelectActivity.class);
+            intent.putExtra("selection_mode", false);
+            startActivity(intent);
         });
+
+        setupMenuItem(binding.itemPayment.getRoot(), R.drawable.ic_orders_payments, "Payment Methods", null, v -> {
+            Toast.makeText(requireContext(), "Payment Methods coming soon", Toast.LENGTH_SHORT).show();
+        });
+
+        setupMenuItem(binding.itemLanguage.getRoot(), R.drawable.ic_search_tune, "Language", "English", v -> {
+            Toast.makeText(requireContext(), "Language selection coming soon", Toast.LENGTH_SHORT).show();
+        });
+
+        setupMenuItem(binding.itemCurrency.getRoot(), R.drawable.ic_orders_payments, "Currency", "INR", v -> {
+             Toast.makeText(requireContext(), "Currency selection coming soon", Toast.LENGTH_SHORT).show();
+        });
+
+        // Second Group
+        setupMenuItem(binding.itemNotifications.getRoot(), R.drawable.ic_home_notification, "Notifications", null, v -> {
+            startActivity(new Intent(requireContext(), com.bloom.customer.ui.notifications.NotificationActivity.class));
+        });
+
+        setupMenuItem(binding.itemHistory.getRoot(), R.drawable.ic_orders_receipt, "Order History", null, v -> {
+            if (requireActivity() instanceof com.bloom.customer.ui.home.HomeActivity) {
+                View navOrders = requireActivity().findViewById(R.id.navOrders);
+                if (navOrders != null) navOrders.performClick();
+            }
+        });
+
+        setupMenuItem(binding.itemHelp.getRoot(), R.drawable.ic_lux_menu, "Help & Support", null, v -> {
+            startActivity(new Intent(requireContext(), com.bloom.customer.ui.support.HelpCenterActivity.class));
+        });
+
+        binding.cvLogout.setOnClickListener(v -> logout());
+
+        binding.btnBack.setOnClickListener(v -> {
+             if (requireActivity() instanceof com.bloom.customer.ui.home.HomeActivity) {
+                View navHome = requireActivity().findViewById(R.id.navHome);
+                if (navHome != null) navHome.performClick();
+            }
+        });
+    }
+
+    private void setupMenuItem(View itemView, int iconRes, String title, String subtitle, View.OnClickListener listener) {
+        ImageView icon = itemView.findViewById(R.id.ivMenuIcon);
+        TextView tvTitle = itemView.findViewById(R.id.tvMenuTitle);
+        TextView tvSubtitle = itemView.findViewById(R.id.tvMenuSubtitle);
+
+        icon.setImageResource(iconRes);
+        tvTitle.setText(title);
+        
+        if (subtitle != null) {
+            tvSubtitle.setText(subtitle);
+            tvSubtitle.setVisibility(View.VISIBLE);
+        } else {
+            tvSubtitle.setVisibility(View.GONE);
+        }
+
+        itemView.setOnClickListener(listener);
     }
 
     private void fetchProfileData() {
@@ -67,19 +125,18 @@ public class ProfileFragment extends Fragment {
         profileRepository.getProfile(userId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == NetworkResult.Status.SUCCESS && result.data != null) {
                 binding.tvFullName.setText(result.data.getFullName());
-                binding.tvEmail.setText(result.data.getPhone()); // using phone as email is not in Profile model currently
+                binding.tvEmail.setText(result.data.getPhone());
                 
-                Glide.with(this)
-                        .load(result.data.getAvatarUrl())
-                        .placeholder(android.R.drawable.ic_menu_gallery)
-                        .circleCrop()
-                        .into(binding.ivAvatar);
-            } else if (result.status == NetworkResult.Status.ERROR) {
-                // If profile not found, maybe show basic info from session if available
-                binding.tvFullName.setText("Bloom User");
-                binding.tvEmail.setText(SessionManager.getInstance(requireContext()).getUserId());
-                if (result.message != null) {
-                    Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show();
+                if (result.data.getAvatarUrl() != null) {
+                    Glide.with(this)
+                            .load(result.data.getAvatarUrl())
+                            .circleCrop()
+                            .into(binding.ivAvatar);
+                            
+                    Glide.with(this)
+                            .load(result.data.getAvatarUrl())
+                            .circleCrop()
+                            .into(binding.ivSmallAvatar);
                 }
             }
         });

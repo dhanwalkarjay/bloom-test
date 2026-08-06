@@ -166,7 +166,7 @@ public class HomeFragment extends Fragment {
         adapter.setOnProductClickListener(new FeaturedProductAdapter.OnProductClickListener() {
             @Override
             public void onProductClick(Product product) {
-                openProductDetail(product);
+                openProductDetail(product, 0); // Distance unknown for home featured
             }
 
             @Override
@@ -177,9 +177,10 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void openProductDetail(Product product) {
+    private void openProductDetail(Product product, double distance) {
         Intent intent = new Intent(requireContext(), ProductDetailActivity.class);
         intent.putExtra("product_json", new Gson().toJson(product));
+        intent.putExtra("distance", distance);
         // For seasonal/bestseller, we assume they are from available shops or handled by proximity
         intent.putExtra("is_shop_open", true); 
         startActivity(intent);

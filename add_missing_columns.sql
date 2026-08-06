@@ -2,6 +2,8 @@
 ALTER TABLE public.addresses ADD COLUMN IF NOT EXISTS label TEXT;
 ALTER TABLE public.addresses ADD COLUMN IF NOT EXISTS recipient_name TEXT;
 ALTER TABLE public.addresses ADD COLUMN IF NOT EXISTS recipient_phone TEXT;
+ALTER TABLE public.addresses ADD COLUMN IF NOT EXISTS city TEXT;
+ALTER TABLE public.addresses ADD COLUMN IF NOT EXISTS is_default BOOLEAN DEFAULT false;
 
 -- Rename address_line to full_address if it exists and full_address doesn't
 DO $$
