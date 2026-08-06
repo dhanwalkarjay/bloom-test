@@ -23,10 +23,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.ui.auth.LoginActivity;
 import com.bloom.R;
+import com.bloom.customer.ui.explore.ExploreFragment;
 import com.bloom.customer.ui.lux.LuxFragment;
 import com.bloom.customer.ui.orderhistory.OrdersFragment;
 import com.bloom.customer.ui.profile.ProfileFragment;
-import com.bloom.customer.ui.search.SearchFragment;
 import com.bloom.databinding.ActivityHomeBinding;
 
 /**
@@ -169,7 +169,7 @@ public class HomeActivity extends AppCompatActivity {
     private Fragment createFragmentByTag(String tag) {
         switch (tag) {
             case TAG_LUX: return new LuxFragment();
-            case TAG_SEARCH: return new SearchFragment();
+            case TAG_SEARCH: return new ExploreFragment();
             case TAG_ORDERS: return new OrdersFragment();
             case TAG_PROFILE: return new ProfileFragment();
             default: return new HomeFragment();

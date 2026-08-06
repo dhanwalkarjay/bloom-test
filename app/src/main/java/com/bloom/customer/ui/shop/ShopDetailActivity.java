@@ -76,7 +76,9 @@ public class ShopDetailActivity extends AppCompatActivity {
         adapter.setOnProductClickListener((product, isOpen) -> {
             Intent intent = new Intent(this, ProductDetailActivity.class);
             intent.putExtra("product_json", new Gson().toJson(product));
+            intent.putExtra("shop_json", new Gson().toJson(shop)); // Pass full shop info
             intent.putExtra("is_shop_open", isOpen);
+            intent.putExtra("distance", shop.getDistance());
             startActivity(intent);
         });
     }

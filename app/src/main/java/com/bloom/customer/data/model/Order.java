@@ -58,11 +58,14 @@ public class Order {
     @SerializedName("created_at")
     private String createdAt;
 
-    @SerializedName("florists")
+    @SerializedName("shops")
     private ShopInfo shop;
 
     @SerializedName("order_items")
     private List<OrderItem> items;
+
+    @SerializedName("addresses")
+    private Address address;
 
     @SerializedName("delivery_distance_km")
     private double deliveryDistanceKm;
@@ -78,6 +81,21 @@ public class Order {
 
     @SerializedName("payout_eligible_at")
     private String payoutEligibleAt;
+
+    @SerializedName("delivery_otp")
+    private String deliveryOtp;
+
+    @SerializedName("rider_name")
+    private String riderName;
+
+    @SerializedName("rider_phone")
+    private String riderPhone;
+
+    @SerializedName("rider_lat")
+    private double riderLat;
+
+    @SerializedName("rider_lng")
+    private double riderLng;
 
     // Getters and Setters
     public String getId() { return id; }
@@ -140,6 +158,24 @@ public class Order {
     public List<OrderItem> getItems() { return items; }
     public void setItems(List<OrderItem> items) { this.items = items; }
 
+    public Address getAddress() { return address; }
+    public void setAddress(Address address) { this.address = address; }
+
+    public String getDeliveryOtp() { return deliveryOtp; }
+    public void setDeliveryOtp(String deliveryOtp) { this.deliveryOtp = deliveryOtp; }
+
+    public String getRiderName() { return riderName; }
+    public void setRiderName(String riderName) { this.riderName = riderName; }
+
+    public String getRiderPhone() { return riderPhone; }
+    public void setRiderPhone(String riderPhone) { this.riderPhone = riderPhone; }
+
+    public double getRiderLat() { return riderLat; }
+    public void setRiderLat(double riderLat) { this.riderLat = riderLat; }
+
+    public double getRiderLng() { return riderLng; }
+    public void setRiderLng(double riderLng) { this.riderLng = riderLng; }
+
     /**
      * Nested class to capture shop info from join.
      */
@@ -147,7 +183,19 @@ public class Order {
         @SerializedName("name")
         private String name;
 
+        @SerializedName("latitude")
+        private double latitude;
+
+        @SerializedName("longitude")
+        private double longitude;
+
         public String getName() { return name; }
         public void setName(String name) { this.name = name; }
+
+        public double getLatitude() { return latitude; }
+        public void setLatitude(double latitude) { this.latitude = latitude; }
+
+        public double getLongitude() { return longitude; }
+        public void setLongitude(double longitude) { this.longitude = longitude; }
     }
 }

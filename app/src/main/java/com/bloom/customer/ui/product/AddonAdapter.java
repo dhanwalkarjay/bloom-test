@@ -20,6 +20,7 @@ public class AddonAdapter extends RecyclerView.Adapter<AddonAdapter.ViewHolder> 
 
     public void setAddons(List<Addon> newAddons) {
         addons.clear();
+        selectedAddons.clear(); // Clear selections when data changes to avoid stale data
         if (newAddons != null) addons.addAll(newAddons);
         notifyDataSetChanged();
     }
@@ -66,12 +67,15 @@ public class AddonAdapter extends RecyclerView.Adapter<AddonAdapter.ViewHolder> 
             binding.cbSelected.setChecked(selectedAddons.contains(addon));
 
             itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position == RecyclerView.NO_POSITION) return; // Guard against invalid position
+
                 if (selectedAddons.contains(addon)) {
                     selectedAddons.remove(addon);
                 } else {
                     selectedAddons.add(addon);
                 }
-                notifyItemChanged(getAdapterPosition());
+                notifyItemChanged(position);
             });
         }
     }

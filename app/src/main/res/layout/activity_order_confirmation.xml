@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,16 +13,20 @@
         android:layout_height="48dp"
         android:layout_margin="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Close"
+        android:elevation="10dp"
         android:src="@drawable/ic_delete_outline"
-        app:layout_anchor="@id/productScrollView"
-        app:layout_anchorGravity="top|end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:tint="#333333" />
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/productScrollView"
+        android:id="@+id/orderScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/llBottomActions"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,7 +64,7 @@
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:text="Order Confirmed!"
                 android:textColor="#333333"
-                android:textSize="28sp"
+                android:textSize="22sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -71,15 +75,15 @@
                 android:fontFamily="@font/work_sans"
                 android:text="Order ID: #BLM-892415"
                 android:textColor="#999999"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <!-- Estimated Delivery Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="32dp"
                 app:cardBackgroundColor="#FEE9EE"
-                app:cardCornerRadius="16dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -87,21 +91,21 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="20dp">
+                    android:padding="16dp">
 
                     <ImageView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:background="@drawable/bg_circle_translucent"
                         android:backgroundTint="#B6EDC2"
-                        android:padding="11dp"
+                        android:padding="9dp"
                         android:src="@drawable/ic_home_bag"
                         app:tint="#4A7C59" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="12dp"
                         android:orientation="vertical">
 
                         <TextView
@@ -110,7 +114,7 @@
                             android:fontFamily="@font/dm_sans"
                             android:text="ESTIMATED DELIVERY"
                             android:textColor="#999999"
-                            android:textSize="10sp"
+                            android:textSize="9sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -121,7 +125,7 @@
                             android:fontFamily="@font/plus_jakarta_sans"
                             android:text="Today, 2:00 PM - 5:00 PM"
                             android:textColor="#333333"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
@@ -131,9 +135,9 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="16dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
                 app:strokeColor="#F5F5F5"
                 app:strokeWidth="1dp">
@@ -147,12 +151,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:padding="12dp">
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/ivProduct"
-                            android:layout_width="84dp"
-                            android:layout_height="84dp"
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/home_hero_spring_sale"
                             app:shapeAppearanceOverlay="@style/Bloom.HomeRounded12" />
@@ -160,7 +164,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="12dp"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:orientation="vertical">
@@ -172,7 +176,7 @@
                                 android:fontFamily="@font/plus_jakarta_sans"
                                 android:text="Sunrise Roses"
                                 android:textColor="#333333"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -182,12 +186,12 @@
                                 android:fontFamily="@font/work_sans"
                                 android:text="Artisanal Bouquet"
                                 android:textColor="#999999"
-                                android:textSize="13sp" />
+                                android:textSize="12sp" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="6dp"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
@@ -198,7 +202,7 @@
                                     android:fontFamily="@font/dm_sans"
                                     android:text="TOTAL PAID"
                                     android:textColor="#999999"
-                                    android:textSize="10sp"
+                                    android:textSize="9sp"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -206,15 +210,15 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/plus_jakarta_sans"
-                                    android:text="₹975.00"
+                                    android:text="₹0.00"
                                     android:textColor="#A82D47"
-                                    android:textSize="22sp"
+                                    android:textSize="12sp"
                                     android:textStyle="bold" />
 
                                 <ImageView
-                                    android:layout_width="18dp"
-                                    android:layout_height="18dp"
-                                    android:layout_marginStart="8dp"
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_marginStart="6dp"
                                     android:src="@drawable/ic_home_flare"
                                     app:tint="#4A7C59" />
                             </LinearLayout>
@@ -227,12 +231,12 @@
                         android:background="#FEE9EE"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp">
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="8dp">
 
                         <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
                             android:src="@android:drawable/ic_menu_agenda"
                             app:tint="#A82D47" />
 
@@ -240,40 +244,42 @@
                             android:id="@+id/tvPaymentMethod"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
+                            android:layout_marginStart="8dp"
                             android:fontFamily="@font/work_sans"
-                            android:text="Payment via Apple Pay"
+                            android:text="Payment Method"
                             android:textColor="#A82D47"
-                            android:textSize="13sp" />
+                            android:textSize="10sp" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Spacer for bottom buttons -->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="100dp" />
+                android:layout_height="80dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:id="@+id/llBottomActions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@android:color/transparent"
+        android:background="@drawable/bg_bottom_gradient"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="24dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnTrackOrder"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="52dp"
             android:backgroundTint="#A82D47"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="Track Order"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:cornerRadius="16dp"
             app:icon="@drawable/ic_arrow_forward"
@@ -284,12 +290,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="Back to Home"
             android:textColor="#A82D47"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

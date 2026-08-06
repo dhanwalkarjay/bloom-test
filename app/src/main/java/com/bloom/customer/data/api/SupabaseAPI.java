@@ -113,6 +113,12 @@ public interface SupabaseAPI {
     Call<Void> updateAddress(@Query("id") String id, @Body Map<String, Object> body);
 
     /**
+     * Delete an address.
+     */
+    @retrofit2.http.DELETE(Constants.REST_ENDPOINT + "addresses")
+    Call<Void> deleteAddress(@Query("id") String id);
+
+    /**
      * Create a new order.
      */
     @Headers("Prefer: return=representation")
@@ -134,6 +140,12 @@ public interface SupabaseAPI {
         @Query("select") String select,
         @Query("order") String order
     );
+
+    /**
+     * Update an order.
+     */
+    @PATCH(Constants.REST_ENDPOINT + "orders")
+    Call<Void> updateOrder(@Query("id") String id, @Body Map<String, Object> body);
 
     /**
      * Submit a review for an order.
