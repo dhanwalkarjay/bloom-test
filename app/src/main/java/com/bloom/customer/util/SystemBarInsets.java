@@ -61,8 +61,6 @@ public final class SystemBarInsets {
                     : null;
             PaddingState bottomNavigationPadding = getPaddingState(root, R.id.bottomNavigation);
             PaddingState bottomBarPadding = getPaddingState(root, R.id.bottomBar);
-            MarginState addToCartMargin = getMarginState(root, R.id.btnAddToCart);
-            MarginState viewCartMargin = getMarginState(root, R.id.btnViewCart);
             MarginState continueButtonMargin = getMarginState(root, R.id.btnContinue);
             MarginState bottomLinksMargin = getMarginState(root, R.id.llBottomLinks);
 
@@ -82,8 +80,6 @@ public final class SystemBarInsets {
 
                 applyBottomInsetToBar(bottomNavigationPadding, systemBars.bottom);
                 applyBottomInsetToBar(bottomBarPadding, systemBars.bottom);
-                applyBottomInsetToMargin(addToCartMargin, systemBars.bottom);
-                applyBottomInsetToMargin(viewCartMargin, systemBars.bottom);
                 applyBottomInsetToMargin(continueButtonMargin, systemBars.bottom);
                 applyBottomInsetToMargin(bottomLinksMargin, systemBars.bottom);
 

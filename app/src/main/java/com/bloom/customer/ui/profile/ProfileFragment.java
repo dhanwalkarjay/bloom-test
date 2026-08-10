@@ -38,7 +38,8 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FragmentStatusBar.applyTopInset(this, binding.toolbar);
+        // Apply top inset to the scroll container so content clears the status bar
+        FragmentStatusBar.applyTopInset(this, binding.scrollContainer);
 
         profileRepository = new ProfileRepository(requireContext());
         setupMenu();
@@ -83,12 +84,7 @@ public class ProfileFragment extends Fragment {
 
         binding.cvLogout.setOnClickListener(v -> logout());
 
-        binding.btnBack.setOnClickListener(v -> {
-             if (requireActivity() instanceof com.bloom.customer.ui.home.HomeActivity) {
-                View navHome = requireActivity().findViewById(R.id.navHome);
-                if (navHome != null) navHome.performClick();
-            }
-        });
+
     }
 
     private void setupMenuItem(View itemView, int iconRes, String title, String subtitle, View.OnClickListener listener) {
@@ -132,11 +128,6 @@ public class ProfileFragment extends Fragment {
                             .load(result.data.getAvatarUrl())
                             .circleCrop()
                             .into(binding.ivAvatar);
-                            
-                    Glide.with(this)
-                            .load(result.data.getAvatarUrl())
-                            .circleCrop()
-                            .into(binding.ivSmallAvatar);
                 }
             }
         });

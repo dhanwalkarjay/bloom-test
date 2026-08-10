@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="@dimen/_240sdp"
-    android:layout_height="@dimen/_160sdp"
-    android:layout_marginBottom="@dimen/_12sdp"
-    android:layout_marginStart="@dimen/_4sdp"
-    android:layout_marginEnd="@dimen/_12sdp"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_180sdp"
+    android:layout_marginBottom="@dimen/_16sdp"
+    android:layout_marginStart="@dimen/_16sdp"
+    android:layout_marginEnd="@dimen/_16sdp"
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="@dimen/_16sdp"
     app:cardElevation="@dimen/_6sdp"
@@ -70,7 +70,7 @@
             android:id="@+id/tvTopRatedBadge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_margin="@dimen/_12sdp"
             android:background="@drawable/bg_glass_pill"
             android:paddingStart="@dimen/_8sdp"
             android:paddingEnd="@dimen/_8sdp"
@@ -78,7 +78,7 @@
             android:paddingBottom="@dimen/_4sdp"
             android:text="★ TOP RATED"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/_9ssp"
+            android:textSize="@dimen/_10ssp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +89,7 @@
             android:id="@+id/tvRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_margin="@dimen/_12sdp"
             android:background="@drawable/bg_glass_pill"
             android:paddingStart="@dimen/_8sdp"
             android:paddingEnd="@dimen/_8sdp"
@@ -98,7 +98,7 @@
             android:fontFamily="@font/dm_sans"
             android:text="★ 4.5"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/_11ssp"
+            android:textSize="@dimen/_12ssp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -110,17 +110,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:layout_marginBottom="@dimen/_12sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <!-- Distance -->
             <ImageView
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
+                android:layout_width="@dimen/_14sdp"
+                android:layout_height="@dimen/_14sdp"
                 android:src="@drawable/ic_home_location"
                 app:tint="@android:color/white" />
 
@@ -132,7 +132,7 @@
                 android:fontFamily="@font/dm_sans"
                 android:text="1.2 km"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_12ssp" />
 
             <TextView
                 android:id="@+id/tvDot"
@@ -142,12 +142,12 @@
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:text="•"
                 android:textColor="#E0E0E0"
-                android:textSize="@dimen/_10ssp"/>
+                android:textSize="@dimen/_11ssp"/>
 
             <!-- Prep Time -->
             <ImageView
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
+                android:layout_width="@dimen/_14sdp"
+                android:layout_height="@dimen/_14sdp"
                 android:src="@drawable/ic_clock"
                 app:tint="@android:color/white" />
 
@@ -159,7 +159,7 @@
                 android:fontFamily="@font/dm_sans"
                 android:text="30-40 mins"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_12ssp" />
 
         </LinearLayout>
 
@@ -168,13 +168,13 @@
             android:id="@+id/tvShopName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:layout_marginBottom="@dimen/_4sdp"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:layout_marginBottom="@dimen/_6sdp"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="Florist Name"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/_18ssp"
+            android:textSize="@dimen/_20ssp"
             android:textStyle="bold"
             android:shadowColor="#80000000"
             android:shadowDx="0"

@@ -36,7 +36,7 @@
             <View
                 android:id="@+id/navHomeBg"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_home_nav_active"
                 android:alpha="0"
@@ -74,7 +74,7 @@
             <View
                 android:id="@+id/navLuxBg"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_home_nav_active"
                 android:alpha="0"
@@ -112,7 +112,7 @@
             <View
                 android:id="@+id/navSearchBg"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_home_nav_active"
                 android:alpha="0"
@@ -150,7 +150,7 @@
             <View
                 android:id="@+id/navOrdersBg"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_home_nav_active"
                 android:alpha="0"
@@ -188,7 +188,7 @@
             <View
                 android:id="@+id/navProfileBg"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_home_nav_active"
                 android:alpha="0"

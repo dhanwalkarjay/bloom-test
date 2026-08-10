@@ -489,20 +489,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_28sdp"
+                    android:layout_marginTop="28dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingStart="@dimen/_16sdp"
-                    android:paddingEnd="@dimen/_16sdp">
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/work_sans"
+                        android:fontFamily="@font/plus_jakarta_sans"
                         android:text="New Arrivals"
                         android:textColor="@color/home_on_surface"
-                        android:textSize="@dimen/_18ssp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvViewAllNewArrivals"
@@ -511,7 +512,7 @@
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="View All"
                         android:textColor="@color/home_primary"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -532,20 +533,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_28sdp"
+                    android:layout_marginTop="28dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingStart="@dimen/_16sdp"
-                    android:paddingEnd="@dimen/_16sdp">
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/work_sans"
+                        android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Seasonal Favorites"
                         android:textColor="@color/home_on_surface"
-                        android:textSize="@dimen/_18ssp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvViewAllSeasonal"
@@ -554,7 +556,7 @@
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="View All"
                         android:textColor="@color/home_primary"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -575,20 +577,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_28sdp"
+                    android:layout_marginTop="28dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingStart="@dimen/_16sdp"
-                    android:paddingEnd="@dimen/_16sdp">
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/work_sans"
+                        android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Bestsellers"
                         android:textColor="@color/home_on_surface"
-                        android:textSize="@dimen/_18ssp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvViewAllBestsellers"
@@ -597,7 +600,7 @@
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="View All"
                         android:textColor="@color/home_primary"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -654,7 +657,8 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:clipToPadding="false"
-                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:visibility="visible"
                     tools:listitem="@layout/item_shop" />
 
