@@ -112,11 +112,24 @@ public class ExploreFragment extends Fragment {
             return false;
         });
 
+        binding.chipAll.setOnClickListener(v -> {
+            binding.chipAll.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_lux_active);
+            binding.chipShops.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_lux_inactive);
+            binding.chipBouquets.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_lux_inactive);
+            binding.chipAll.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), android.R.color.white));
+            binding.chipShops.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.home_lux_dark));
+            binding.chipBouquets.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.home_lux_dark));
+            String query = binding.etSearch.getText().toString().trim();
+            performSearch(query, null);
+        });
+
         binding.chipShops.setOnClickListener(v -> {
-            binding.chipShops.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_active);
-            binding.chipBouquets.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_inactive);
-            binding.chipShops.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.search_primary));
-            binding.chipBouquets.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.search_on_surface_variant));
+            binding.chipAll.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_lux_inactive);
+            binding.chipAll.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.home_lux_dark));
+            binding.chipShops.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_lux_active);
+            binding.chipBouquets.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_lux_inactive);
+            binding.chipShops.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), android.R.color.white));
+            binding.chipBouquets.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.home_lux_dark));
             
             // Re-run search if there's text
             String query = binding.etSearch.getText().toString().trim();
@@ -124,10 +137,12 @@ public class ExploreFragment extends Fragment {
         });
 
         binding.chipBouquets.setOnClickListener(v -> {
-            binding.chipBouquets.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_active);
-            binding.chipShops.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_inactive);
-            binding.chipBouquets.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.search_primary));
-            binding.chipShops.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.search_on_surface_variant));
+            binding.chipAll.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_lux_inactive);
+            binding.chipAll.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.home_lux_dark));
+            binding.chipBouquets.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_lux_active);
+            binding.chipShops.setBackgroundResource(com.bloom.R.drawable.bg_search_chip_lux_inactive);
+            binding.chipBouquets.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), android.R.color.white));
+            binding.chipShops.setTextColor(androidx.core.content.ContextCompat.getColor(requireContext(), com.bloom.R.color.home_lux_dark));
             
             String query = binding.etSearch.getText().toString().trim();
             performSearch(query, null);
@@ -141,6 +156,7 @@ public class ExploreFragment extends Fragment {
             }
             binding.resultsSection.setVisibility(View.GONE);
             binding.emptyState.setVisibility(View.GONE);
+            binding.discoverState.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -156,6 +172,7 @@ public class ExploreFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.resultsSection.setVisibility(View.GONE);
         binding.emptyState.setVisibility(View.GONE);
+        binding.discoverState.setVisibility(View.GONE);
 
         viewModel.searchProducts(lat, lng, query, category).observe(getViewLifecycleOwner(), result -> {
             binding.progressBar.setVisibility(View.GONE);
@@ -168,13 +185,16 @@ public class ExploreFragment extends Fragment {
                     productAdapter.setProducts(products, true);
                     binding.resultsSection.setVisibility(View.VISIBLE);
                     binding.emptyState.setVisibility(View.GONE);
+                    binding.discoverState.setVisibility(View.GONE);
                 } else {
                     binding.resultsSection.setVisibility(View.GONE);
                     binding.emptyState.setVisibility(View.VISIBLE);
+                    binding.discoverState.setVisibility(View.GONE);
                 }
             } else if (result.status == NetworkResult.Status.ERROR) {
                 binding.resultsSection.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.VISIBLE);
+                binding.discoverState.setVisibility(View.GONE);
             }
         });
     }

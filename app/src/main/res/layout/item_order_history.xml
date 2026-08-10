@@ -4,21 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
+    android:layout_marginBottom="24dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="8dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="6dp"
     app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="16dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProduct"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
             android:scaleType="centerCrop"
             android:src="@drawable/bg_cart_image_placeholder"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -30,31 +32,33 @@
             android:id="@+id/tvShopName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="Sunrise Roses"
-            android:textColor="#333333"
-            android:textSize="16sp"
+            android:textColor="@color/home_lux_dark"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/tvStatus"
             app:layout_constraintStart_toEndOf="@id/ivProduct"
             app:layout_constraintTop_toTopOf="@id/ivProduct" />
 
+        <!-- Luxury Status Badge -->
         <TextView
             android:id="@+id/tvStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_home_chip_inactive"
-            android:backgroundTint="#FFF9C4"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="2dp"
+            android:backgroundTint="#F0EFEF"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
             android:text="PREPARING"
-            android:textColor="#FBC02D"
-            android:textSize="9sp"
+            android:textColor="@color/home_lux_dark"
+            android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvShopName" />
+            app:layout_constraintTop_toTopOf="@id/tvShopName"
+            app:layout_constraintBottom_toBottomOf="@id/tvShopName"/>
 
         <TextView
             android:id="@+id/tvDate"
@@ -63,8 +67,8 @@
             android:layout_marginTop="4dp"
             android:fontFamily="@font/work_sans"
             android:text="Ordered on Oct 24, 2023"
-            android:textColor="#666666"
-            android:textSize="12sp"
+            android:textColor="@color/orders_on_surface_variant"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@id/tvShopName"
             app:layout_constraintTop_toBottomOf="@id/tvShopName" />
 
@@ -72,31 +76,32 @@
             android:id="@+id/tvTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="₹97.50"
-            android:textColor="#AF314A"
-            android:textSize="18sp"
+            android:textColor="@color/orders_primary"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvShopName"
             app:layout_constraintTop_toBottomOf="@id/tvDate" />
 
+        <!-- Track Order Action Pill -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnTrackOrder"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:backgroundTint="#AF314A"
+            android:layout_height="40dp"
+            android:backgroundTint="@color/home_lux_dark"
             android:fontFamily="@font/plus_jakarta_sans"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="20dp"
             android:text="Track Order"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="11sp"
+            android:textSize="13sp"
             android:textStyle="bold"
-            app:cornerRadius="18dp"
+            app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -104,7 +109,7 @@
             android:id="@+id/llItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:orientation="vertical"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/ivProduct" />
@@ -116,7 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Leave Review"
-            android:textColor="#E85D75"
+            android:textColor="@color/orders_primary"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/llItems" />

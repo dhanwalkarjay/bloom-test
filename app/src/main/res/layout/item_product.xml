@@ -10,7 +10,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
 
         <!-- Image Container (Square) -->
         <FrameLayout
@@ -30,28 +31,75 @@
 
         </FrameLayout>
 
-        <!-- Floating Add Button -->
+        <!-- Floating Quantity Controller -->
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/btnAddProduct"
-            android:layout_width="32dp"
+            android:id="@+id/cardQuantityControl"
+            android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/home_secondary_container"
+            app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="16dp"
             app:cardElevation="4dp"
             app:layout_constraintBottom_toBottomOf="@id/imageContainer"
             app:layout_constraintEnd_toEndOf="@id/imageContainer"
-            app:strokeWidth="0dp">
+            app:strokeWidth="0dp"
+            android:animateLayoutChanges="true">
 
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_home_add"
-                app:tint="@color/home_on_secondary_container" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:minWidth="32dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:animateLayoutChanges="true">
+
+                <ImageView
+                    android:id="@+id/ivMinus"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_minus" 
+                    android:visibility="gone"
+                    app:tint="#111111" />
+
+                <View
+                    android:id="@+id/vDivider1"
+                    android:layout_width="1dp"
+                    android:layout_height="16dp"
+                    android:background="#E0E0E0"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="1"
+                    android:textColor="#111111"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:paddingHorizontal="8dp"/>
+
+                <View
+                    android:id="@+id/vDivider2"
+                    android:layout_width="1dp"
+                    android:layout_height="16dp"
+                    android:background="#E0E0E0"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/ivPlus"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_home_add"
+                    app:tint="#111111" />
+
+            </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 

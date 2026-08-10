@@ -137,7 +137,8 @@ public class HomeFragment extends Fragment {
 
     private void setupRecyclerView() {
         shopAdapter = new ShopListAdapter();
-        binding.rvShops.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.rvShops.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        new androidx.recyclerview.widget.LinearSnapHelper().attachToRecyclerView(binding.rvShops);
         binding.rvShops.setAdapter(shopAdapter);
 
         shopAdapter.setOnShopClickListener(shop -> {
@@ -300,6 +301,10 @@ public class HomeFragment extends Fragment {
         binding.btnLogin.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), LoginActivity.class));
         });
+
+        binding.tvViewAllShops.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), AllShopsActivity.class));
+        });
     }
 
     private void openSearch(String category) {
@@ -340,7 +345,8 @@ public class HomeFragment extends Fragment {
             } else if (result.status == NetworkResult.Status.SUCCESS) {
                 binding.progressBar.setVisibility(View.GONE);
                 if (result.data != null && !result.data.isEmpty()) {
-                    shopAdapter.setShops(result.data);
+                    // Limit to 4 cards for home carousel
+                    shopAdapter.setShops(result.data.subList(0, Math.min(result.data.size(), 4)));
                     binding.rvShops.setVisibility(View.VISIBLE);
                     binding.emptyState.setVisibility(View.GONE);
                 } else {

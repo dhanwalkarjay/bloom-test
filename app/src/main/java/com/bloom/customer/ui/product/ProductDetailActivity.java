@@ -58,7 +58,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
             );
 
-            binding.appBarLayout.setPadding(0, insets.top, 0, 0);
+            binding.topBar.setPadding(0, insets.top, 0, 0);
 
             binding.bottomActionBar.setPadding(
                     binding.bottomActionBar.getPaddingLeft(),
@@ -124,8 +124,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                     if (item.getProduct().getId().equals(product.getId())) {
                         quantity = item.getQuantity();
                         updateQuantityText();
-                        binding.btnAddToCart.setVisibility(View.GONE);
-                        binding.llQuantityContainer.setVisibility(View.VISIBLE);
+                        binding.btnAdd.setVisibility(View.GONE);
+                        binding.llQuantity.setVisibility(View.VISIBLE);
                         found = true;
                         break;
                     }
@@ -134,8 +134,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             if (!found) {
                 quantity = 1;
                 updateQuantityText();
-                binding.btnAddToCart.setVisibility(View.VISIBLE);
-                binding.llQuantityContainer.setVisibility(View.GONE);
+                binding.btnAdd.setVisibility(View.VISIBLE);
+                binding.llQuantity.setVisibility(View.GONE);
             }
         });
     }
@@ -163,15 +163,15 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         if (distance > allowedRadiusKm * 1000) { // Convert KM to Meters
             binding.flAction.setVisibility(View.GONE);
-            binding.btnBuyNow.setVisibility(View.GONE);
+            binding.btnCheckout.setVisibility(View.GONE);
             binding.tvOutOfRadius.setVisibility(View.VISIBLE);
             binding.tvOutOfRadius.setText("Shop delivery radius is " + allowedRadiusKm + "km. You are at " + String.format("%.1f", distance/1000) + "km.");
         } else if (!isShopOpen) {
-            binding.btnAddToCart.setEnabled(false);
-            binding.btnAddToCart.setText(R.string.shop_closed);
-            binding.btnAddToCart.setBackgroundColor(getColor(android.R.color.darker_gray));
-            binding.btnBuyNow.setEnabled(false);
-            binding.btnBuyNow.setBackgroundColor(getColor(android.R.color.darker_gray));
+            binding.btnAdd.setEnabled(false);
+            binding.btnAdd.setText(R.string.shop_closed);
+            binding.btnAdd.setBackgroundColor(getColor(android.R.color.darker_gray));
+            binding.btnCheckout.setEnabled(false);
+            binding.btnCheckout.setBackgroundColor(getColor(android.R.color.darker_gray));
         }
         
         updateQuantityText();
@@ -203,7 +203,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-        binding.btnAddToCart.setOnClickListener(v -> {
+        binding.btnAdd.setOnClickListener(v -> {
             CartItem cartItem = new CartItem(product);
             cartItem.setQuantity(1);
             cartItem.setSize("Regular");
@@ -214,13 +214,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             // After adding, checkIfInCart will trigger via observer and show quantity selector
         });
 
-        binding.btnBuyNow.setOnClickListener(v -> {
-            CartItem cartItem = new CartItem(product);
-            cartItem.setQuantity(quantity);
-            cartItem.setAddons(addonAdapter.getSelectedAddons());
-            handleAddToCart(cartItem);
-            
-            // Redirect to cart immediately
+        binding.btnCheckout.setOnClickListener(v -> {
             Intent intent = new Intent(this, com.bloom.customer.ui.cart.CartActivity.class);
             startActivity(intent);
         });

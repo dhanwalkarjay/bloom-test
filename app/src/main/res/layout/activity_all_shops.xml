@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_background"
+    tools:context=".customer.ui.home.AllShopsActivity">
+
+    <!-- Header Area -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#111111"
+        android:elevation="4dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Top Bar -->
+        <FrameLayout
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Explore Shops"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Search Bar -->
+        <LinearLayout
+            android:id="@+id/searchBarContainer"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_search_premium"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@id/topBar">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_search_premium"
+                app:tint="#888888" />
+
+            <EditText
+                android:id="@+id/etSearchShop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="12dp"
+                android:background="@null"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:hint="Search premium shops..."
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:textColor="@android:color/white"
+                android:textColorHint="#888888"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:id="@+id/actionButtonsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@id/searchBarContainer">
+
+            <TextView
+                android:id="@+id/btnSortBy"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_chip_premium_inactive"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:gravity="center"
+                android:text="Sort By"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down"
+                app:drawableTint="@android:color/white"
+                android:drawablePadding="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="12dp" />
+
+            <View
+                android:layout_width="12dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/btnFilter"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_chip_premium_inactive"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:gravity="center"
+                android:text="Filter"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down"
+                app:drawableTint="@android:color/white"
+                android:drawablePadding="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="12dp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Shops List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAllShops"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        tools:listitem="@layout/item_shop_vertical" />
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+
+    <!-- Dropdown Overlay -->
+    <View
+        android:id="@+id/dimOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#B3000000"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Sort Dropdown Panel -->
+    <LinearLayout
+        android:id="@+id/sortDropdownPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dropdown_premium"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:translationY="-500dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sort By Criteria"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <RadioGroup
+            android:id="@+id/rgSortCriteria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/rbSortRelevance"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_premium_toggle"
+                android:button="@null"
+                android:gravity="center"
+                android:text="Relevance"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="@color/color_premium_toggle_text"
+                android:checked="true"/>
+            <View android:layout_width="8dp" android:layout_height="match_parent" />
+            <RadioButton
+                android:id="@+id/rbSortRating"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_premium_toggle"
+                android:button="@null"
+                android:gravity="center"
+                android:text="Rating"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="@color/color_premium_toggle_text"/>
+            <View android:layout_width="8dp" android:layout_height="match_parent" />
+            <RadioButton
+                android:id="@+id/rbSortDistance"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_premium_toggle"
+                android:button="@null"
+                android:gravity="center"
+                android:text="Distance"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="@color/color_premium_toggle_text"/>
+        </RadioGroup>
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#333333"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <RadioGroup
+            android:id="@+id/rgSortOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/rbSortDesc"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_premium_toggle"
+                android:button="@null"
+                android:gravity="center"
+                android:text="High to Low"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="@color/color_premium_toggle_text"
+                android:checked="true"/>
+            <View android:layout_width="12dp" android:layout_height="match_parent" />
+            <RadioButton
+                android:id="@+id/rbSortAsc"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_premium_toggle"
+                android:button="@null"
+                android:gravity="center"
+                android:text="Low to High"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textColor="@color/color_premium_toggle_text"/>
+        </RadioGroup>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnApplySort"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="24dp"
+            android:text="Apply Sort"
+            app:backgroundTint="@android:color/white"
+            android:textColor="#111111"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"/>
+    </LinearLayout>
+
+    <!-- Filter Dropdown Panel -->
+    <LinearLayout
+        android:id="@+id/filterDropdownPanel"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_dropdown_premium"
+        android:orientation="vertical"
+        android:translationY="-1000dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintBottom_toBottomOf="parent">
+        
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:padding="16dp">
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                
+                <!-- Shopkeeper Type -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shopkeeper Type"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
+                    <CheckBox android:id="@+id/cbFilterOfficial" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Official Brand" android:textColor="@color/color_premium_toggle_text" />
+                    <View android:layout_width="12dp" android:layout_height="match_parent" />
+                    <CheckBox android:id="@+id/cbFilterArtisan" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Independent" android:textColor="@color/color_premium_toggle_text" />
+                </LinearLayout>
+                
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" android:layout_marginTop="16dp" android:layout_marginBottom="16dp"/>
+                
+                <!-- Price Range -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+                    
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Price Range"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+                        
+                    <TextView
+                        android:id="@+id/tvPriceRangeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$20 - $150"
+                        android:textColor="#AAAAAA"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <com.google.android.material.slider.RangeSlider
+                    android:id="@+id/rsPriceRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:valueFrom="0.0"
+                    android:valueTo="300.0"
+                    app:values="@array/initial_price_range"
+                    app:thumbColor="@android:color/white"
+                    app:trackColorActive="@android:color/white"
+                    app:trackColorInactive="#333333"
+                    app:haloColor="#4DFFFFFF" />
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" android:layout_marginTop="8dp" android:layout_marginBottom="16dp"/>
+                
+                <!-- Area / Location -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Area / Location"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
+                    <CheckBox android:id="@+id/cbFilterAreaDowntown" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Downtown" android:textColor="@color/color_premium_toggle_text" />
+                    <View android:layout_width="12dp" android:layout_height="match_parent" />
+                    <CheckBox android:id="@+id/cbFilterAreaSuburbs" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Suburbs" android:textColor="@color/color_premium_toggle_text" />
+                </LinearLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" android:layout_marginTop="16dp" android:layout_marginBottom="16dp"/>
+                
+                <!-- Flower Type -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Flower Type"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
+                    <CheckBox android:id="@+id/cbFilterFlowerRoses" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Roses" android:textColor="@color/color_premium_toggle_text" />
+                    <View android:layout_width="8dp" android:layout_height="match_parent" />
+                    <CheckBox android:id="@+id/cbFilterFlowerOrchids" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Orchids" android:textColor="@color/color_premium_toggle_text" />
+                    <View android:layout_width="8dp" android:layout_height="match_parent" />
+                    <CheckBox android:id="@+id/cbFilterFlowerLilies" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Mixed" android:textColor="@color/color_premium_toggle_text" />
+                </LinearLayout>
+                
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" android:layout_marginTop="16dp" android:layout_marginBottom="16dp"/>
+                
+                <!-- Other Features -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Other Features"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
+                    <CheckBox android:id="@+id/cbFilterFeatureCod" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="COD" android:textColor="@color/color_premium_toggle_text" />
+                    <View android:layout_width="12dp" android:layout_height="match_parent" />
+                    <CheckBox android:id="@+id/cbFilterFeatureLux" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Lux Delivery" android:textColor="@color/color_premium_toggle_text" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+        
+        <!-- Filter Actions Footer -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:background="#1A1A1A">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnApplyFilter"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Apply Filters"
+                app:backgroundTint="@android:color/white"
+                android:textColor="#111111"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textStyle="bold"
+                app:cornerRadius="12dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -78,6 +78,8 @@ public class FeaturedProductAdapter extends RecyclerView.Adapter<FeaturedProduct
                     .load(product.getImageUrl())
                     .centerCrop()
                     .into(binding.ivProductImage);
+                    
+            updateQuantityUI(product);
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
@@ -85,11 +87,35 @@ public class FeaturedProductAdapter extends RecyclerView.Adapter<FeaturedProduct
                 }
             });
 
-            binding.btnAddProduct.setOnClickListener(v -> {
+            binding.ivPlus.setOnClickListener(v -> {
+                product.setCartQuantity(product.getCartQuantity() + 1);
+                updateQuantityUI(product);
                 if (listener != null) {
                     listener.onAddClick(product);
                 }
             });
+            
+            binding.ivMinus.setOnClickListener(v -> {
+                if (product.getCartQuantity() > 0) {
+                    product.setCartQuantity(product.getCartQuantity() - 1);
+                    updateQuantityUI(product);
+                }
+            });
+        }
+        
+        private void updateQuantityUI(Product product) {
+            if (product.getCartQuantity() > 0) {
+                binding.ivMinus.setVisibility(View.VISIBLE);
+                binding.vDivider1.setVisibility(View.VISIBLE);
+                binding.tvQuantity.setVisibility(View.VISIBLE);
+                binding.vDivider2.setVisibility(View.VISIBLE);
+                binding.tvQuantity.setText(String.valueOf(product.getCartQuantity()));
+            } else {
+                binding.ivMinus.setVisibility(View.GONE);
+                binding.vDivider1.setVisibility(View.GONE);
+                binding.tvQuantity.setVisibility(View.GONE);
+                binding.vDivider2.setVisibility(View.GONE);
+            }
         }
     }
 }

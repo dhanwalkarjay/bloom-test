@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bloom.customer.data.local.SessionManager;
+import com.bloom.customer.data.model.Notification;
 import com.bloom.customer.data.repository.NotificationRepository;
 import com.bloom.customer.util.NetworkResult;
 import com.bloom.databinding.ActivityNotificationBinding;
@@ -37,27 +38,33 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void fetchNotifications() {
-        String userId = SessionManager.getInstance(this).getUserId();
-        if (userId == null) return;
-
-        binding.progressBar.setVisibility(View.VISIBLE);
+        // Injecting Premium Demo Notifications
+        binding.progressBar.setVisibility(View.GONE);
         binding.emptyState.setVisibility(View.GONE);
 
-        repository.getNotifications(userId).observe(this, result -> {
-            if (result.status == NetworkResult.Status.LOADING) {
-                binding.progressBar.setVisibility(View.VISIBLE);
-            } else if (result.status == NetworkResult.Status.SUCCESS) {
-                binding.progressBar.setVisibility(View.GONE);
-                if (result.data != null && !result.data.isEmpty()) {
-                    adapter.setNotifications(result.data);
-                    binding.emptyState.setVisibility(View.GONE);
-                } else {
-                    binding.emptyState.setVisibility(View.VISIBLE);
-                }
-            } else if (result.status == NetworkResult.Status.ERROR) {
-                binding.progressBar.setVisibility(View.GONE);
-                binding.emptyState.setVisibility(View.VISIBLE);
-            }
-        });
+        java.util.List<Notification> demoNotifications = new java.util.ArrayList<>();
+
+        Notification n1 = new Notification();
+        n1.setId("1");
+        n1.setTitle("Order Out for Delivery 🚚");
+        n1.setMessage("Your premium roses order #10294 is out for delivery and will arrive shortly!");
+        n1.setRead(false);
+        demoNotifications.add(n1);
+
+        Notification n2 = new Notification();
+        n2.setId("2");
+        n2.setTitle("Flash Sale: 20% Off 🌹");
+        n2.setMessage("Get 20% off all Premium Roses today only. Tap to explore our luxury collection.");
+        n2.setRead(true);
+        demoNotifications.add(n2);
+
+        Notification n3 = new Notification();
+        n3.setId("3");
+        n3.setTitle("Welcome to Bloom! ✨");
+        n3.setMessage("We're thrilled to have you here. Discover our exclusive hand-picked floral arrangements.");
+        n3.setRead(true);
+        demoNotifications.add(n3);
+
+        adapter.setNotifications(demoNotifications);
     }
 }

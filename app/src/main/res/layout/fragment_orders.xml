@@ -7,17 +7,18 @@
     android:background="@color/orders_surface"
     tools:context=".customer.ui.orderhistory.OrdersFragment">
 
+    <!-- Luxury Top Bar -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="56dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:minHeight="64dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="4dp"
         android:background="@color/orders_surface"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
+        android:paddingStart="24dp"
         android:paddingEnd="16dp"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,130 +27,52 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/plus_jakarta_sans"
-            android:includeFontPadding="false"
             android:text="My Orders"
-            android:textColor="@color/orders_primary"
-            android:textSize="18sp"
+            android:textColor="@color/home_lux_dark"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/btnCart"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="10dp"
+            android:padding="12dp"
             android:src="@drawable/ic_cart"
-            app:tint="@color/orders_primary" />
+            app:tint="@color/home_lux_dark" />
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/headerDivider"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/orders_outline_variant"
-        app:layout_constraintTop_toBottomOf="@id/topBar" />
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:tabBackground="@color/orders_surface"
+        app:tabIndicatorColor="@color/orders_primary"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="3dp"
+        app:tabSelectedTextColor="@color/home_lux_dark"
+        app:tabTextAppearance="@style/TextAppearance.AppCompat.Small"
+        app:tabTextColor="@color/orders_on_surface_variant">
 
-    <LinearLayout
-        android:id="@+id/segmentedControl"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/bg_orders_segment_container"
-        android:orientation="horizontal"
-        android:padding="3dp"
-        app:layout_constraintTop_toBottomOf="@id/headerDivider">
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Active" />
 
-        <TextView
-            android:id="@+id/tabActive"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_orders_segment_active"
-            android:gravity="center"
-            android:text="Active"
-            android:textColor="@color/orders_primary"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:elevation="2dp" />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Past" />
+    </com.google.android.material.tabs.TabLayout>
 
-        <TextView
-            android:id="@+id/tabPast"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:text="Past"
-            android:textColor="@color/orders_on_surface_variant"
-            android:textSize="13sp"
-            android:elevation="0dp" />
-    </LinearLayout>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/segmentedControl">
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvOrderHistory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/item_order_history" />
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="32dp"
-                    android:visibility="gone" />
-
-                <LinearLayout
-                    android:id="@+id/emptyState"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="32dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="No orders yet"
-                        android:textColor="#333333"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center"
-                        android:text="Your orders will appear here once placed."
-                        android:textColor="#666666"
-                        android:textSize="13sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

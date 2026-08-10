@@ -12,6 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bloom.customer.data.model.CartItem;
 import com.bloom.customer.util.CurrencyFormatter;
 import com.bloom.databinding.ActivityCartBinding;
+import com.bloom.R;
+
+import android.view.Window;
+import android.view.WindowManager;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import java.util.List;
 
@@ -30,6 +37,14 @@ public class CartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.cart_background));
+        WindowCompat.setDecorFitsSystemWindows(window, true);
+        WindowCompat.getInsetsController(window, window.getDecorView()).setAppearanceLightStatusBars(true);
+
         binding = ActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

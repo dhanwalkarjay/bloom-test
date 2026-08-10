@@ -41,6 +41,11 @@ public class Product {
 
     @SerializedName("created_at")
     private String createdAt;
+    
+    // Transient field for local cart quantity tracking in UI
+    private int cartQuantity = 0;
+    public int getCartQuantity() { return cartQuantity; }
+    public void setCartQuantity(int cartQuantity) { this.cartQuantity = cartQuantity; }
 
     // Getters and Setters
     public String getId() { return id; }
