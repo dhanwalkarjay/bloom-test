@@ -1,698 +1,338 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cart_background">
+    android:background="#F7F6F4"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- ===== HEADER ===== -->
+    <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/cart_background"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="4dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginStart="4dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Back"
             android:padding="12dp"
             android:src="@drawable/ic_arrow_back"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="#8B2F44" />
+            app:tint="@color/home_lux_dark" />
 
         <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
             android:fontFamily="@font/plus_jakarta_sans"
-            android:text="Delivery Type"
-            android:textColor="#8B2F44"
-            android:textSize="18sp"
+            android:text="When should we\ndeliver?"
+            android:textColor="@color/home_lux_dark"
+            android:textSize="32sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:lineSpacingExtra="2dp" />
 
-        <ImageButton
-            android:id="@+id/btnMenu"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Menu"
-            android:padding="12dp"
-            android:src="@drawable/ic_lux_menu"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="#8B2F44" />
+    </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <!-- ===== SCROLL BODY ===== -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipChildren="false"
         android:clipToPadding="false"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@id/btnContinue"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toTopOf="@id/bottomAnchor"
         app:layout_constraintTop_toBottomOf="@id/header">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingTop="12dp"
+            android:paddingBottom="24dp">
 
-            <!-- Date Selector (Visible for Scheduled) -->
-            <LinearLayout
-                android:id="@+id/llDateSelector"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/dm_sans"
-                    android:letterSpacing="0.1"
-                    android:text="SELECT DATE"
-                    android:textColor="#999999"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:clipToPadding="false"
-                    android:overScrollMode="never"
-                    android:scrollbars="none">
-
-                    <LinearLayout
-                        android:id="@+id/llDates"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <!-- Mon 14 -->
-                        <LinearLayout
-                            android:layout_width="64dp"
-                            android:layout_height="80dp"
-                            android:background="#F5F5F5"
-                            android:gravity="center"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/dm_sans"
-                                android:text="MON"
-                                android:textColor="#999999"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:fontFamily="@font/plus_jakarta_sans"
-                                android:text="14"
-                                android:textColor="#333333"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <!-- Tue 15 (Selected) -->
-                        <LinearLayout
-                            android:layout_width="64dp"
-                            android:layout_height="80dp"
-                            android:layout_marginStart="12dp"
-                            android:background="#A82D47"
-                            android:gravity="center"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/dm_sans"
-                                android:text="TUE"
-                                android:textColor="#FFCDD2"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:fontFamily="@font/plus_jakarta_sans"
-                                android:text="15"
-                                android:textColor="#FFFFFF"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <!-- Wed 16 -->
-                        <LinearLayout
-                            android:layout_width="64dp"
-                            android:layout_height="80dp"
-                            android:layout_marginStart="12dp"
-                            android:background="#F5F5F5"
-                            android:gravity="center"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/dm_sans"
-                                android:text="WED"
-                                android:textColor="#999999"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:fontFamily="@font/plus_jakarta_sans"
-                                android:text="16"
-                                android:textColor="#333333"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-                </HorizontalScrollView>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/dm_sans"
-                android:letterSpacing="0.1"
-                android:text="DELIVERY TYPE"
-                android:textColor="#999999"
-                android:textSize="11sp"
-                android:textStyle="bold" />
-
-            <!-- Custom Segmented Control / Tabs -->
+            <!-- ── Edge-to-Edge Calendar ── -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_orders_segment_container"
-                android:padding="3dp"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingBottom="12dp"
+                android:overScrollMode="never"
                 android:scrollbars="none">
 
                 <LinearLayout
+                    android:id="@+id/llDates"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tabInstant"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/transparent"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:gravity="center"
-                        android:text="INSTANT"
-                        android:textColor="#999999"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tabSameDay"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_orders_segment_active"
-                        android:elevation="2dp"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:gravity="center"
-                        android:text="SAME-DAY"
-                        android:textColor="#A82D47"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tabScheduled"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/transparent"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:gravity="center"
-                        android:text="SCHEDULED"
-                        android:textColor="#999999"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tabMidnight"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/transparent"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:gravity="center"
-                        android:text="MIDNIGHT"
-                        android:textColor="#999999"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:paddingTop="8dp">
+                    
+                    <!-- Dynamic Tall Pills will be added here -->
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <FrameLayout
-                android:id="@+id/flDeliveryContent"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp">
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="16dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
 
-                <!-- Scheduled/Same-Day Content (Image 3 & 6) -->
+                <!-- ── Delivery Method Cards ── -->
                 <LinearLayout
-                    android:id="@+id/llTimeSelection"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="visible">
-
+                    android:orientation="horizontal"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+                    
+                    <!-- Same Day Card -->
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
+                        android:id="@+id/cardSameDay"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:cardBackgroundColor="#FEE9EE"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp">
-
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        app:cardBackgroundColor="@android:color/white"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="6dp"
+                        app:strokeColor="@color/home_primary"
+                        app:strokeWidth="2dp">
+                        
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="20dp">
-
+                            android:orientation="vertical"
+                            android:padding="20dp"
+                            android:gravity="center">
+                            
                             <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:background="@drawable/bg_circle_translucent"
-                                android:backgroundTint="#B6EDC2"
-                                android:padding="10dp"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
                                 android:src="@drawable/ic_product_lightning"
-                                app:tint="#4A7C59" />
-
-                            <LinearLayout
+                                app:tint="@color/home_primary" />
+                                
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/tvDeliveryMainLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/plus_jakarta_sans"
-                                    android:text="Today's Delivery"
-                                    android:textColor="#333333"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/tvDeliverySubLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:fontFamily="@font/work_sans"
-                                    android:text="Saturday, August 1"
-                                    android:textColor="#666666"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
+                                android:layout_marginTop="12dp"
+                                android:fontFamily="@font/plus_jakarta_sans"
+                                android:text="Same-Day"
+                                android:textColor="@color/home_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="28dp"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:text="Select a Time"
-                        android:textColor="#333333"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
+                    <!-- Scheduled Card -->
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
+                        android:id="@+id/cardScheduled"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        app:cardBackgroundColor="#FFFFFF"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp"
-                        app:strokeColor="#F5F5F5"
-                        app:strokeWidth="1dp">
-
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        app:cardBackgroundColor="@android:color/white"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="2dp"
+                        app:strokeWidth="0dp">
+                        
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:orientation="vertical"
-                            android:padding="24dp">
+                            android:padding="20dp"
+                            android:gravity="center">
+                            
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_product_calendar"
+                                app:tint="#AAAAAA" />
+                                
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:fontFamily="@font/plus_jakarta_sans"
+                                android:text="Scheduled"
+                                android:textColor="#999999"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
+                <!-- ── Time Selection Hub ── -->
+                <FrameLayout
+                    android:id="@+id/flDeliveryContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <!-- Content wrapper -->
+                    <LinearLayout
+                        android:id="@+id/llTimeSelection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/tvDeliveryMainLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:letterSpacing="0.05"
+                            android:text="ARRIVAL TIME"
+                            android:textColor="#AAAAAA"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <!-- Stunning Digital Clock Display -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="8dp"
+                            android:gravity="bottom">
+                            
                             <TextView
                                 android:id="@+id/tvSelectedTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:fontFamily="@font/playfair_display"
-                                android:text="12:30 PM"
-                                android:textColor="#A82D47"
-                                android:textSize="42sp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="24dp"
-                                android:background="#E8F5E9"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal"
-                                android:padding="12dp">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@android:drawable/ic_dialog_info"
-                                    app:tint="#2E7D32" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="12dp"
-                                    android:fontFamily="@font/work_sans"
-                                    android:text="Estimated delivery within 60 mins of selected time"
-                                    android:textColor="#2E7D32"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
-
-                <!-- Instant Content (Image 4) - Hidden by default -->
-                <LinearLayout
-                    android:id="@+id/llInstantContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cardBackgroundColor="#FEE9EE"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="24dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/dm_sans"
-                                android:letterSpacing="0.1"
-                                android:text="EXPECTED ARRIVAL"
-                                android:textColor="#A82D47"
-                                android:textSize="11sp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
-
-                                <ImageView
-                                    android:layout_width="24dp"
-                                    android:layout_height="24dp"
-                                    android:src="@drawable/ic_product_lightning"
-                                    app:tint="#A82D47" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="12dp"
-                                    android:fontFamily="@font/playfair_display"
-                                    android:text="45-60 mins"
-                                    android:textColor="#333333"
-                                    android:textSize="32sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
                                 android:fontFamily="@font/plus_jakarta_sans"
-                                android:text="✓ Florist nearby is ready to go"
-                                android:textColor="#4A7C59"
-                                android:textSize="13sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        app:cardBackgroundColor="#FFFFFF"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp"
-                        app:strokeColor="#F5F5F5"
-                        app:strokeWidth="1dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="20dp">
-
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:background="#F1F8F3"
-                                android:padding="10dp"
-                                android:src="@drawable/ic_home_location"
-                                app:tint="#4A7C59" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/plus_jakarta_sans"
-                                    android:text="Live Tracking Included"
-                                    android:textColor="#333333"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:fontFamily="@font/work_sans"
-                                    android:text="You'll receive a real-time link to follow your courier."
-                                    android:textColor="#666666"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
-
-                <!-- Midnight Content (Image 5) -->
-                <LinearLayout
-                    android:id="@+id/llMidnightContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        app:cardBackgroundColor="#FFFFFF"
-                        app:cardCornerRadius="32dp"
-                        app:cardElevation="8dp"
-                        app:strokeWidth="0dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="32dp">
-
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:src="@drawable/ic_product_moon"
-                                app:tint="#8B2F44" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="20dp"
-                                android:fontFamily="@font/plus_jakarta_sans"
-                                android:text="Coming Soon"
-                                android:textColor="#8B2F44"
-                                android:textSize="32sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:fontFamily="@font/work_sans"
-                                android:gravity="center"
-                                android:text="Midnight surprises are coming\nsoon to your city!"
-                                android:textColor="#666666"
-                                android:textSize="14sp" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="44dp"
-                                android:layout_marginTop="24dp"
-                                android:backgroundTint="#B6EDC2"
-                                android:fontFamily="@font/dm_sans"
-                                android:insetTop="0dp"
-                                android:insetBottom="0dp"
-                                android:paddingStart="20dp"
-                                android:paddingEnd="20dp"
-                                android:text="NOTIFY ME WHEN LIVE"
-                                android:textAllCaps="false"
-                                android:textColor="#376847"
-                                android:textSize="11sp"
+                                android:text="12:30"
+                                android:textColor="@color/home_lux_dark"
+                                android:textSize="64sp"
                                 android:textStyle="bold"
-                                app:cornerRadius="22dp"
-                                app:icon="@drawable/ic_home_notification"
-                                app:iconSize="16dp"
-                                app:iconTint="#376847" />
-
+                                android:includeFontPadding="false" />
+                                
+                            <TextView
+                                android:id="@+id/tvAmPm"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginBottom="12dp"
+                                android:fontFamily="@font/plus_jakarta_sans"
+                                android:text="PM"
+                                android:textColor="@color/home_lux_dark"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+                                
+                            <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1" />
+                            
+                            <!-- Change Time Chip -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/cardChangeTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_marginBottom="16dp"
+                                app:cardBackgroundColor="#EBEBEB"
+                                app:cardCornerRadius="20dp"
+                                app:cardElevation="0dp"
+                                app:strokeWidth="0dp">
+                                
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:paddingHorizontal="16dp"
+                                    android:fontFamily="@font/plus_jakarta_sans"
+                                    android:text="Change"
+                                    android:textColor="@color/home_lux_dark"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </com.google.android.material.card.MaterialCardView>
                         </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="0dp"
+                        <!-- Info tag -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:cardBackgroundColor="#FEE9EE"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="0dp">
-                            <LinearLayout
-                                android:layout_width="match_parent"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+                            
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:src="@drawable/ic_product_lightning"
+                                app:tint="#AAAAAA" />
+                                
+                            <TextView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="16dp">
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:src="@drawable/ic_product_calendar"
-                                    app:tint="#A82D47" />
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
-                                    android:fontFamily="@font/dm_sans"
-                                    android:text="12 AM - 2 AM"
-                                    android:textColor="#A82D47"
-                                    android:textSize="10sp"
-                                    android:textStyle="bold" />
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:fontFamily="@font/work_sans"
-                                    android:text="Guaranteed delivery\nwithin the witching hours."
-                                    android:textColor="#A82D47"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
+                                android:layout_marginStart="6dp"
+                                android:fontFamily="@font/work_sans"
+                                android:text="Guaranteed delivery within 60 minutes"
+                                android:textColor="#999999"
+                                android:textSize="13sp" />
+                        </LinearLayout>
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_weight="1"
-                            app:cardBackgroundColor="#FEE9EE"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="0dp">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="16dp">
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:src="@drawable/ic_home_flare"
-                                    app:tint="#A82D47" />
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
-                                    android:fontFamily="@font/dm_sans"
-                                    android:text="SPECIAL PACKING"
-                                    android:textColor="#A82D47"
-                                    android:textSize="10sp"
-                                    android:textStyle="bold" />
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:fontFamily="@font/work_sans"
-                                    android:text="Exclusive midnight-\nthemed box and card sets."
-                                    android:textColor="#A82D47"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
                     </LinearLayout>
-                </LinearLayout>
-
-            </FrameLayout>
+                    
+                </FrameLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Floating anchor space -->
+    <View
+        android:id="@+id/bottomAnchor"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- ===== FLOATING ACTION BUTTON ===== -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnContinue"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_margin="16dp"
-        android:backgroundTint="#A82D47"
+        android:layout_height="64dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/home_lux_dark"
         android:fontFamily="@font/plus_jakarta_sans"
-        android:text="Confirm &amp; Continue"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Confirm Delivery"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:cornerRadius="12dp"
+        android:elevation="12dp"
+        app:cornerRadius="32dp"
         app:icon="@drawable/ic_arrow_forward"
         app:iconGravity="textEnd"
+        app:iconPadding="10dp"
+        app:iconSize="20dp"
+        app:iconTint="@color/home_primary"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
