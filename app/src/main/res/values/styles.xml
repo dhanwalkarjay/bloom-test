@@ -1,111 +1,148 @@
-<!-- res/values/styles.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Bloom" />
-    <style name="Bloom.Button" />
-    <style name="Bloom.Chip" />
-
-    <!-- Primary button - matches the rounded rose-pink button used throughout the customer app -->
-    <style name="Bloom.Button.Primary" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/bloom_primary</item>
-        <item name="cornerRadius">@dimen/radius_button</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/text_body</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:layout_height">@dimen/button_height</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
-
-    <!-- Outlined secondary button -->
-    <style name="Bloom.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@color/bloom_primary</item>
-        <item name="android:textColor">@color/bloom_primary</item>
-        <item name="cornerRadius">@dimen/radius_button</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:layout_height">@dimen/button_height</item>
-    </style>
-
-    <!-- Card style used for shop cards, product cards, order cards -->
-    <style name="Bloom.Card" parent="Widget.MaterialComponents.CardView">
-        <item name="cardCornerRadius">@dimen/radius_card</item>
-        <item name="cardElevation">2dp</item>
-        <item name="strokeColor">@color/bloom_card_stroke</item>
-        <item name="strokeWidth">0.5dp</item>
-        <item name="cardBackgroundColor">@color/white</item>
-    </style>
-
-    <!-- Status chip base -->
-    <style name="Bloom.Chip.Status" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="chipCornerRadius">@dimen/radius_chip</item>
-        <item name="android:textSize">@dimen/text_caption</item>
-        <item name="chipMinHeight">28dp</item>
-    </style>
-
-    <!-- Text styles -->
-    <style name="Bloom.Text" />
-
-    <style name="Bloom.Text.Headline">
-        <item name="android:textSize">@dimen/text_headline</item>
-        <item name="android:textColor">@color/bloom_text_primary</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+    <!-- ============================================== -->
+    <!-- TYPOGRAPHY                                     -->
+    <!-- ============================================== -->
+    <style name="TextAppearance.Bloom.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:fontFamily">@font/plus_jakarta_sans</item>
+        <item name="android:textSize">@dimen/text_h1</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="Bloom.Text.Title">
-        <item name="android:textSize">@dimen/text_title</item>
-        <item name="android:textColor">@color/bloom_text_primary</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+    <style name="TextAppearance.Bloom.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="android:fontFamily">@font/plus_jakarta_sans</item>
+        <item name="android:textSize">@dimen/text_h2</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="Bloom.Text.Body">
-        <item name="android:textSize">@dimen/text_body</item>
-        <item name="android:textColor">@color/bloom_text_primary</item>
+    <style name="TextAppearance.Bloom.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="android:fontFamily">@font/plus_jakarta_sans</item>
+        <item name="android:textSize">@dimen/text_h3</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="Bloom.Text.Caption">
+    <style name="TextAppearance.Bloom.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:fontFamily">@font/plus_jakarta_sans</item>
+        <item name="android:textSize">@dimen/text_h4</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Bloom.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:fontFamily">@font/plus_jakarta_sans</item>
+        <item name="android:textSize">@dimen/text_h5</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Bloom.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:fontFamily">@font/plus_jakarta_sans</item>
+        <item name="android:textSize">@dimen/text_h6</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Bloom.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:fontFamily">@font/work_sans</item>
+        <item name="android:textSize">@dimen/text_subtitle1</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Bloom.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:fontFamily">@font/work_sans</item>
+        <item name="android:textSize">@dimen/text_subtitle2</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.Bloom.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:fontFamily">@font/dm_sans</item>
+        <item name="android:textSize">@dimen/text_body1</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Bloom.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:fontFamily">@font/dm_sans</item>
+        <item name="android:textSize">@dimen/text_body2</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.Bloom.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/plus_jakarta_sans</item>
+        <item name="android:textSize">@dimen/text_button</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="TextAppearance.Bloom.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:fontFamily">@font/dm_sans</item>
         <item name="android:textSize">@dimen/text_caption</item>
-        <item name="android:textColor">@color/bloom_text_secondary</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
 
-    <style name="Bloom.CartImageShape">
+    <!-- ============================================== -->
+    <!-- WIDGETS                                        -->
+    <!-- ============================================== -->
+    
+    <!-- Primary Button -->
+    <style name="Widget.Bloom.Button.Primary" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.Bloom.Button</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="cornerRadius">@dimen/button_radius</item>
+        <item name="android:minHeight">@dimen/button_height</item>
+    </style>
+    
+    <!-- Secondary/Outline Button -->
+    <style name="Widget.Bloom.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textAppearance">@style/TextAppearance.Bloom.Button</item>
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="cornerRadius">@dimen/button_radius</item>
+        <item name="android:minHeight">@dimen/button_height</item>
+    </style>
+
+    <!-- Text Button -->
+    <style name="Widget.Bloom.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textAppearance">@style/TextAppearance.Bloom.Button</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:minHeight">@dimen/button_height</item>
+    </style>
+
+    <!-- Card Base -->
+    <style name="Widget.Bloom.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="cardCornerRadius">@dimen/card_radius</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">?attr/colorOutlineVariant</item>
+    </style>
+    
+    <!-- Legacy Styles / Shapes that were overwritten -->
+    <style name="Bloom.HomeRounded12" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
 
-    <style name="Bloom.HomeRounded12">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">12dp</item>
-    </style>
-
-    <style name="Bloom.HomeRounded16">
+    <style name="Bloom.HomeRounded16" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">16dp</item>
     </style>
 
-    <style name="Bloom.LuxProfileShape">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
-
-    <style name="Bloom.SearchRounded12">
+    <style name="Bloom.SearchRounded12" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
 
-    <style name="Bloom.SearchRounded16">
+    <style name="Bloom.CartImageShape" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16dp</item>
+        <item name="cornerSize">12dp</item>
     </style>
-
-    <style name="Bloom.LuxProgressBar" parent="Widget.AppCompat.ProgressBar">
-        <item name="android:indeterminateTint">@color/lux_accent</item>
-    </style>
-
-    <!-- LUX theme variant, for the LUX screens only -->
-    <style name="Theme.Bloom.Lux" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:windowBackground">@color/lux_background</item>
-        <item name="colorAccent">@color/lux_accent</item>
-        <item name="android:textColorPrimary">@color/lux_text</item>
-    </style>
-
+    
+    <style name="Bloom.Button.Primary" parent="Widget.Bloom.Button.Primary" />
+    
 </resources>

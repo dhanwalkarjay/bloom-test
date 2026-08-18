@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cart_background"
+    android:background="#FFFFFF"
     tools:ignore="HardcodedText,SmallSp">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/cart_background"
+        android:layout_height="@dimen/button_height"
+        android:background="#FFFFFF"
         app:contentInsetStart="0dp"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -21,24 +21,25 @@
 
             <ImageButton
                 android:id="@+id/btnBack"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="4dp"
+                android:layout_width="@dimen/spacing_xxl"
+                android:layout_height="@dimen/spacing_xxl"
+                android:layout_marginStart="@dimen/spacing_xs"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Back"
-                android:padding="12dp"
+                android:padding="@dimen/spacing_s"
                 android:src="@drawable/ic_arrow_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="#8B2F44" />
+                app:tint="@color/home_lux_dark" />
 
             <TextView
+                android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:text="Track Delivery"
-                android:textColor="#8B2F44"
+                android:textColor="@color/home_lux_dark"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -47,27 +48,33 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginEnd="16dp"
-                app:cardCornerRadius="18dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="@dimen/spacing_m"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
+                app:strokeColor="#F0F0F0"
+                app:strokeWidth="1dp"
+                app:cardBackgroundColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_home_person"
-                    android:contentDescription="User"
-                    app:tint="#999999" />
+                    <ImageView
+                        android:id="@+id/btnHelp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_help_premium"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Help"
+                        app:tint="@color/home_lux_dark" />
             </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
@@ -82,27 +89,31 @@
             <!-- Map Section -->
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="320dp">
+                android:layout_height="320dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="@dimen/spacing_m"
+                android:background="@drawable/bg_bottom_sheet_premium">
 
-                <WebView
-                    android:id="@+id/mapWebView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <View
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/bg_home_hero_overlay"
-                    android:alpha="0.1" />
+                    app:cardCornerRadius="@dimen/spacing_l"
+                    app:cardElevation="0dp">
+                    <WebView
+                        android:id="@+id/mapWebView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/spacing_m"
+                    android:layout_gravity="top|center_horizontal"
                     app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="24dp"
-                    app:cardElevation="4dp"
-                    app:strokeColor="#FEE9EE"
+                    app:cardCornerRadius="@dimen/spacing_l"
+                    app:cardElevation="@dimen/spacing_s"
+                    app:strokeColor="#EAEAEA"
                     app:strokeWidth="1dp">
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -112,16 +123,18 @@
                         android:paddingHorizontal="18dp"
                         android:paddingVertical="10dp">
                         <View
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
-                            android:background="@drawable/bg_home_notification_dot" />
+                            android:id="@+id/vTimeDot"
+                            android:layout_width="@dimen/spacing_s"
+                            android:layout_height="@dimen/spacing_s"
+                            android:background="@drawable/bg_home_notification_dot"
+                            android:backgroundTint="#A82D47" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:fontFamily="@font/dm_sans"
+                            android:fontFamily="@font/plus_jakarta_sans"
                             android:text="ARRIVING IN 12 MINS"
-                            android:textColor="#A82D47"
+                            android:textColor="@color/home_lux_dark"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -130,31 +143,50 @@
 
             <!-- Timeline -->
             <LinearLayout
+                android:id="@+id/llTimeline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="28dp">
+                android:padding="28dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
 
                 <!-- Step 1 -->
                 <RelativeLayout
                     android:id="@+id/rlStep1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+                    <View
+                        android:id="@+id/line1Bg"
+                        android:layout_width="@dimen/spacing_xxs"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="21dp"
+                        android:layout_marginTop="36dp"
+                        android:background="#F0F0F0" />
                     <View
                         android:id="@+id/line1"
-                        android:layout_width="2dp"
-                        android:layout_height="60dp"
+                        android:layout_width="@dimen/spacing_xxs"
+                        android:layout_height="0dp"
                         android:layout_marginStart="21dp"
                         android:layout_marginTop="36dp"
                         android:background="#A82D47" />
+                    <View
+                        android:id="@+id/vRipple1"
+                        android:layout_width="@dimen/button_height_small"
+                        android:layout_height="@dimen/button_height_small"
+                        android:background="@drawable/bg_ripple_ring"
+                        android:alpha="0" />
                     <ImageView
                         android:id="@+id/ivStatus1"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="@dimen/button_height_small"
+                        android:layout_height="@dimen/button_height_small"
                         android:background="@drawable/bg_home_notification_dot"
                         android:backgroundTint="#A82D47"
-                        android:padding="13dp"
-                        app:srcCompat="@android:drawable/checkbox_on_background" />
+                        android:padding="@dimen/spacing_s"
+                        app:tint="#FFFFFF"
+                        android:src="@drawable/ic_timeline_placed" />
                     <TextView
                         android:id="@+id/tvStatus1Title"
                         android:layout_width="wrap_content"
@@ -163,8 +195,8 @@
                         android:layout_toEndOf="@id/ivStatus1"
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Order Placed"
-                        android:textColor="#333333"
-                        android:textSize="14sp"
+                        android:textColor="@color/home_lux_dark"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/tvStatus1Desc"
@@ -176,8 +208,8 @@
                         android:layout_toEndOf="@id/ivStatus1"
                         android:fontFamily="@font/work_sans"
                         android:text="We've received your order"
-                        android:textColor="#666666"
-                        android:textSize="12sp" />
+                        android:textColor="#888888"
+                        android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvStatus1Time"
                         android:layout_width="wrap_content"
@@ -185,8 +217,8 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/work_sans"
                         android:text="09:15 AM"
-                        android:textColor="#999999"
-                        android:textSize="10sp" />
+                        android:textColor="#AAAAAA"
+                        android:textSize="11sp" />
                 </RelativeLayout>
 
                 <!-- Step 2 -->
@@ -194,22 +226,38 @@
                     android:id="@+id/rlStep2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="@dimen/spacing_s"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
                     <View
-                        android:id="@+id/line2"
-                        android:layout_width="2dp"
+                        android:id="@+id/line2Bg"
+                        android:layout_width="@dimen/spacing_xxs"
                         android:layout_height="50dp"
                         android:layout_marginStart="21dp"
                         android:layout_marginTop="36dp"
+                        android:background="#F0F0F0" />
+                    <View
+                        android:id="@+id/line2"
+                        android:layout_width="@dimen/spacing_xxs"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="21dp"
+                        android:layout_marginTop="36dp"
                         android:background="#A82D47" />
+                    <View
+                        android:id="@+id/vRipple2"
+                        android:layout_width="@dimen/button_height_small"
+                        android:layout_height="@dimen/button_height_small"
+                        android:background="@drawable/bg_ripple_ring"
+                        android:alpha="0" />
                     <ImageView
                         android:id="@+id/ivStatus2"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="@dimen/button_height_small"
+                        android:layout_height="@dimen/button_height_small"
                         android:background="@drawable/bg_home_notification_dot"
                         android:backgroundTint="#A82D47"
-                        android:padding="13dp"
-                        app:srcCompat="@android:drawable/checkbox_on_background" />
+                        android:padding="@dimen/spacing_s"
+                        app:tint="#FFFFFF"
+                        android:src="@drawable/ic_timeline_confirmed" />
                     <TextView
                         android:id="@+id/tvStatus2Title"
                         android:layout_width="wrap_content"
@@ -218,8 +266,8 @@
                         android:layout_toEndOf="@id/ivStatus2"
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Confirmed"
-                        android:textColor="#333333"
-                        android:textSize="14sp"
+                        android:textColor="@color/home_lux_dark"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/tvStatus2Desc"
@@ -231,8 +279,8 @@
                         android:layout_toEndOf="@id/ivStatus2"
                         android:fontFamily="@font/work_sans"
                         android:text="Seller has accepted your request"
-                        android:textColor="#666666"
-                        android:textSize="12sp" />
+                        android:textColor="#888888"
+                        android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvStatus2Time"
                         android:layout_width="wrap_content"
@@ -240,8 +288,8 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/work_sans"
                         android:text="09:22 AM"
-                        android:textColor="#999999"
-                        android:textSize="10sp" />
+                        android:textColor="#AAAAAA"
+                        android:textSize="11sp" />
                 </RelativeLayout>
 
                 <!-- Step 3 -->
@@ -249,22 +297,37 @@
                     android:id="@+id/rlStep3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="@dimen/spacing_s"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
                     <View
-                        android:id="@+id/line3"
-                        android:layout_width="2dp"
+                        android:id="@+id/line3Bg"
+                        android:layout_width="@dimen/spacing_xxs"
                         android:layout_height="50dp"
                         android:layout_marginStart="21dp"
                         android:layout_marginTop="36dp"
+                        android:background="#F0F0F0" />
+                    <View
+                        android:id="@+id/line3"
+                        android:layout_width="@dimen/spacing_xxs"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="21dp"
+                        android:layout_marginTop="36dp"
                         android:background="#A82D47" />
+                    <View
+                        android:id="@+id/vRipple3"
+                        android:layout_width="@dimen/button_height_small"
+                        android:layout_height="@dimen/button_height_small"
+                        android:background="@drawable/bg_ripple_ring"
+                        android:alpha="0" />
                     <ImageView
                         android:id="@+id/ivStatus3"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="@dimen/button_height_small"
+                        android:layout_height="@dimen/button_height_small"
                         android:background="@drawable/bg_home_notification_dot"
                         android:backgroundTint="#A82D47"
-                        android:padding="11dp"
-                        android:src="@drawable/ic_home_flare"
+                        android:padding="@dimen/spacing_s"
+                        android:src="@drawable/ic_timeline_preparing"
                         app:tint="#FFFFFF" />
                     <TextView
                         android:id="@+id/tvStatus3Title"
@@ -274,8 +337,8 @@
                         android:layout_toEndOf="@id/ivStatus3"
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Preparing Your Bouquet"
-                        android:textColor="#333333"
-                        android:textSize="14sp"
+                        android:textColor="@color/home_lux_dark"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/tvStatus3Desc"
@@ -287,8 +350,8 @@
                         android:layout_toEndOf="@id/ivStatus3"
                         android:fontFamily="@font/work_sans"
                         android:text="Florist is hand-picking fresh blooms"
-                        android:textColor="#666666"
-                        android:textSize="12sp" />
+                        android:textColor="#888888"
+                        android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvStatus3Time"
                         android:layout_width="wrap_content"
@@ -296,8 +359,8 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/work_sans"
                         android:text="09:45 AM"
-                        android:textColor="#999999"
-                        android:textSize="10sp" />
+                        android:textColor="#AAAAAA"
+                        android:textSize="11sp" />
                 </RelativeLayout>
 
                 <!-- Step 4 Highlighted -->
@@ -305,25 +368,33 @@
                     android:id="@+id/cvStep4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    app:cardBackgroundColor="#FEE9EE"
-                    app:cardCornerRadius="16dp"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    app:cardBackgroundColor="#FCFCFC"
+                    app:cardCornerRadius="@dimen/spacing_m"
                     app:cardElevation="0dp"
-                    app:strokeColor="#F4DDDE"
+                    app:strokeColor="#FEE9EE"
                     app:strokeWidth="1.2dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp">
+                        android:padding="@dimen/spacing_l"
+                        android:clipChildren="false"
+                        android:clipToPadding="false">
+                        <View
+                            android:id="@+id/vRipple4"
+                            android:layout_width="@dimen/button_height_small"
+                            android:layout_height="@dimen/button_height_small"
+                            android:background="@drawable/bg_ripple_ring"
+                            android:alpha="0" />
                         <ImageView
                             android:id="@+id/ivStatus4"
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
+                            android:layout_width="@dimen/button_height_small"
+                            android:layout_height="@dimen/button_height_small"
                             android:background="@drawable/bg_home_notification_dot"
                             android:backgroundTint="#A82D47"
-                            android:padding="11dp"
-                            android:src="@drawable/ic_home_bag"
+                            android:padding="@dimen/spacing_s"
+                            android:src="@drawable/ic_timeline_out"
                             app:tint="#FFFFFF" />
                         <TextView
                             android:id="@+id/tvStatus4Title"
@@ -334,19 +405,19 @@
                             android:fontFamily="@font/plus_jakarta_sans"
                             android:text="Out for Delivery"
                             android:textColor="#A82D47"
-                            android:textSize="14sp"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/tvStatus4Title"
                             android:layout_marginStart="18dp"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="@dimen/spacing_xs"
                             android:layout_toEndOf="@id/ivStatus4"
                             android:fontFamily="@font/work_sans"
                             android:text="David R. is nearby with your flowers"
                             android:textColor="#666666"
-                            android:textSize="12sp" />
+                            android:textSize="13sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -359,21 +430,22 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="56dp"
+                            android:layout_height="@dimen/button_height"
                             android:layout_below="@id/ivStatus4"
-                            android:layout_marginTop="16dp"
-                            android:background="#FFFFFF"
+                            android:layout_marginTop="@dimen/spacing_m"
+                            android:background="@drawable/bg_input_pill_lux"
+                            android:backgroundTint="#FAFAFA"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingHorizontal="16dp">
+                            android:paddingHorizontal="@dimen/spacing_m">
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:fontFamily="@font/dm_sans"
-                                android:text="DELIVERY OTP:"
+                                android:fontFamily="@font/plus_jakarta_sans"
+                                android:text="DELIVERY OTP"
                                 android:textColor="#999999"
-                                android:textSize="10sp"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
                             <TextView
                                 android:id="@+id/tvOtp"
@@ -383,7 +455,7 @@
                                 android:letterSpacing="0.2"
                                 android:text="--- ---"
                                 android:textColor="#A82D47"
-                                android:textSize="20sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </RelativeLayout>
@@ -395,16 +467,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:alpha="0.4">
+                    android:alpha="0.4"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+                    <View
+                        android:id="@+id/vRipple5"
+                        android:layout_width="@dimen/button_height_small"
+                        android:layout_height="@dimen/button_height_small"
+                        android:background="@drawable/bg_ripple_ring"
+                        android:alpha="0" />
                     <ImageView
                         android:id="@+id/ivStatus5"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="@dimen/button_height_small"
+                        android:layout_height="@dimen/button_height_small"
                         android:background="@drawable/bg_home_notification_dot"
-                        android:backgroundTint="#FEE9EE"
-                        android:padding="13dp"
-                        android:src="@drawable/ic_home_bag"
-                        app:tint="#A82D47" />
+                        android:backgroundTint="#F8F8F8"
+                        android:padding="@dimen/spacing_s"
+                        android:src="@drawable/ic_timeline_delivered"
+                        app:tint="#CCCCCC" />
                     <TextView
                         android:id="@+id/tvStatus5Title"
                         android:layout_width="wrap_content"
@@ -413,8 +493,8 @@
                         android:layout_toEndOf="@id/ivStatus5"
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Delivered"
-                        android:textColor="#999999"
-                        android:textSize="14sp"
+                        android:textColor="#CCCCCC"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/tvStatus5Desc"
@@ -426,8 +506,8 @@
                         android:layout_toEndOf="@id/ivStatus5"
                         android:fontFamily="@font/work_sans"
                         android:text="Expect a knock at your door soon"
-                        android:textColor="#999999"
-                        android:textSize="12sp" />
+                        android:textColor="#CCCCCC"
+                        android:textSize="13sp" />
                 </RelativeLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -436,7 +516,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="@dimen/spacing_xl"
                     android:text="Cancel Order"
                     android:textAllCaps="false"
                     android:textColor="#AF314A"
@@ -455,11 +535,11 @@
         android:id="@+id/cvCourierInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/spacing_m"
         android:visibility="gone"
         app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="8dp"
+        app:cardCornerRadius="@dimen/spacing_l"
+        app:cardElevation="@dimen/spacing_m"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
@@ -467,11 +547,11 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="12dp">
+            android:padding="@dimen/spacing_m">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/spacing_xxl"
+                android:layout_height="@dimen/spacing_xxl"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_home_person"
                 app:shapeAppearanceOverlay="@style/Bloom.HomeRounded12"
@@ -480,7 +560,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="@dimen/spacing_s"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -489,8 +569,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/dm_sans"
                     android:text="DELIVERY PARTNER"
-                    android:textColor="#999999"
-                    android:textSize="8sp"
+                    android:textColor="#AAAAAA"
+                    android:textSize="10sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -499,8 +579,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:text="David R."
-                    android:textColor="#333333"
-                    android:textSize="14sp"
+                    android:textColor="@color/home_lux_dark"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -508,25 +588,25 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/work_sans"
                     android:text="4.9 (250+ deliveries)"
-                    android:textColor="#666666"
-                    android:textSize="11sp" />
+                    android:textColor="#888888"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <ImageButton
                 android:id="@+id/btnCall"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="@dimen/button_height_small"
+                android:layout_height="@dimen/button_height_small"
                 android:background="@drawable/bg_circle_translucent"
-                android:backgroundTint="#B6EDC2"
+                android:backgroundTint="#F2F8F4"
                 android:contentDescription="Call Courier"
                 android:src="@android:drawable/ic_menu_call"
                 app:tint="#4A7C59" />
 
             <ImageButton
                 android:id="@+id/btnChat"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="8dp"
+                android:layout_width="@dimen/button_height_small"
+                android:layout_height="@dimen/button_height_small"
+                android:layout_marginStart="@dimen/spacing_s"
                 android:background="@drawable/bg_circle_translucent"
                 android:backgroundTint="#FEE9EE"
                 android:contentDescription="Message Courier"

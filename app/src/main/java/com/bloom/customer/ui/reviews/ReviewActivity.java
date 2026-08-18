@@ -1,6 +1,8 @@
 package com.bloom.customer.ui.reviews;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
@@ -43,11 +45,24 @@ public class ReviewActivity extends AppCompatActivity {
             if (result.status == NetworkResult.Status.LOADING) {
                 binding.btnSubmit.setEnabled(false);
                 binding.tvError.setVisibility(View.GONE);
+                binding.btnSubmit.setText("Submitting...");
             } else if (result.status == NetworkResult.Status.SUCCESS) {
                 binding.tvError.setVisibility(View.GONE);
-                finish();
+                
+                // Success Animation
+                binding.cvReviewForm.animate().alpha(0f).setDuration(400).withEndAction(() -> {
+                    binding.cvReviewForm.setVisibility(View.GONE);
+                    
+                    binding.llSuccessState.setAlpha(0f);
+                    binding.llSuccessState.setVisibility(View.VISIBLE);
+                    binding.llSuccessState.animate().alpha(1f).setDuration(400).start();
+                    
+                    new Handler(Looper.getMainLooper()).postDelayed(this::finish, 1500);
+                }).start();
+                
             } else if (result.status == NetworkResult.Status.ERROR) {
                 binding.btnSubmit.setEnabled(true);
+                binding.btnSubmit.setText("Submit Review");
                 binding.tvError.setText(result.message != null ? result.message : "Failed to submit review. Please try again.");
                 binding.tvError.setVisibility(View.VISIBLE);
             }

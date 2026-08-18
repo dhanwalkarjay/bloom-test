@@ -1,80 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFBF7">
+    android:background="@color/cart_background">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="Rate your Order"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIconTint="#000000" />
-
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/_24sdp"
-        android:gravity="center_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="How was the bouquet?"
-            android:textSize="@dimen/_22ssp"
-            android:textStyle="bold"
-            android:textColor="#333333" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title=""
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="@color/cart_on_surface" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_32sdp"
-            android:numStars="5"
-            android:stepSize="1"
-            android:progressTint="#D4AF37" />
+    <!-- Main Content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:fillViewport="true">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_32sdp"
-            android:hint="Write your feedback (optional)">
+            android:layout_gravity="center">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etComment"
+            <!-- The Review Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvReviewForm"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_120sdp"
-                android:gravity="top"
-                android:inputType="textMultiLine" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/cart_surface"
+                app:strokeWidth="0dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSubmit"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_56sdp"
-            android:layout_marginTop="@dimen/_40sdp"
-            android:text="Submit Review"
-            android:textAllCaps="false"
-            android:backgroundTint="#E85D75"
-            app:cornerRadius="@dimen/_12sdp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp"
+                    android:gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/tvError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:text=""
-            android:textColor="#D32F2F"
-            android:textSize="@dimen/_14ssp"
-            android:textAlignment="center"
-            android:visibility="gone" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Share your experience"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/cart_on_surface" />
+                        
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Your feedback helps us maintain our premium standards."
+                        android:textSize="13sp"
+                        android:textAlignment="center"
+                        android:textColor="@color/cart_outline" />
 
-    </LinearLayout>
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:numStars="5"
+                        android:stepSize="1"
+                        android:progressTint="@color/home_lux_gold" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <!-- Using the luxury background for input -->
+                    <EditText
+                        android:id="@+id/etComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@drawable/bg_input_pill_lux"
+                        android:gravity="top|start"
+                        android:hint="Tell us what you loved... (optional)"
+                        android:inputType="textMultiLine"
+                        android:padding="16dp"
+                        android:textColorHint="@color/cart_outline"
+                        android:textColor="@color/cart_on_surface"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSubmit"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="32dp"
+                        android:text="Submit Review"
+                        android:textAllCaps="false"
+                        android:backgroundTint="@color/cart_primary"
+                        app:cornerRadius="28dp"
+                        app:elevation="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvError"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text=""
+                        android:textColor="#D32F2F"
+                        android:textSize="14sp"
+                        android:textAlignment="center"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Success State Layout -->
+            <LinearLayout
+                android:id="@+id/llSuccessState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone"
+                android:padding="32dp">
+                
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:cardBackgroundColor="@color/cart_surface_container"
+                    app:cardCornerRadius="40dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+                    
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:src="@android:drawable/ic_dialog_info" 
+                        app:tint="@color/home_lux_gold" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Thank You!"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/cart_on_surface" />
+                    
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Your feedback is invaluable to us."
+                    android:textSize="14sp"
+                    android:textAlignment="center"
+                    android:textColor="@color/cart_outline" />
+            </LinearLayout>
+
+        </FrameLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

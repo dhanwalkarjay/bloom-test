@@ -107,6 +107,12 @@ public class AllShopsActivity extends AppCompatActivity {
                 applyFilters();
             }
         });
+
+        binding.btnClearFilters.setOnClickListener(v -> {
+            binding.etSearchShop.setText("");
+            // Other filters could be reset here
+            applyFilters();
+        });
     }
 
     private void toggleSortDropdown() {
@@ -201,43 +207,42 @@ public class AllShopsActivity extends AppCompatActivity {
     }
 
     private void fetchShops() {
-        // Inject 3 premium sample shops for the UI demonstration
-        binding.progressBar.setVisibility(View.GONE);
-        binding.rvAllShops.setVisibility(View.VISIBLE);
-        allShops.clear();
+        viewModel.getUserLocation().observe(this, location -> {
+            if (location != null && !viewModel.hasManualLocation()) {
+                fetchShopsFromApi(location.getLatitude(), location.getLongitude());
+            }
+        });
+        
+        if (viewModel.hasManualLocation()) {
+            fetchShopsFromApi(viewModel.getManualLat(), viewModel.getManualLng());
+        } else {
+            viewModel.refreshLocation();
+        }
+    }
 
-        Shop shop1 = new Shop();
-        shop1.setId("s1");
-        shop1.setName("Luxe Florals & Co.");
-        shop1.setRating(4.9);
-        shop1.setDistance(800);
-        shop1.setPrepTime("20-30 mins");
-        shop1.setOpen(true);
-        shop1.setImageUrl("https://images.unsplash.com/photo-1563241527-3004b7be0ffd?w=800&q=80"); // Elegant premium bouquet
-        
-        Shop shop2 = new Shop();
-        shop2.setId("s2");
-        shop2.setName("Midnight Rose Studio");
-        shop2.setRating(4.8);
-        shop2.setDistance(1500);
-        shop2.setPrepTime("15-25 mins");
-        shop2.setOpen(true);
-        shop2.setImageUrl("https://images.unsplash.com/photo-1582794543139-8ac9cb4f5544?w=800&q=80"); // Dark, moody, luxurious roses
-        
-        Shop shop3 = new Shop();
-        shop3.setId("s3");
-        shop3.setName("The Artisan Bloom");
-        shop3.setRating(4.6);
-        shop3.setDistance(2100);
-        shop3.setPrepTime("30-45 mins");
-        shop3.setOpen(true);
-        shop3.setImageUrl("https://images.unsplash.com/photo-1591886960571-74d43a9d4166?w=800&q=80"); // Bright artisanal shop
-
-        allShops.add(shop1);
-        allShops.add(shop2);
-        allShops.add(shop3);
-        
-        applyFilters();
+    private void fetchShopsFromApi(double lat, double lng) {
+        viewModel.getNearbyShops(lat, lng).observe(this, result -> {
+            if (result.status == NetworkResult.Status.LOADING) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.rvAllShops.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.GONE);
+            } else if (result.status == NetworkResult.Status.SUCCESS) {
+                binding.progressBar.setVisibility(View.GONE);
+                if (result.data != null && !result.data.isEmpty()) {
+                    allShops.clear();
+                    allShops.addAll(result.data);
+                    binding.rvAllShops.setVisibility(View.VISIBLE);
+                    applyFilters();
+                } else {
+                    binding.rvAllShops.setVisibility(View.GONE);
+                    binding.emptyState.setVisibility(View.VISIBLE);
+                }
+            } else if (result.status == NetworkResult.Status.ERROR) {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.rvAllShops.setVisibility(View.GONE);
+                Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void applyFilters() {
@@ -248,6 +253,14 @@ public class AllShopsActivity extends AppCompatActivity {
             if (query.isEmpty() || shop.getName().toLowerCase().contains(query)) {
                 filteredList.add(shop);
             }
+        }
+        
+        if (filteredList.isEmpty() && !allShops.isEmpty()) {
+            binding.rvAllShops.setVisibility(View.GONE);
+            binding.emptyState.setVisibility(View.VISIBLE);
+        } else if (!filteredList.isEmpty()) {
+            binding.rvAllShops.setVisibility(View.VISIBLE);
+            binding.emptyState.setVisibility(View.GONE);
         }
         
         adapter.setShops(filteredList);

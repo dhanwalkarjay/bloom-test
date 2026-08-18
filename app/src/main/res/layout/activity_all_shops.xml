@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/home_background"
+    android:background="?android:attr/colorBackground"
     tools:context=".customer.ui.home.AllShopsActivity">
 
     <!-- Header Area -->
@@ -13,15 +13,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#111111"
-        android:elevation="4dp"
-        android:paddingBottom="12dp"
+        android:elevation="@dimen/spacing_xs"
+        android:paddingBottom="@dimen/spacing_s"
         app:layout_constraintTop_toTopOf="parent">
 
         <!-- Top Bar -->
         <FrameLayout
             android:id="@+id/topBar"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/button_height"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -29,9 +29,9 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/spacing_s"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="8dp"
+                android:padding="@dimen/spacing_s"
                 android:src="@drawable/ic_arrow_back"
                 app:tint="@android:color/white" />
 
@@ -50,15 +50,15 @@
         <LinearLayout
             android:id="@+id/searchBarContainer"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="@dimen/spacing_xxl"
+            android:layout_marginStart="@dimen/spacing_m"
+            android:layout_marginEnd="@dimen/spacing_m"
+            android:layout_marginTop="@dimen/spacing_s"
             android:background="@drawable/bg_search_premium"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="@dimen/spacing_m"
+            android:paddingEnd="@dimen/spacing_m"
             app:layout_constraintTop_toBottomOf="@id/topBar">
 
             <ImageView
@@ -71,7 +71,7 @@
                 android:id="@+id/etSearchShop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="@dimen/spacing_s"
                 android:background="@null"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:hint="Search premium shops..."
@@ -87,10 +87,10 @@
             android:id="@+id/actionButtonsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/spacing_s"
             android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="@dimen/spacing_m"
+            android:paddingEnd="@dimen/spacing_m"
             app:layout_constraintTop_toBottomOf="@id/searchBarContainer">
 
             <TextView
@@ -107,12 +107,12 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/ic_arrow_drop_down"
                 app:drawableTint="@android:color/white"
-                android:drawablePadding="8dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="12dp" />
+                android:drawablePadding="@dimen/spacing_s"
+                android:paddingStart="@dimen/spacing_m"
+                android:paddingEnd="@dimen/spacing_s" />
 
             <View
-                android:layout_width="12dp"
+                android:layout_width="@dimen/spacing_s"
                 android:layout_height="match_parent" />
 
             <TextView
@@ -129,9 +129,9 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/ic_arrow_drop_down"
                 app:drawableTint="@android:color/white"
-                android:drawablePadding="8dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="12dp" />
+                android:drawablePadding="@dimen/spacing_s"
+                android:paddingStart="@dimen/spacing_m"
+                android:paddingEnd="@dimen/spacing_s" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -141,9 +141,9 @@
         android:id="@+id/rvAllShops"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="@dimen/spacing_s"
         android:clipToPadding="false"
-        android:paddingBottom="24dp"
+        android:paddingBottom="@dimen/spacing_l"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerLayout"
         tools:listitem="@layout/item_shop_vertical" />
@@ -158,6 +158,74 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+
+    <!-- Empty state -->
+    <LinearLayout
+        android:id="@+id/emptyState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_xl"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="@dimen/spacing_m"
+            android:background="@drawable/bg_circle_translucent">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_search_location"
+                app:tint="?attr/colorPrimary" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvEmptyTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:gravity="center"
+            android:text="No florists found"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvEmptySubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_s"
+            android:fontFamily="@font/work_sans"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/spacing_xs"
+            android:text="Try adjusting your filters or search term."
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="14sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClearFilters"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_l"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:paddingHorizontal="@dimen/spacing_xl"
+            android:text="Clear Filters"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorPrimary"
+            app:cornerRadius="@dimen/spacing_s"
+            app:strokeColor="?attr/colorPrimary" />
+
+    </LinearLayout>
+
 
     <!-- Dropdown Overlay -->
     <View
@@ -178,7 +246,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_dropdown_premium"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="@dimen/spacing_m"
         android:translationY="-500dp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/headerLayout">
@@ -196,7 +264,7 @@
             android:id="@+id/rgSortCriteria"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/spacing_s"
             android:orientation="horizontal">
             <RadioButton
                 android:id="@+id/rbSortRelevance"
@@ -210,7 +278,7 @@
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:textColor="@color/color_premium_toggle_text"
                 android:checked="true"/>
-            <View android:layout_width="8dp" android:layout_height="match_parent" />
+            <View android:layout_width="@dimen/spacing_s" android:layout_height="match_parent" />
             <RadioButton
                 android:id="@+id/rbSortRating"
                 android:layout_width="0dp"
@@ -222,7 +290,7 @@
                 android:text="Rating"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:textColor="@color/color_premium_toggle_text"/>
-            <View android:layout_width="8dp" android:layout_height="match_parent" />
+            <View android:layout_width="@dimen/spacing_s" android:layout_height="match_parent" />
             <RadioButton
                 android:id="@+id/rbSortDistance"
                 android:layout_width="0dp"
@@ -240,8 +308,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#333333"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginTop="@dimen/spacing_m"
+            android:layout_marginBottom="@dimen/spacing_m"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -256,7 +324,7 @@
             android:id="@+id/rgSortOrder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/spacing_s"
             android:orientation="horizontal">
             <RadioButton
                 android:id="@+id/rbSortDesc"
@@ -270,7 +338,7 @@
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:textColor="@color/color_premium_toggle_text"
                 android:checked="true"/>
-            <View android:layout_width="12dp" android:layout_height="match_parent" />
+            <View android:layout_width="@dimen/spacing_s" android:layout_height="match_parent" />
             <RadioButton
                 android:id="@+id/rbSortAsc"
                 android:layout_width="0dp"
@@ -288,13 +356,13 @@
             android:id="@+id/btnApplySort"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/spacing_l"
             android:text="Apply Sort"
             app:backgroundTint="@android:color/white"
             android:textColor="#111111"
             android:fontFamily="@font/plus_jakarta_sans"
             android:textStyle="bold"
-            app:cornerRadius="12dp"/>
+            app:cornerRadius="@dimen/spacing_s"/>
     </LinearLayout>
 
     <!-- Filter Dropdown Panel -->
@@ -314,7 +382,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:clipToPadding="false"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_m">
             
             <LinearLayout
                 android:layout_width="match_parent"
@@ -330,13 +398,13 @@
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:textStyle="bold"
                     android:textSize="16sp" />
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/spacing_s">
                     <CheckBox android:id="@+id/cbFilterOfficial" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Official Brand" android:textColor="@color/color_premium_toggle_text" />
-                    <View android:layout_width="12dp" android:layout_height="match_parent" />
+                    <View android:layout_width="@dimen/spacing_s" android:layout_height="match_parent" />
                     <CheckBox android:id="@+id/cbFilterArtisan" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Independent" android:textColor="@color/color_premium_toggle_text" />
                 </LinearLayout>
                 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" android:layout_marginTop="16dp" android:layout_marginBottom="16dp"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" android:layout_marginTop="@dimen/spacing_m" android:layout_marginBottom="@dimen/spacing_m"/>
                 
                 <!-- Price Range -->
                 <LinearLayout
@@ -369,7 +437,7 @@
                     android:id="@+id/rsPriceRange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/spacing_s"
                     android:valueFrom="0.0"
                     android:valueTo="300.0"
                     app:values="@array/initial_price_range"
@@ -378,7 +446,7 @@
                     app:trackColorInactive="#333333"
                     app:haloColor="#4DFFFFFF" />
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" android:layout_marginTop="8dp" android:layout_marginBottom="16dp"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" android:layout_marginTop="@dimen/spacing_s" android:layout_marginBottom="@dimen/spacing_m"/>
                 
                 <!-- Area / Location -->
                 <TextView
@@ -389,13 +457,13 @@
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:textStyle="bold"
                     android:textSize="16sp" />
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/spacing_s">
                     <CheckBox android:id="@+id/cbFilterAreaDowntown" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Downtown" android:textColor="@color/color_premium_toggle_text" />
-                    <View android:layout_width="12dp" android:layout_height="match_parent" />
+                    <View android:layout_width="@dimen/spacing_s" android:layout_height="match_parent" />
                     <CheckBox android:id="@+id/cbFilterAreaSuburbs" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Suburbs" android:textColor="@color/color_premium_toggle_text" />
                 </LinearLayout>
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" android:layout_marginTop="16dp" android:layout_marginBottom="16dp"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" android:layout_marginTop="@dimen/spacing_m" android:layout_marginBottom="@dimen/spacing_m"/>
                 
                 <!-- Flower Type -->
                 <TextView
@@ -406,15 +474,15 @@
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:textStyle="bold"
                     android:textSize="16sp" />
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/spacing_s">
                     <CheckBox android:id="@+id/cbFilterFlowerRoses" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Roses" android:textColor="@color/color_premium_toggle_text" />
-                    <View android:layout_width="8dp" android:layout_height="match_parent" />
+                    <View android:layout_width="@dimen/spacing_s" android:layout_height="match_parent" />
                     <CheckBox android:id="@+id/cbFilterFlowerOrchids" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Orchids" android:textColor="@color/color_premium_toggle_text" />
-                    <View android:layout_width="8dp" android:layout_height="match_parent" />
+                    <View android:layout_width="@dimen/spacing_s" android:layout_height="match_parent" />
                     <CheckBox android:id="@+id/cbFilterFlowerLilies" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Mixed" android:textColor="@color/color_premium_toggle_text" />
                 </LinearLayout>
                 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" android:layout_marginTop="16dp" android:layout_marginBottom="16dp"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#333333" android:layout_marginTop="@dimen/spacing_m" android:layout_marginBottom="@dimen/spacing_m"/>
                 
                 <!-- Other Features -->
                 <TextView
@@ -425,9 +493,9 @@
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:textStyle="bold"
                     android:textSize="16sp" />
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/spacing_s">
                     <CheckBox android:id="@+id/cbFilterFeatureCod" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="COD" android:textColor="@color/color_premium_toggle_text" />
-                    <View android:layout_width="12dp" android:layout_height="match_parent" />
+                    <View android:layout_width="@dimen/spacing_s" android:layout_height="match_parent" />
                     <CheckBox android:id="@+id/cbFilterFeatureLux" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:button="@null" android:gravity="center" android:background="@drawable/bg_premium_toggle" android:text="Lux Delivery" android:textColor="@color/color_premium_toggle_text" />
                 </LinearLayout>
             </LinearLayout>
@@ -438,7 +506,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp"
+            android:padding="@dimen/spacing_m"
             android:background="#1A1A1A">
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnApplyFilter"
@@ -449,7 +517,7 @@
                 android:textColor="#111111"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:textStyle="bold"
-                app:cornerRadius="12dp"/>
+                app:cornerRadius="@dimen/spacing_s"/>
         </LinearLayout>
     </LinearLayout>
 

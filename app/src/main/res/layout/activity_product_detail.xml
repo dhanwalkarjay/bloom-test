@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bloom_background"
+    android:background="?android:attr/colorBackground"
     tools:context=".customer.ui.product.ProductDetailActivity">
 
     <!-- Scrollable Content -->
@@ -20,16 +20,39 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="24dp">
+            android:paddingBottom="@dimen/spacing_l">
 
-            <!-- Hero Image Edge to Edge -->
-            <ImageView
-                android:id="@+id/ivProductImage"
+            <!-- Hero Image Carousel (Edge to Edge) -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vpProductGallery"
                 android:layout_width="match_parent"
-                android:layout_height="420dp"
+                android:layout_height="480dp"
                 android:background="#F5F5F5"
-                android:scaleType="centerCrop"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Gradient Scrim for better indicator visibility -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/bg_bottom_black_scrim"
+                app:layout_constraintBottom_toBottomOf="@id/vpProductGallery" />
+
+            <!-- Dot Indicator -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_marginBottom="44dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="@id/vpProductGallery"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                app:tabPaddingEnd="8dp"
+                app:tabPaddingStart="8dp"
+                app:tabRippleColor="@null" />
 
             <!-- Details Overlapping Container (Bottom Sheet Style) -->
             <LinearLayout
@@ -38,12 +61,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-32dp"
                 android:background="@drawable/bg_bottom_sheet_premium"
-                android:elevation="8dp"
+                android:elevation="@dimen/spacing_s"
                 android:orientation="vertical"
-                android:paddingHorizontal="24dp"
-                android:paddingTop="32dp"
+                android:paddingHorizontal="@dimen/spacing_l"
+                android:paddingTop="@dimen/spacing_xl"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ivProductImage"
+                app:layout_constraintTop_toBottomOf="@id/vpProductGallery"
                 app:layout_constraintVertical_bias="0.0">
 
                 <LinearLayout
@@ -59,7 +82,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="Sunrise Roses"
-                        android:textColor="@color/cart_on_surface"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="26sp"
                         android:textStyle="bold" />
 
@@ -69,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="₹580"
-                        android:textColor="@color/bloom_primary"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="22sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -77,52 +100,110 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/spacing_s"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="@dimen/spacing_m"
+                        android:layout_height="@dimen/spacing_m"
                         android:src="@drawable/ic_search_star"
                         app:tint="#F4B400" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginStart="@dimen/spacing_xs"
                         android:fontFamily="@font/work_sans"
                         android:text="4.8 (124 reviews)"
-                        android:textColor="@color/cart_on_surface_variant"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Florist Profile Card -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_l"
+                    android:background="@drawable/bg_rounded_grey"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_m">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_circle_translucent"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_shop"
+                        app:tint="?attr/colorPrimary" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_m"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:text="Petals &amp; Co. Boutique"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/work_sans"
+                            android:text="Premium Artisan Florist"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="View Store"
+                        android:textAllCaps="false"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="12sp"
+                        app:cornerRadius="20dp"
+                        app:strokeColor="?attr/colorPrimary" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="@dimen/spacing_l"
                     android:fontFamily="@font/work_sans"
                     android:lineSpacingMultiplier="1.4"
                     android:text="A radiant collection of premium roses in warm sunset hues, perfect for brightening any space."
-                    android:textColor="@color/cart_on_surface_variant"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="15sp" />
 
                 <!-- Options -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="@dimen/spacing_xl"
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:text="Select Size"
-                    android:textColor="@color/cart_on_surface"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/spacing_m"
                     android:orientation="horizontal">
 
                     <TextView
@@ -130,45 +211,278 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_home_chip_active"
                         android:fontFamily="@font/plus_jakarta_sans"
-                        android:paddingHorizontal="24dp"
+                        android:paddingHorizontal="@dimen/spacing_l"
                         android:paddingVertical="10dp"
                         android:text="Regular"
-                        android:textColor="@android:color/white"
+                        android:textColor="?attr/colorSurface"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="@dimen/spacing_s"
                         android:background="@drawable/bg_home_chip_inactive"
                         android:fontFamily="@font/plus_jakarta_sans"
-                        android:paddingHorizontal="24dp"
+                        android:paddingHorizontal="@dimen/spacing_l"
                         android:paddingVertical="10dp"
                         android:text="Deluxe"
-                        android:textColor="@color/cart_on_surface_variant"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp"
                         android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Care Instructions -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xl"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="Care Instructions"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_m"
+                    android:orientation="horizontal">
+                    
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_rounded_grey"
+                        android:padding="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="💧"
+                            android:textSize="20sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/work_sans"
+                            android:text="Change water\nevery 2 days"
+                            android:textSize="12sp"
+                            android:textColor="?attr/colorOnSurfaceVariant"/>
+                    </LinearLayout>
+                    
+                    <Space
+                        android:layout_width="@dimen/spacing_s"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_rounded_grey"
+                        android:padding="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="✂️"
+                            android:textSize="20sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/work_sans"
+                            android:text="Trim stems\n1 inch daily"
+                            android:textSize="12sp"
+                            android:textColor="?attr/colorOnSurfaceVariant"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    android:orientation="horizontal">
+                    
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_rounded_grey"
+                        android:padding="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="☀️"
+                            android:textSize="20sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/work_sans"
+                            android:text="Avoid direct\nsunlight"
+                            android:textSize="12sp"
+                            android:textColor="?attr/colorOnSurfaceVariant"/>
+                    </LinearLayout>
+                    
+                    <Space
+                        android:layout_width="@dimen/spacing_s"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_rounded_grey"
+                        android:padding="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🍃"
+                            android:textSize="20sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/work_sans"
+                            android:text="Use included\nflower food"
+                            android:textSize="12sp"
+                            android:textColor="?attr/colorOnSurfaceVariant"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Card Message Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xl"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="Card Message"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_m"
+                    app:boxBackgroundColor="#F5F5F5"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="1dp"
+                    app:boxStrokeColor="?attr/colorPrimary"
+                    app:hintEnabled="false"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCardMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|start"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:background="@null"
+                        android:padding="16dp"
+                        android:hint="Type your message here..." />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    android:scrollbars="none">
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="false">
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipBirthday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Happy Birthday!" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipSympathy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="With deepest sympathy" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipThinking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thinking of you" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipCongrats"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Congratulations!" />
+                    </com.google.android.material.chip.ChipGroup>
+                </HorizontalScrollView>
+
+                <LinearLayout
+                    android:id="@+id/llAttachVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_m"
+                    android:background="@drawable/bg_rounded_grey"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_s"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="@dimen/spacing_l"
+                        android:layout_height="@dimen/spacing_l"
+                        android:src="@android:drawable/ic_menu_camera"
+                        app:tint="?attr/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/tvVideoStatus"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_s"
+                        android:layout_weight="1"
+                        android:text="Attach Video Message ✨"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                        
+                    <ImageView
+                        android:id="@+id/btnRemoveVideo"
+                        android:layout_width="@dimen/spacing_l"
+                        android:layout_height="@dimen/spacing_l"
+                        android:src="@android:drawable/ic_menu_close_clear_cancel"
+                        android:visibility="gone"
+                        app:tint="?attr/colorOutline" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="@dimen/spacing_xl"
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:text="Delivery Information"
-                    android:textColor="@color/cart_on_surface"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="@dimen/spacing_s"
                     android:fontFamily="@font/work_sans"
                     android:lineSpacingExtra="6dp"
                     android:text="• Estimated delivery: 2-3 hours\n• Same day delivery available for orders before 4 PM\n• Hand-delivered in signature Bloom wrap"
-                    android:textColor="@color/cart_on_surface_variant"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="14sp" />
 
                 <!-- Add-ons Section -->
@@ -176,10 +490,10 @@
                     android:id="@+id/tvAddonsLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="@dimen/spacing_xl"
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:text="Add something extra?"
-                    android:textColor="@color/cart_on_surface"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -187,7 +501,7 @@
                     android:id="@+id/rvAddons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/spacing_m"
                     android:clipToPadding="false"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -198,18 +512,18 @@
             <!-- Floating Favorite Button perfectly positioned on the boundary -->
             <ImageButton
                 android:id="@+id/btnFavorite"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginEnd="24dp"
+                android:layout_width="@dimen/button_height"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginEnd="@dimen/spacing_l"
                 android:background="@drawable/bg_circle_translucent"
-                android:backgroundTint="@color/home_lux_dark"
+                android:backgroundTint="?attr/colorPrimary"
                 android:contentDescription="Favorite"
-                android:elevation="12dp"
+                android:elevation="@dimen/spacing_s"
                 android:src="@drawable/ic_search_heart"
                 app:layout_constraintBottom_toTopOf="@id/llDetailsContainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/llDetailsContainer"
-                app:tint="@android:color/white" />
+                app:tint="?attr/colorSurface" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
@@ -219,24 +533,24 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="24dp"
+        android:paddingHorizontal="@dimen/spacing_l"
         android:paddingTop="38dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="@dimen/spacing_m"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/spacing_xxl"
+            android:layout_height="@dimen/spacing_xxl"
             android:background="@drawable/bg_circle_translucent"
             android:backgroundTint="#80000000"
             android:contentDescription="Back"
-            android:padding="12dp"
+            android:padding="@dimen/spacing_s"
             android:src="@drawable/ic_arrow_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@android:color/white" />
+            app:tint="?attr/colorSurface" />
 
         <FrameLayout
             android:id="@+id/flCartTop"
@@ -248,14 +562,14 @@
 
             <ImageButton
                 android:id="@+id/btnCartTop"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/spacing_xxl"
+                android:layout_height="@dimen/spacing_xxl"
                 android:background="@drawable/bg_circle_translucent"
                 android:backgroundTint="#80000000"
                 android:contentDescription="Cart"
-                android:padding="12dp"
+                android:padding="@dimen/spacing_s"
                 android:src="@drawable/ic_cart"
-                app:tint="@android:color/white" />
+                app:tint="?attr/colorSurface" />
 
             <TextView
                 android:id="@+id/tvCartBadge"
@@ -265,7 +579,7 @@
                 android:background="@drawable/bg_home_notification_dot"
                 android:gravity="center"
                 android:text="0"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/colorSurface"
                 android:textSize="10sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
@@ -277,11 +591,11 @@
         android:id="@+id/bottomActionBar"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="@color/bloom_background"
-        android:elevation="24dp"
+        android:background="?android:attr/colorBackground"
+        android:elevation="@dimen/spacing_l"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="24dp"
+        android:paddingHorizontal="@dimen/spacing_l"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- Add to Cart / Stepper -->
@@ -299,13 +613,13 @@
                 android:backgroundTint="@color/bloom_chip_bg"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:text="Add to Cart"
-                android:textColor="@color/bloom_primary"
+                android:textColor="?attr/colorPrimary"
                 android:textStyle="bold"
                 app:cornerRadius="25dp"
                 app:icon="@drawable/ic_cart"
                 app:iconGravity="textStart"
-                app:iconTint="@color/bloom_primary"
-                app:strokeColor="@color/bloom_primary"
+                app:iconTint="?attr/colorPrimary"
+                app:strokeColor="?attr/colorPrimary"
                 app:strokeWidth="1dp" />
 
             <LinearLayout
@@ -313,7 +627,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_home_chip_active"
-                android:backgroundTint="@color/bloom_primary"
+                android:backgroundTint="?attr/colorPrimary"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:visibility="gone">
@@ -324,11 +638,11 @@
                     android:layout_height="36dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_remove"
-                    app:tint="@android:color/white" />
+                    app:tint="?attr/colorSurface" />
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_height="24dp"
+                    android:layout_height="@dimen/spacing_l"
                     android:background="#40FFFFFF" />
 
                 <TextView
@@ -339,13 +653,13 @@
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:gravity="center"
                     android:text="1"
-                    android:textColor="@android:color/white"
+                    android:textColor="?attr/colorSurface"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_height="24dp"
+                    android:layout_height="@dimen/spacing_l"
                     android:background="#40FFFFFF" />
 
                 <ImageButton
@@ -354,7 +668,7 @@
                     android:layout_height="36dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_home_add"
-                    app:tint="@android:color/white" />
+                    app:tint="?attr/colorSurface" />
             </LinearLayout>
         </FrameLayout>
 
@@ -363,12 +677,12 @@
             android:id="@+id/btnCheckout"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/spacing_m"
             android:layout_weight="1"
-            android:backgroundTint="@color/home_lux_dark"
+            android:backgroundTint="?attr/colorPrimary"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="Buy Now"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/colorSurface"
             android:textSize="16sp"
             android:textStyle="bold"
             app:cornerRadius="25dp" />

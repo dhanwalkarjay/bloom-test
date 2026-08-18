@@ -26,10 +26,13 @@ public class SignupActivity extends AppCompatActivity {
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        com.bloom.customer.util.SystemBarInsets.apply(this);
+
         viewModel = new ViewModelProvider(this).get(com.bloom.customer.ui.auth.AuthViewModel.class);
 
         binding.btnSignup.setOnClickListener(v -> attemptSignup());
         binding.tvLoginLink.setOnClickListener(v -> finish());
+        binding.btnBack.setOnClickListener(v -> finish());
     }
 
     private void attemptSignup() {

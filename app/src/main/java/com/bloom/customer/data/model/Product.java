@@ -76,6 +76,15 @@ public class Product {
     public boolean isLux() { return isLux; }
     public void setLux(boolean lux) { isLux = lux; }
 
+    public String[] getOccasionTags() { return occasionTags; }
+    public void setOccasionTags(String[] occasionTags) { this.occasionTags = occasionTags; }
+
+    public boolean isBestseller() { return isBestseller; }
+    public void setBestseller(boolean bestseller) { isBestseller = bestseller; }
+
+    public int getStockCount() { return stockCount; }
+    public void setStockCount(int stockCount) { this.stockCount = stockCount; }
+
     public String getCreatedAt() { return createdAt; }
     public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
 }

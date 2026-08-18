@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/_240sdp"
     android:layout_height="@dimen/_160sdp"
-    android:layout_marginBottom="@dimen/_12sdp"
+    android:layout_marginBottom="@dimen/spacing_s"
     android:layout_marginStart="@dimen/_4sdp"
-    android:layout_marginEnd="@dimen/_12sdp"
+    android:layout_marginEnd="@dimen/spacing_s"
     app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="@dimen/_16sdp"
+    app:cardCornerRadius="@dimen/spacing_m"
     app:cardElevation="@dimen/_6sdp"
     app:strokeWidth="0dp">
 
@@ -72,8 +72,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/bg_glass_pill"
-            android:paddingStart="@dimen/_8sdp"
-            android:paddingEnd="@dimen/_8sdp"
+            android:paddingStart="@dimen/spacing_s"
+            android:paddingEnd="@dimen/spacing_s"
             android:paddingTop="@dimen/_4sdp"
             android:paddingBottom="@dimen/_4sdp"
             android:text="★ TOP RATED"
@@ -91,8 +91,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/bg_glass_pill"
-            android:paddingStart="@dimen/_8sdp"
-            android:paddingEnd="@dimen/_8sdp"
+            android:paddingStart="@dimen/spacing_s"
+            android:paddingEnd="@dimen/spacing_s"
             android:paddingTop="@dimen/_4sdp"
             android:paddingBottom="@dimen/_4sdp"
             android:fontFamily="@font/dm_sans"
@@ -110,8 +110,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginStart="@dimen/spacing_s"
+            android:layout_marginEnd="@dimen/spacing_s"
             android:layout_marginBottom="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -119,8 +119,8 @@
 
             <!-- Distance -->
             <ImageView
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
+                android:layout_width="@dimen/spacing_s"
+                android:layout_height="@dimen/spacing_s"
                 android:src="@drawable/ic_home_location"
                 app:tint="@android:color/white" />
 
@@ -138,16 +138,16 @@
                 android:id="@+id/tvDot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
+                android:layout_marginStart="@dimen/spacing_s"
+                android:layout_marginEnd="@dimen/spacing_s"
                 android:text="•"
                 android:textColor="#E0E0E0"
                 android:textSize="@dimen/_10ssp"/>
 
             <!-- Prep Time -->
             <ImageView
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
+                android:layout_width="@dimen/spacing_s"
+                android:layout_height="@dimen/spacing_s"
                 android:src="@drawable/ic_clock"
                 app:tint="@android:color/white" />
 
@@ -168,8 +168,8 @@
             android:id="@+id/tvShopName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginStart="@dimen/spacing_s"
+            android:layout_marginEnd="@dimen/spacing_s"
             android:layout_marginBottom="@dimen/_4sdp"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="Florist Name"

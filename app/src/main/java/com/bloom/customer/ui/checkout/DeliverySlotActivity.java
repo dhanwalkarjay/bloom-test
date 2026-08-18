@@ -18,7 +18,13 @@ public class DeliverySlotActivity extends AppCompatActivity {
 
     private ActivityDeliverySlotBinding binding;
     private String selectedSlot = "SAME-DAY";
+    private com.bloom.customer.data.model.Shop shop;
     private View lastSelectedDateView = null;
+    private int opensAtHour = 8;
+    private int closesAtHour = 20;
+    private int opensAtMin = 0;
+    private int closesAtMin = 0;
+    private int prepTimeMinutes = 60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +34,61 @@ public class DeliverySlotActivity extends AppCompatActivity {
 
         binding.btnBack.setOnClickListener(v -> finish());
 
+        // Parse shop details
+        String shopJson = getIntent().getStringExtra("shop_json");
+        if (shopJson != null) {
+            shop = new com.google.gson.Gson().fromJson(shopJson, com.bloom.customer.data.model.Shop.class);
+            if (shop != null) {
+                parseShopTimes();
+                prepTimeMinutes = shop.getPreparationMinutes() > 0 ? shop.getPreparationMinutes() : 60;
+            }
+        }
+
         setupTabs();
         setupPickers();
         
         binding.btnContinue.setOnClickListener(v -> {
             Intent intent = new Intent(this, PaymentActivity.class);
             intent.putExtra("address_id", getIntent().getStringExtra("address_id"));
-            intent.putExtra("delivery_slot", selectedSlot);
+            
+            String finalSlot = selectedSlot;
+            if ("SCHEDULED".equals(selectedSlot)) {
+                String time = "";
+                String ampm = "";
+                if (binding.tvSelectedTime != null) time = binding.tvSelectedTime.getText().toString();
+                if (binding.tvAmPm != null) ampm = binding.tvAmPm.getText().toString();
+                
+                String date = "";
+                if (lastSelectedDateView != null) {
+                    TextView tvDayName = lastSelectedDateView.findViewById(R.id.tvDayName);
+                    TextView tvDayNum = lastSelectedDateView.findViewById(R.id.tvDayNum);
+                    date = tvDayName.getText().toString() + " " + tvDayNum.getText().toString();
+                }
+                finalSlot = "SCHEDULED: " + date + " at " + time + " " + ampm;
+            }
+            
+            intent.putExtra("delivery_slot", finalSlot);
             startActivity(intent);
         });
 
         binding.cardChangeTime.setOnClickListener(v -> showTimePicker());
+    }
+
+    private void parseShopTimes() {
+        if (shop.getOpensAt() != null) {
+            try {
+                String[] parts = shop.getOpensAt().split(":");
+                opensAtHour = Integer.parseInt(parts[0]);
+                opensAtMin = Integer.parseInt(parts[1]);
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+        if (shop.getClosesAt() != null) {
+            try {
+                String[] parts = shop.getClosesAt().split(":");
+                closesAtHour = Integer.parseInt(parts[0]);
+                closesAtMin = Integer.parseInt(parts[1]);
+            } catch (Exception e) { e.printStackTrace(); }
+        }
     }
 
     private void setupPickers() {
@@ -78,13 +128,16 @@ public class DeliverySlotActivity extends AppCompatActivity {
             com.google.android.material.card.MaterialCardView card = (com.google.android.material.card.MaterialCardView) lastSelectedDateView;
             card.setCardBackgroundColor(Color.TRANSPARENT);
             card.setCardElevation(0f);
-            ((TextView)card.findViewById(R.id.tvDayName)).setTextColor(Color.parseColor("#AAAAAA"));
-            ((TextView)card.findViewById(R.id.tvDayNum)).setTextColor(ContextCompat.getColor(this, R.color.home_lux_dark));
+            card.setStrokeWidth((int)dpToPx(1));
+            card.setStrokeColor(Color.parseColor("#DEBFC1"));
+            ((TextView)card.findViewById(R.id.tvDayName)).setTextColor(Color.parseColor("#574143"));
+            ((TextView)card.findViewById(R.id.tvDayNum)).setTextColor(Color.parseColor("#24181A"));
         }
 
         com.google.android.material.card.MaterialCardView card = (com.google.android.material.card.MaterialCardView) view;
         card.setCardBackgroundColor(ContextCompat.getColor(this, R.color.home_primary));
-        card.setCardElevation(dpToPx(8));
+        card.setCardElevation(0f);
+        card.setStrokeWidth(0);
         ((TextView)card.findViewById(R.id.tvDayName)).setTextColor(Color.parseColor("#E6FFFFFF"));
         ((TextView)card.findViewById(R.id.tvDayNum)).setTextColor(Color.WHITE);
         
@@ -92,7 +145,18 @@ public class DeliverySlotActivity extends AppCompatActivity {
     }
 
     private boolean isSameDayPossible() {
-        return true; // Simplified for UI branch
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        int currentHour = calendar.get(java.util.Calendar.HOUR_OF_DAY);
+        int currentMin = calendar.get(java.util.Calendar.MINUTE);
+        
+        int currentTotalMins = (currentHour * 60) + currentMin;
+        int closesAtTotalMins = (closesAtHour * 60) + closesAtMin;
+        
+        // If current time + prep time is past closing time, no same day delivery
+        if (currentTotalMins + prepTimeMinutes >= closesAtTotalMins) {
+            return false;
+        }
+        return true;
     }
 
     private void showTimePicker() {
@@ -108,6 +172,22 @@ public class DeliverySlotActivity extends AppCompatActivity {
             int hour = picker.getHour();
             int min = picker.getMinute();
             
+            // Validate bounds
+            int selectedMins = (hour * 60) + min;
+            int openMins = (opensAtHour * 60) + opensAtMin;
+            int closeMins = (closesAtHour * 60) + closesAtMin;
+            
+            if (selectedMins < openMins || selectedMins > closeMins) {
+                String openTime = formatTime(opensAtHour, opensAtMin);
+                String closeTime = formatTime(closesAtHour, closesAtMin);
+                new androidx.appcompat.app.AlertDialog.Builder(this)
+                        .setTitle("Invalid Time")
+                        .setMessage("This shop is open from " + openTime + " to " + closeTime + ". Please select a time within operating hours.")
+                        .setPositiveButton("OK", null)
+                        .show();
+                return; // Do not update UI
+            }
+            
             String ampm = hour >= 12 ? "PM" : "AM";
             int hour12 = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
             binding.tvSelectedTime.setText(String.format("%d:%02d", hour12, min));
@@ -117,13 +197,27 @@ public class DeliverySlotActivity extends AppCompatActivity {
         picker.show(getSupportFragmentManager(), "TIME_PICKER");
     }
 
+    private String formatTime(int hour, int min) {
+        String ampm = hour >= 12 ? "PM" : "AM";
+        int hour12 = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+        return String.format("%d:%02d %s", hour12, min, ampm);
+    }
+
     private void setupTabs() {
         if (binding.cardSameDay == null) return;
         
-        binding.cardSameDay.setOnClickListener(v -> selectTab("SAME-DAY"));
+        binding.cardSameDay.setOnClickListener(v -> {
+            if (isSameDayPossible()) selectTab("SAME-DAY");
+            else android.widget.Toast.makeText(this, "Same-Day Delivery cutoff (6 PM) has passed.", android.widget.Toast.LENGTH_SHORT).show();
+        });
         binding.cardScheduled.setOnClickListener(v -> selectTab("SCHEDULED"));
         
-        selectTab("SAME-DAY");
+        if (isSameDayPossible()) {
+            selectTab("SAME-DAY");
+        } else {
+            selectTab("SCHEDULED");
+            binding.cardSameDay.setAlpha(0.5f);
+        }
     }
 
     private void selectTab(String tab) {
@@ -148,7 +242,8 @@ public class DeliverySlotActivity extends AppCompatActivity {
             
             if (!isSameDayPossible()) {
                 binding.btnContinue.setEnabled(false);
-                binding.btnContinue.setText("Same-day closed");
+                String openTime = formatTime(opensAtHour, opensAtMin);
+                binding.btnContinue.setText("This shop is sleeping. Earliest delivery Tomorrow at " + openTime);
             } else {
                 binding.btnContinue.setEnabled(true);
                 binding.btnContinue.setText("Confirm Delivery");

@@ -51,7 +51,17 @@ public class ShopDetailActivity extends AppCompatActivity {
 
     private void setupUI() {
         binding.tvShopName.setText(shop.getName());
-        binding.tvShopDetails.setText("★ " + shop.getRating() + " • " + shop.getFormattedDistance());
+        binding.tvShopRating.setText("★ " + shop.getRating());
+        binding.tvShopDistance.setText(shop.getFormattedDistance());
+        
+        double allowedRadiusKm = shop.getDeliveryRadiusKm() > 0 ? shop.getDeliveryRadiusKm() : 5.0;
+        if (shop.getDistance() > allowedRadiusKm * 1000) {
+            binding.tvShopTime.setText("Out of Delivery Zone");
+            binding.tvShopTime.setTextColor(getColor(android.R.color.holo_red_dark));
+            binding.tvShopTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0); // Remove icon if any
+        } else {
+            binding.tvShopTime.setText(shop.isOpen() ? "Open Now" : "Opens 9 AM");
+        }
         
         Glide.with(this)
                 .load(shop.getImageUrl())
@@ -116,13 +126,22 @@ public class ShopDetailActivity extends AppCompatActivity {
                 }
             }
             if (totalCount > 0) {
-                binding.btnViewCart.setVisibility(View.VISIBLE);
                 binding.btnViewCart.setText("View Cart (" + totalCount + " items)");
-                
-                binding.tvCartBadge.setVisibility(View.VISIBLE);
                 binding.tvCartBadge.setText(String.valueOf(totalCount));
+                binding.tvCartBadge.setVisibility(View.VISIBLE);
+                
+                if (binding.btnViewCart.getVisibility() != View.VISIBLE) {
+                    binding.btnViewCart.setAlpha(0f);
+                    binding.btnViewCart.setTranslationY(50f);
+                    binding.btnViewCart.setVisibility(View.VISIBLE);
+                    binding.btnViewCart.animate().alpha(1f).translationY(0f).setDuration(300).start();
+                }
             } else {
-                binding.btnViewCart.setVisibility(View.GONE);
+                if (binding.btnViewCart.getVisibility() == View.VISIBLE) {
+                    binding.btnViewCart.animate().alpha(0f).translationY(50f).setDuration(200).withEndAction(() -> {
+                        binding.btnViewCart.setVisibility(View.GONE);
+                    }).start();
+                }
                 binding.tvCartBadge.setVisibility(View.GONE);
             }
         });

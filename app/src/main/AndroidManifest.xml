@@ -1,6 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="upi" />
+        </intent>
+    </queries>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -20,6 +27,8 @@
         <activity android:name=".customer.ui.auth.OtpVerifyActivity" />
         <activity android:name=".customer.ui.auth.ForgotPasswordActivity" />
         <activity android:name=".customer.ui.home.HomeActivity" />
+        <activity android:name=".customer.ui.home.ShopMapActivity" />
+        <activity android:name=".customer.ui.home.InAppCallActivity" />
         <activity android:name=".customer.ui.location.ManualLocationActivity" />
         <activity android:name=".customer.ui.shop.ShopDetailActivity" />
         <activity android:name=".customer.ui.product.ProductDetailActivity" />
@@ -34,8 +43,10 @@
         <activity android:name=".customer.ui.orderhistory.RateOrderActivity" />
         <activity android:name=".customer.ui.support.HelpCenterActivity" />
         <activity android:name=".customer.ui.support.SupportActivity" />
+        <activity android:name=".customer.ui.profile.OccasionsActivity" />
+        <activity android:name=".customer.ui.profile.AddOccasionActivity" />
 
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="YOUR_GOOGLE_MAPS_API_KEY" />
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="${MAPS_API_KEY}" />
 
         <receiver android:name="com.razorpay.RzpTokenReceiver" android:exported="true">
             <intent-filter>
@@ -45,6 +56,25 @@
 
         <activity android:name=".MainActivity" android:exported="false" android:windowSoftInputMode="adjustResize">
         </activity>
-    <activity android:name=".customer.ui.home.AllShopsActivity" android:exported="false" /></application>
+        <activity android:name=".customer.ui.home.AllShopsActivity" android:exported="false" />
+        <activity
+            android:name=".customer.ui.bespoke.CreateBouquetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".merchant.MerchantHomeActivity"
+            android:exported="false" />
+        
+        <!-- FileProvider for sharing PDF Invoices -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
 
 </manifest>

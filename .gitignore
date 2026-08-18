@@ -13,3 +13,16 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Debug logs
+logcat.txt
+*.log
+
+# Utility scripts and test data (tracked in specific subdirectories only)
+# These prevent accidental root-level commits
+/*.sql
+/*.py
+/*.json
+!settings.gradle.kts
+!build.gradle.kts
+!package.json

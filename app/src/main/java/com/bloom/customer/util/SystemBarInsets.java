@@ -93,7 +93,10 @@ public final class SystemBarInsets {
         String className = activity.getClass().getName();
         return className.equals("com.bloom.MainActivity")
                 || className.endsWith(".ui.home.HomeActivity")
-                || className.endsWith(".ui.splash.SplashActivity");
+                || className.endsWith(".ui.splash.SplashActivity")
+                || className.endsWith(".ui.product.ProductDetailActivity")
+                || className.endsWith(".ui.location.ManualLocationActivity")
+                || className.endsWith(".ui.auth.ForgotPasswordActivity");
     }
 
     private static boolean isDarkSystemBarScreen(Activity activity) {
@@ -105,7 +108,9 @@ public final class SystemBarInsets {
         String className = activity.getClass().getName();
         return className.endsWith(".ui.checkout.AddAddressActivity")
                 || className.endsWith(".ui.product.ProductDetailActivity")
-                || className.endsWith(".ui.shop.ShopDetailActivity");
+                || className.endsWith(".ui.shop.ShopDetailActivity")
+                || className.endsWith(".ui.auth.OtpVerifyActivity")
+                || className.endsWith(".ui.auth.SignupActivity");
     }
 
     private static PaddingState getPaddingState(View root, int viewId) {

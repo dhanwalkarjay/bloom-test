@@ -25,6 +25,7 @@ public class CheckoutViewModel extends AndroidViewModel {
     private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
     private final ShopRepository shopRepository;
+    private final com.bloom.customer.data.repository.ProductRepository productRepository;
 
     private final MutableLiveData<String> selectedAddressId = new MutableLiveData<>();
     private final MutableLiveData<String> selectedDeliverySlot = new MutableLiveData<>();
@@ -36,6 +37,7 @@ public class CheckoutViewModel extends AndroidViewModel {
         this.cartRepository = CartRepository.getInstance(application);
         this.orderRepository = new OrderRepository(application);
         this.shopRepository = new ShopRepository(application);
+        this.productRepository = new com.bloom.customer.data.repository.ProductRepository(application);
     }
 
     public LiveData<NetworkResult<List<Address>>> getAddresses() {
@@ -56,6 +58,14 @@ public class CheckoutViewModel extends AndroidViewModel {
 
     public LiveData<NetworkResult<Order>> placeOrder(Order order) {
         return orderRepository.placeOrder(order);
+    }
+
+    public LiveData<NetworkResult<Void>> updateOrderPaymentStatus(String orderId, String status) {
+        return orderRepository.updateOrderPaymentStatus(orderId, status);
+    }
+
+    public LiveData<NetworkResult<List<com.bloom.customer.data.model.Product>>> getProductsByShop(String shopId) {
+        return productRepository.getProductsByShop(shopId);
     }
 
     public LiveData<List<CartItem>> getCartItems() {

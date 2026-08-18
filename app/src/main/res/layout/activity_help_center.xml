@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF8F7">
+    android:background="?android:attr/colorBackground">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/button_height"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,22 +18,22 @@
 
             <ImageButton
                 android:id="@+id/btnBack"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/spacing_xxl"
+                android:layout_height="@dimen/spacing_xxl"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="12dp"
+                android:padding="@dimen/spacing_s"
                 android:src="@drawable/ic_arrow_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="#AF314A" />
+                app:tint="?attr/colorPrimary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:text="Help Center"
-                android:textColor="#AF314A"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -43,16 +43,16 @@
 
             <ImageButton
                 android:id="@+id/btnSearch"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
+                android:layout_width="@dimen/spacing_xxl"
+                android:layout_height="@dimen/spacing_xxl"
+                android:layout_marginEnd="@dimen/spacing_s"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="12dp"
+                android:padding="@dimen/spacing_s"
                 android:src="@drawable/ic_home_search"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="#AF314A" />
+                app:tint="?attr/colorPrimary" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -68,37 +68,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="@dimen/spacing_m">
 
             <EditText
                 android:id="@+id/etSearchHelp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/spacing_xxl"
                 android:background="@drawable/bg_search_pill"
-                android:backgroundTint="#FFFFFF"
+                android:backgroundTint="?attr/colorSurface"
                 android:drawableStart="@drawable/ic_home_search"
-                android:drawablePadding="12dp"
-                android:drawableTint="#999999"
+                android:drawablePadding="@dimen/spacing_s"
+                android:drawableTint="?attr/colorOnSurfaceVariant"
                 android:fontFamily="@font/work_sans"
                 android:hint="Search for help"
-                android:paddingHorizontal="16dp"
-                android:textColor="#333333"
+                android:paddingHorizontal="@dimen/spacing_m"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="@dimen/spacing_xl"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:text="Popular Topics"
-                android:textColor="#333333"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_m"
                 android:columnCount="2"
                 android:rowCount="2">
 
@@ -109,8 +109,8 @@
                     android:layout_height="120dp"
                     android:layout_columnWeight="1"
                     android:layout_margin="6dp"
-                    app:cardBackgroundColor="#FEE9EE"
-                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardCornerRadius="@dimen/spacing_m"
                     app:cardElevation="0dp">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -128,10 +128,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="@dimen/spacing_s"
                             android:fontFamily="@font/dm_sans"
                             android:text="My Order"
-                            android:textColor="#333333"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -144,8 +144,8 @@
                     android:layout_height="120dp"
                     android:layout_columnWeight="1"
                     android:layout_margin="6dp"
-                    app:cardBackgroundColor="#FEE9EE"
-                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardCornerRadius="@dimen/spacing_m"
                     app:cardElevation="0dp">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -159,14 +159,14 @@
                             android:backgroundTint="#FFEBEE"
                             android:padding="10dp"
                             android:src="@drawable/ic_launcher_foreground"
-                            app:tint="#AF314A" />
+                            app:tint="?attr/colorPrimary" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="@dimen/spacing_s"
                             android:fontFamily="@font/dm_sans"
                             android:text="Cancel/Refund"
-                            android:textColor="#333333"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -179,8 +179,8 @@
                     android:layout_height="120dp"
                     android:layout_columnWeight="1"
                     android:layout_margin="6dp"
-                    app:cardBackgroundColor="#FEE9EE"
-                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardCornerRadius="@dimen/spacing_m"
                     app:cardElevation="0dp">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -198,10 +198,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="@dimen/spacing_s"
                             android:fontFamily="@font/dm_sans"
                             android:text="Payment Issues"
-                            android:textColor="#333333"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -214,8 +214,8 @@
                     android:layout_height="120dp"
                     android:layout_columnWeight="1"
                     android:layout_margin="6dp"
-                    app:cardBackgroundColor="#FEE9EE"
-                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardCornerRadius="@dimen/spacing_m"
                     app:cardElevation="0dp">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -233,10 +233,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="@dimen/spacing_s"
                             android:fontFamily="@font/dm_sans"
                             android:text="Delivery Problem"
-                            android:textColor="#333333"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -247,26 +247,26 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="@dimen/spacing_xl"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:text="Support &amp; FAQ"
-                android:textColor="#333333"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="16dp"
+                android:layout_marginTop="@dimen/spacing_m"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardCornerRadius="@dimen/spacing_m"
                 app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="@dimen/spacing_s">
 
                     <include layout="@layout/item_profile_menu" app:title="Frequently Asked Questions" app:icon="@android:drawable/ic_menu_agenda" />
                     <include layout="@layout/item_profile_menu" app:title="Email Support" app:icon="@android:drawable/ic_menu_send" />
@@ -279,8 +279,8 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:layout_marginTop="24dp"
-                app:cardCornerRadius="24dp"
+                android:layout_marginTop="@dimen/spacing_l"
+                app:cardCornerRadius="@dimen/spacing_l"
                 app:cardElevation="0dp">
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -299,19 +299,19 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:orientation="vertical"
-                        android:padding="24dp">
+                        android:padding="@dimen/spacing_l">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/plus_jakarta_sans"
                             android:text="Need urgent\nhelp?"
-                            android:textColor="#FFFFFF"
+                            android:textColor="?attr/colorSurface"
                             android:textSize="20sp"
                             android:textStyle="bold" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="@dimen/spacing_s"
                             android:fontFamily="@font/work_sans"
                             android:text="Our floral experts are\navailable 24/7 for you."
                             android:textColor="#EFFFFFFF"
@@ -326,16 +326,16 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnChat"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_margin="20dp"
-        android:backgroundTint="#AF314A"
+        android:layout_height="@dimen/button_height"
+        android:layout_margin="@dimen/spacing_m"
+        android:backgroundTint="?attr/colorPrimary"
         android:fontFamily="@font/plus_jakarta_sans"
         android:text="Chat with Support"
         android:textAllCaps="false"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/colorSurface"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:cornerRadius="12dp"
+        app:cornerRadius="@dimen/spacing_s"
         app:icon="@android:drawable/stat_notify_chat"
         app:iconGravity="textStart"
         app:layout_constraintBottom_toBottomOf="parent" />

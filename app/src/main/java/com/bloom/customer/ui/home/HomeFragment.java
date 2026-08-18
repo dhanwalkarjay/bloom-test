@@ -13,7 +13,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -57,7 +56,7 @@ public class HomeFragment extends Fragment {
                     double lat = result.getData().getDoubleExtra("lat", 0);
                     double lng = result.getData().getDoubleExtra("lng", 0);
                     String area = result.getData().getStringExtra("area_name");
-                    
+
                     // Save manual location to ViewModel so it persists across refreshes
                     viewModel.setManualLocation(lat, lng, area);
                     binding.tvCurrentLocation.setText(area);
@@ -95,23 +94,12 @@ public class HomeFragment extends Fragment {
         updateGuestUI();
     }
 
+    private java.util.List<com.bloom.customer.data.model.Shop> loadedShops;
+
     private void fetchFeatureFlags() {
         featureFlagRepository.getFeatureFlags().observe(getViewLifecycleOwner(), result -> {
             if (result.status == NetworkResult.Status.SUCCESS && result.data != null) {
-                for (com.bloom.customer.data.model.FeatureFlag flag : result.data) {
-                    if ("create_your_own".equals(flag.getKey())) {
-                        boolean isEnabled = flag.isEnabled();
-                        binding.cvCreateOwn.setAlpha(isEnabled ? 1.0f : 0.6f);
-                        binding.tvComingSoon.setVisibility(isEnabled ? View.GONE : View.VISIBLE);
-                        binding.cvCreateOwn.setOnClickListener(v -> {
-                            if (isEnabled) {
-                                Toast.makeText(requireContext(), "Opening Creation Studio", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }
+                // Feature flags applied here if needed
             }
         });
     }
@@ -172,8 +160,22 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onAddClick(Product product) {
-                cartRepository.addToCart(new com.bloom.customer.data.model.CartItem(product));
-                Toast.makeText(requireContext(), "Added to cart: " + product.getName(), Toast.LENGTH_SHORT).show();
+                com.bloom.customer.data.model.CartItem item = new com.bloom.customer.data.model.CartItem(product);
+                boolean success = cartRepository.addToCart(item);
+                if (success) {
+                    Toast.makeText(requireContext(), "Added to cart: " + product.getName(), Toast.LENGTH_SHORT).show();
+                } else {
+                    new android.app.AlertDialog.Builder(requireContext())
+                        .setTitle("Clear Cart?")
+                        .setMessage("Your cart contains items from another shop. Clear cart to add this item?")
+                        .setPositiveButton("Clear & Add", (dialog, which) -> {
+                            cartRepository.clearCart();
+                            cartRepository.addToCart(item);
+                            Toast.makeText(requireContext(), "Added to cart: " + product.getName(), Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+                }
             }
         });
     }
@@ -183,7 +185,7 @@ public class HomeFragment extends Fragment {
         intent.putExtra("product_json", new Gson().toJson(product));
         intent.putExtra("distance", distance);
         // For seasonal/bestseller, we assume they are from available shops or handled by proximity
-        intent.putExtra("is_shop_open", true); 
+        intent.putExtra("is_shop_open", true);
         startActivity(intent);
     }
 
@@ -236,11 +238,11 @@ public class HomeFragment extends Fragment {
                     android.location.Address address = addresses.get(0);
                     String city = address.getLocality();
                     String area = address.getSubLocality();
-                    
+
                     String displayName = "";
                     if (area != null && !area.isEmpty()) displayName += area + ", ";
                     if (city != null && !city.isEmpty()) displayName += city;
-                    
+
                     if (!displayName.isEmpty()) {
                         String finalName = displayName;
                         if (isAdded()) {
@@ -269,6 +271,29 @@ public class HomeFragment extends Fragment {
             manualLocationLauncher.launch(new Intent(requireContext(), ManualLocationActivity.class));
         });
 
+        binding.occasionsPromo.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), com.bloom.customer.ui.profile.OccasionsActivity.class));
+        });
+
+        binding.btnChangeLocation.setOnClickListener(v -> {
+            manualLocationLauncher.launch(new Intent(requireContext(), ManualLocationActivity.class));
+        });
+
+        // Ensure cvCreateOwn is visually enabled
+        binding.cvCreateOwn.setAlpha(1.0f);
+        binding.tvComingSoon.setVisibility(View.GONE);
+        
+        binding.cvCreateOwn.setOnClickListener(v -> {
+            if (loadedShops != null && !loadedShops.isEmpty()) {
+                Intent intent = new Intent(requireContext(), com.bloom.customer.ui.bespoke.CreateBouquetActivity.class);
+                intent.putExtra("shop_id", loadedShops.get(0).getId());
+                startActivity(intent);
+            } else {
+                Toast.makeText(requireContext(), "Please wait for shops to load...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         binding.ivNotifications.setOnClickListener(v -> {
             if (SessionManager.getInstance(requireContext()).isLoggedIn()) {
                 startActivity(new Intent(requireContext(), NotificationActivity.class));
@@ -288,11 +313,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // Occasion filter chips — each routes to Explore with a pre-filled occasion tag
         binding.chipAll.setOnClickListener(v -> openSearch(null));
         binding.chipBirthday.setOnClickListener(v -> openSearch("Birthday"));
         binding.chipAnniversary.setOnClickListener(v -> openSearch("Anniversary"));
         binding.chipSympathy.setOnClickListener(v -> openSearch("Sympathy"));
         binding.chipCongratulations.setOnClickListener(v -> openSearch("Congratulations"));
+        binding.chipWedding.setOnClickListener(v -> openSearch("Wedding"));
+        binding.chipJustBecause.setOnClickListener(v -> openSearch("Just Because"));
 
         binding.tvViewAllSeasonal.setOnClickListener(v -> openSearch(null));
         binding.tvViewAllBestsellers.setOnClickListener(v -> openSearch(null));
@@ -304,6 +332,10 @@ public class HomeFragment extends Fragment {
 
         binding.tvViewAllShops.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), AllShopsActivity.class));
+        });
+
+        binding.btnMapToggle.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), ShopMapActivity.class));
         });
     }
 
@@ -345,12 +377,19 @@ public class HomeFragment extends Fragment {
             } else if (result.status == NetworkResult.Status.SUCCESS) {
                 binding.progressBar.setVisibility(View.GONE);
                 if (result.data != null && !result.data.isEmpty()) {
+                    loadedShops = result.data;
                     // Limit to 4 cards for home carousel
                     shopAdapter.setShops(result.data.subList(0, Math.min(result.data.size(), 4)));
                     binding.rvShops.setVisibility(View.VISIBLE);
                     binding.emptyState.setVisibility(View.GONE);
                 } else {
+                    loadedShops = null;
                     binding.rvShops.setVisibility(View.GONE);
+                    String locationName = viewModel.hasManualLocation()
+                            ? viewModel.getManualAreaName()
+                            : "your area";
+                    binding.tvEmptyTitle.setText("No florists found near " + locationName);
+                    binding.tvEmptySubtitle.setText("Bloom hasn't launched here yet. Try a nearby area or check back soon!");
                     binding.emptyState.setVisibility(View.VISIBLE);
                 }
             } else if (result.status == NetworkResult.Status.ERROR) {

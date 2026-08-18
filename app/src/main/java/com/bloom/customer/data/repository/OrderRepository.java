@@ -180,8 +180,31 @@ public class OrderRepository {
             public void onFailure(Call<Void> call, Throwable t) {
                 result.setValue(NetworkResult.error(t.getMessage(), null));
             }
+        });
+        return result;
+    }
 
-            // Fix generic type if needed by compiler, usually Callback<Void> works
+    public LiveData<NetworkResult<Void>> updateOrderPaymentStatus(String orderId, String status) {
+        MutableLiveData<NetworkResult<Void>> result = new MutableLiveData<>();
+        result.setValue(NetworkResult.loading(null));
+
+        java.util.Map<String, Object> body = new java.util.HashMap<>();
+        body.put("payment_status", status);
+
+        api.updateOrder("id.eq." + orderId, body).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    result.setValue(NetworkResult.success(null));
+                } else {
+                    result.setValue(NetworkResult.error("Failed to update payment status", null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                result.setValue(NetworkResult.error(t.getMessage(), null));
+            }
         });
         return result;
     }

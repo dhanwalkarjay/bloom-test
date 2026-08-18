@@ -29,6 +29,10 @@ public class CartItem {
     public String getCardMessage() { return cardMessage; }
     public void setCardMessage(String cardMessage) { this.cardMessage = cardMessage; }
 
+    private String mediaUrl;
+    public String getMediaUrl() { return mediaUrl; }
+    public void setMediaUrl(String mediaUrl) { this.mediaUrl = mediaUrl; }
+
     private java.util.List<Addon> addons = new java.util.ArrayList<>();
 
     public java.util.List<Addon> getAddons() { return addons; }

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet_top_rounded"
+    android:paddingBottom="32dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivShopPreview"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.TopRounded"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        
+    <View
+        android:id="@+id/dragHandle"
+        android:layout_width="36dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="12dp"
+        android:background="#D0D0D0"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvShopNamePreview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/playfair_display"
+            android:textColor="#2B2B2B"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivShopPreview"
+            tools:text="Blossom &amp; Co." />
+
+        <LinearLayout
+            android:id="@+id/llRatingContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvShopNamePreview">
+
+            <TextView
+                android:id="@+id/tvShopRatingNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/dm_sans"
+                android:textColor="#2B2B2B"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="4.9" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:orientation="horizontal">
+                <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_search_star" app:tint="#F4B400" />
+                <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_search_star" app:tint="#F4B400" />
+                <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_search_star" app:tint="#F4B400" />
+                <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_search_star" app:tint="#F4B400" />
+                <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_search_star" app:tint="#F4B400" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvShopReviewCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:fontFamily="@font/dm_sans"
+                android:textColor="#555555"
+                android:textSize="14sp"
+                tools:text="(142 reviews)" />
+        </LinearLayout>
+        
+        <TextView
+            android:id="@+id/tvShopDescriptionPreview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/dm_sans"
+            android:textColor="#4A4A4A"
+            android:textSize="14sp"
+            android:lineSpacingExtra="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llRatingContainer"
+            tools:text="London's premier boutique florist, crafting bespoke bouquets and floral arrangements. Mon-Sat 9am-6pm." />
+
+        <TextView
+            android:id="@+id/tvShopMetaPreview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/dm_sans"
+            android:textColor="#2B2B2B"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvShopDescriptionPreview"
+            tools:text="4.9 · 0.8 miles · Open until 6 PM" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/tvShopMetaPreview">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVisitShop"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:backgroundTint="#E85D75"
+                android:fontFamily="@font/dm_sans"
+                android:text="Visit Shop"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="26dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDirections"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="12dp"
+                app:icon="@drawable/ic_navigation_diamond"
+                app:iconTint="#2B2B2B"
+                app:iconPadding="0dp"
+                app:iconGravity="textStart"
+                app:strokeColor="#E0E0E0"
+                app:strokeWidth="1dp"
+                app:cornerRadius="26dp" />
+                
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCall"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="12dp"
+                app:icon="@drawable/ic_phone"
+                app:iconTint="#2B2B2B"
+                app:iconPadding="0dp"
+                app:iconGravity="textStart"
+                app:strokeColor="#E0E0E0"
+                app:strokeWidth="1dp"
+                app:cornerRadius="26dp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

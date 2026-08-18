@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <style>
+        body { padding: 0; margin: 0; background: #FFFBF7; font-family: 'DM Sans', sans-serif; }
+        html, body, #map { height: 100%; width: 100vw; }
+        .leaflet-control-attribution { display: none; }
+        .leaflet-container { background: #FFFBF7; }
+        .leaflet-control-zoom { display: none; }
+        
+        .marker-wrapper {
+            position: relative;
+            width: 50px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+        }
+        
+        .marker-wrapper:active { transform: scale(0.95); }
+        
+        /* The main white pin */
+        .bubble-pin {
+            position: absolute;
+            bottom: 0;
+            width: 50px;
+            height: 50px;
+            background-color: #FFFFFF;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            box-shadow: -2px 6px 12px rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        /* The inner image inside the pin */
+        .bubble-image-container {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            overflow: hidden;
+            transform: rotate(45deg); /* Counter rotate to keep image upright */
+            background-color: #FDF2F2;
+        }
+        
+        .bubble-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* The side label (Shop Name + Rating) */
+        .side-label {
+            position: absolute;
+            left: 25px; /* Tuck deeply behind the 50px pin (starts at center) */
+            bottom: 25px; /* Vertical center of the 50px pin */
+            transform: translateY(50%); /* Perfectly centered vertically with the pin */
+            background: #FFFFFF;
+            padding: 4px 10px 4px 28px; /* Extra left padding so text clears the pin */
+            border-radius: 0 20px 20px 0; /* Rounded on right, flat on left */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            z-index: 1; /* Below the bubble pin so it tucks under */
+        }
+        
+        .side-label-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .side-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #2B2B2B;
+        }
+        
+        .side-title-chevron {
+            color: #888;
+            font-size: 15px; /* Bigger size */
+            font-weight: 500;
+        }
+        
+        .side-rating {
+            font-size: 10px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-top: 1px;
+        }
+        
+        .side-star {
+            color: #F4B400;
+            font-size: 10px;
+        }
+
+        /* The top floating tag */
+        .top-tag {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 800;
+            white-space: nowrap;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            z-index: 3;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* The little pointer arrow for top tag */
+        .top-tag::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 4px 4px 0;
+            border-style: solid;
+            display: block;
+            width: 0;
+        }
+
+        .tag-discount {
+            background-color: #E85D75;
+            color: #FFFFFF;
+        }
+        .tag-discount::after { border-color: #E85D75 transparent transparent transparent; }
+        
+        .tag-perk {
+            background-color: #4A7C59;
+            color: #FFFFFF;
+        }
+        .tag-perk::after { border-color: #4A7C59 transparent transparent transparent; }
+
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map', {zoomControl: false}).setView([19.0760, 72.8777], 12);
+        
+        // CartoDB Positron for light, premium map tiles
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
+        }).addTo(map);
+
+        var markers = [];
+        var shopsData = [];
+
+        function setCenter(lat, lng, zoom) {
+            map.flyTo([lat, lng], zoom || 15, {animate: true, duration: 1.2});
+        }
+
+        function addShops(shopsJsonStr) {
+            try {
+                shopsData = JSON.parse(shopsJsonStr);
+                
+                // Clear existing
+                markers.forEach(function(m) { map.removeLayer(m); });
+                markers = [];
+                
+                if (routingControl) {
+                    map.removeControl(routingControl);
+                    routingControl = null;
+                }
+                if (userMarker) {
+                    map.removeLayer(userMarker);
+                    userMarker = null;
+                }
+                
+                var group = new L.featureGroup();
+
+                shopsData.forEach(function(shop) {
+                    var html = '<div class="marker-wrapper">';
+                    
+                    // Side Label
+                    var truncatedName = shop.name.length > 15 ? shop.name.substring(0, 15) + '...' : shop.name;
+                    html += '<div class="side-label">';
+                    html += '<div class="side-label-content">';
+                    html += '<div class="side-title">' + truncatedName + '</div>';
+                    html += '<div class="side-rating"><span class="side-star">⭐</span> ' + shop.rating + '</div>';
+                    html += '</div>';
+                    html += '<div class="side-title-chevron">&gt;</div>';
+                    html += '</div>';
+
+                    // Top Tag (Offer)
+                    if (shop.offerText && shop.offerText.length > 0) {
+                        var tagClass = 'tag-discount';
+                        if (shop.offerText.toLowerCase().includes('free')) {
+                            tagClass = 'tag-perk';
+                        }
+                        html += '<div class="top-tag ' + tagClass + '">' + shop.offerText + ' &gt;</div>';
+                    }
+
+                    // Main Pin Bubble
+                    html += '<div class="bubble-pin">';
+                    html += '<div class="bubble-image-container">';
+                    html += '<img src="' + shop.imageUrl + '" class="bubble-image" onerror="this.src=\'https://ui-avatars.com/api/?name=' + encodeURIComponent(shop.name) + '&background=E85D75&color=FFF\'" />';
+                    html += '</div>';
+                    html += '</div>';
+                    
+                    html += '</div>';
+
+                    var icon = L.divIcon({
+                        html: html,
+                        className: '',
+                        iconSize: [50, 60],
+                        iconAnchor: [25, 60] // Anchor to bottom tip of the pin
+                    });
+
+                    var marker = L.marker([shop.lat, shop.lng], {icon: icon}).addTo(map);
+                    marker.on('click', function() {
+                        // Smooth fly to center (offset slightly up to account for bottom sheet)
+                        map.flyTo([shop.lat - 0.003, shop.lng], 14, {animate: true, duration: 0.8});
+                        if (window.AndroidBridge) {
+                            window.AndroidBridge.onShopClicked(shop.id);
+                        }
+                    });
+                    
+                    markers.push(marker);
+                    group.addLayer(marker);
+                });
+                
+                if (shopsData.length > 0) {
+                    map.fitBounds(group.getBounds(), {padding: [50, 50], maxZoom: 14});
+                }
+            } catch(e) {
+                console.error("Error parsing shops: " + e);
+            }
+        }
+
+        var routingControl = null;
+        var userMarker = null;
+
+        function drawRealtimeRoute(startLat, startLng, endLat, endLng) {
+            if (routingControl) {
+                map.removeControl(routingControl);
+            }
+
+            // Hide the default UI container of the routing machine
+            var routeOptions = {
+                waypoints: [
+                    L.latLng(startLat, startLng),
+                    L.latLng(endLat, endLng)
+                ],
+                lineOptions: {
+                    styles: [{color: '#E85D75', opacity: 0.9, weight: 5}]
+                },
+                createMarker: function() { return null; }, // We handle markers manually
+                routeWhileDragging: false,
+                addWaypoints: false,
+                fitSelectedRoutes: true,
+                show: false
+            };
+
+            routingControl = L.Routing.control(routeOptions).addTo(map);
+            routingControl.hide(); // Further ensure the textual instructions box is hidden
+
+            var userIcon = L.divIcon({
+                className: 'user-location-marker',
+                html: '<div style="width: 16px; height: 16px; background-color: #4A90E2; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);"></div>',
+                iconSize: [22, 22],
+                iconAnchor: [11, 11]
+            });
+            
+            if (userMarker) {
+                map.removeLayer(userMarker);
+            }
+            userMarker = L.marker([startLat, startLng], {icon: userIcon, zIndexOffset: 1000}).addTo(map);
+        }
+
+        function updateUserLocation(lat, lng) {
+            if (userMarker) {
+                userMarker.setLatLng([lat, lng]);
+            }
+            if (routingControl) {
+                var waypoints = routingControl.getWaypoints();
+                // Update the start waypoint to the new location
+                waypoints[0].latLng = L.latLng(lat, lng);
+                routingControl.setWaypoints(waypoints);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -64,6 +64,14 @@ public class SessionManager {
         return sharedPreferences.getString(Constants.KEY_USER_ID, null);
     }
 
+    public void setDefaultAddressId(String addressId) {
+        sharedPreferences.edit().putString("default_address_id", addressId).apply();
+    }
+
+    public String getDefaultAddressId() {
+        return sharedPreferences.getString("default_address_id", null);
+    }
+
     public void clearSession() {
         sharedPreferences.edit().clear().apply();
     }

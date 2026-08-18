@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground">
+
+    <!-- Top Bar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+            
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="@dimen/spacing_s"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/home_lux_dark" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Bespoke Blooms"
+                android:textColor="@color/home_lux_dark"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-medium" />
+                
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- 3D Canvas Placeholder -->
+    <FrameLayout
+        android:id="@+id/sceneContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+        
+        <io.github.sceneview.SceneView
+            android:id="@+id/sceneView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+            
+        <!-- AI Magic Button -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnMagicArrange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:layout_margin="@dimen/spacing_m"
+            android:src="@drawable/ic_home_flare"
+            app:tint="@color/white"
+            app:backgroundTint="?attr/colorPrimary"
+            android:contentDescription="Auto Arrange" />
+
+        <!-- Loading State for AI Generation -->
+        <LinearLayout
+            android:id="@+id/llLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="@dimen/spacing_xxl"
+                android:layout_height="@dimen/spacing_xxl"
+                android:indeterminateTint="?attr/colorPrimary" />
+
+            <TextView
+                android:id="@+id/tvLoadingMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_m"
+                android:text="Generating AI Snapshot..."
+                android:textColor="@color/home_lux_dark"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-medium" />
+        </LinearLayout>
+            
+    </FrameLayout>
+
+    <!-- Bottom Sheet Wizard -->
+    <LinearLayout
+        android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@drawable/bg_bottom_sheet_premium"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_m"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="120dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="@dimen/spacing_xs"
+            android:layout_gravity="center_horizontal"
+            android:background="#DDDDDD"
+            android:layout_marginBottom="@dimen/spacing_m" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            
+            <TextView
+                android:id="@+id/tvStepTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Select Stems"
+                android:textColor="@color/home_lux_dark"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-medium" />
+                
+            <TextView
+                android:id="@+id/tvTotalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$0.00"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-medium" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvInventory"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/spacing_m"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/spacing_m" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNextStep"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:text="Next: Fillers"
+            app:cornerRadius="28dp"
+            android:backgroundTint="@color/home_lux_dark" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

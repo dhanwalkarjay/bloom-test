@@ -5,11 +5,12 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
     android:layout_marginTop="4dp"
-    android:layout_marginHorizontal="4dp"
-    app:cardBackgroundColor="@color/cart_surface"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="6dp"
-    app:strokeWidth="0dp">
+    android:layout_marginHorizontal="16dp"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    app:strokeColor="?attr/colorOutlineVariant"
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,8 +19,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProductImage"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
             android:background="#F5F5F5"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,30 +30,30 @@
 
         <ImageButton
             android:id="@+id/btnRemove"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginEnd="-4dp"
             android:layout_marginTop="-4dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Remove"
-            android:padding="6dp"
-            android:src="@drawable/ic_delete_outline"
+            android:padding="8dp"
+            android:src="@drawable/ic_cart_remove"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/cart_outline" />
+            app:tint="?attr/colorOutline" />
 
         <TextView
             android:id="@+id/tvProductName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
             android:ellipsize="end"
-            android:fontFamily="@font/plus_jakarta_sans"
+            android:fontFamily="@font/work_sans"
             android:maxLines="1"
             android:text="Product Name"
-            android:textColor="@color/cart_on_surface"
-            android:textSize="15sp"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/btnRemove"
             app:layout_constraintStart_toEndOf="@id/ivProductImage"
@@ -62,13 +63,13 @@
             android:id="@+id/tvCustomization"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:fontFamily="@font/work_sans"
             android:maxLines="1"
             android:text="Standard variant"
-            android:textColor="@color/cart_on_surface_variant"
-            android:textSize="12sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="@id/tvProductName"
             app:layout_constraintStart_toStartOf="@id/tvProductName"
             app:layout_constraintTop_toBottomOf="@id/tvProductName" />
@@ -80,72 +81,54 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="₹0.00"
-            android:textColor="@color/cart_primary"
-            android:textSize="15sp"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/ivProductImage"
-            app:layout_constraintStart_toStartOf="@id/tvProductName"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintStart_toStartOf="@id/tvProductName" />
 
-        <!-- Floating Quantity Controller (Pill Style) -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- Flat Colored Quantity Pill -->
+        <LinearLayout
             android:id="@+id/cardQuantityControl"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:strokeWidth="0dp"
+            android:background="@drawable/bg_rounded_grey"
+            android:backgroundTint="#F2F2F2"
+            android:gravity="center"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@id/ivProductImage"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/btnMinus"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:src="@drawable/ic_cart_minus"
+                app:tint="?attr/colorOnSurface" />
+
+            <TextView
+                android:id="@+id/tvQuantity"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:paddingHorizontal="4dp"
+                android:text="1"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/btnMinus"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_minus"
-                    app:tint="#111111" />
+            <ImageView
+                android:id="@+id/btnPlus"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:src="@drawable/ic_cart_plus"
+                app:tint="?attr/colorOnSurface" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="16dp"
-                    android:background="#E0E0E0" />
-
-                <TextView
-                    android:id="@+id/tvQuantity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/plus_jakarta_sans"
-                    android:text="1"
-                    android:textColor="#111111"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:paddingHorizontal="8dp"/>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="16dp"
-                    android:background="#E0E0E0" />
-
-                <ImageView
-                    android:id="@+id/btnPlus"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_home_add"
-                    app:tint="#111111" />
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -75,13 +75,16 @@ public class ExploreFragment extends Fragment {
         sharedViewModel.getSearchCategory().observe(getViewLifecycleOwner(), category -> {
             if (category != null && !category.isEmpty()) {
                 binding.etSearch.setText(category);
+                // Update the results label to show occasion context
+                binding.tvResultsLabel.setText("FOR " + category.toUpperCase());
                 performSearch(null, category);
             }
         });
-        
+
         sharedViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
             if (query != null && !query.isEmpty()) {
                 binding.etSearch.setText(query);
+                binding.tvResultsLabel.setText("SEARCH RESULTS");
                 performSearch(query, null);
             }
         });

@@ -2,16 +2,60 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Bloom" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/bloom_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
         <item name="colorSecondary">@color/bloom_secondary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        
+        <item name="colorSurface">@color/cart_surface</item>
+        <item name="colorOnSurface">@color/cart_on_surface</item>
+        <item name="colorSurfaceVariant">@color/cart_surface_container</item>
+        <item name="colorOnSurfaceVariant">@color/cart_on_surface_variant</item>
+        
+        <item name="android:colorBackground">@color/bloom_background</item>
+        <item name="colorOnBackground">@color/bloom_text_primary</item>
+        
+        <!-- Outline colors for cards and borders -->
+        <item name="colorOutline">@color/cart_outline</item>
+        <item name="colorOutlineVariant">@color/cart_outline_variant</item>
+
         <item name="android:windowBackground">@color/bloom_background</item>
         <item name="android:textColorPrimary">@color/bloom_text_primary</item>
+        <item name="android:textColorSecondary">@color/bloom_text_secondary</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:enforceStatusBarContrast">false</item>
         <item name="android:enforceNavigationBarContrast">false</item>
+        
+        <!-- Apply Global Typography -->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.Bloom.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.Bloom.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.Bloom.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.Bloom.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.Bloom.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.Bloom.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.Bloom.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.Bloom.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.Bloom.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.Bloom.Body2</item>
+        <item name="textAppearanceButton">@style/TextAppearance.Bloom.Button</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.Bloom.Caption</item>
+        
+        <!-- Apply Global Widgets -->
+        <item name="materialButtonStyle">@style/Widget.Bloom.Button.Primary</item>
+        <item name="materialCardViewStyle">@style/Widget.Bloom.CardView</item>
     </style>
 
     <style name="Theme.Bloom" parent="Base.Theme.Bloom" />
+    
+    <style name="ShapeAppearanceOverlay.TopRounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">32dp</item>
+        <item name="cornerSizeTopLeft">32dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
 </resources>

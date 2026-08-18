@@ -3,10 +3,12 @@
     <string name="shop_closed">Shop is Currently Closed</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="filter_all">All</string>
-    <string name="filter_birthday">Birthday</string>
-    <string name="filter_anniversary">Anniversary</string>
-    <string name="filter_sympathy">Sympathy</string>
-    <string name="filter_congratulations">Congratulations</string>
+    <string name="filter_birthday">🎂 Birthday</string>
+    <string name="filter_anniversary">💍 Anniversary</string>
+    <string name="filter_sympathy">🕊️ Sympathy</string>
+    <string name="filter_congratulations">🎉 Congratulations</string>
+    <string name="filter_wedding">💒 Wedding</string>
+    <string name="filter_just_because">💐 Just Because</string>
     <string name="curated_luxury">CURATED LUXURY</string>
     <string name="search_results">SEARCH RESULTS</string>
     <string name="search_hint">Search bouquets&#8230;</string>

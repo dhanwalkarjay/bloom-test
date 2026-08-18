@@ -16,8 +16,10 @@ public class SupportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySupportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        
+        com.bloom.customer.util.SystemBarInsets.apply(this);
 
-        binding.toolbar.setNavigationOnClickListener(v -> finish());
+        binding.btnBack.setOnClickListener(v -> finish());
 
         binding.btnContactEmail.setOnClickListener(v -> 
             Toast.makeText(this, "Opening Email Client", Toast.LENGTH_SHORT).show());

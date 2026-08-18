@@ -71,6 +71,9 @@ public class Shop {
     public String getPrepTime() { return prepTime; }
     public void setPrepTime(String prepTime) { this.prepTime = prepTime; }
 
+    public int getPreparationMinutes() { return preparationMinutes; }
+    public void setPreparationMinutes(int preparationMinutes) { this.preparationMinutes = preparationMinutes; }
+
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 

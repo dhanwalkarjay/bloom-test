@@ -64,6 +64,44 @@ public class CartActivity extends AppCompatActivity {
         binding.btnBack.setOnClickListener(v -> finish());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchLivePrices();
+    }
+
+    private void fetchLivePrices() {
+        String shopId = viewModel.getCartShopId();
+        if (shopId != null && !shopId.isEmpty()) {
+            viewModel.getProductsByShop(shopId).observe(this, result -> {
+                if (result.status == com.bloom.customer.util.NetworkResult.Status.SUCCESS && result.data != null) {
+                    List<com.bloom.customer.data.model.Product> liveProducts = result.data;
+                    List<CartItem> cartItems = viewModel.getCartItems().getValue();
+                    if (cartItems != null && !cartItems.isEmpty()) {
+                        boolean pricesChanged = false;
+                        for (CartItem item : cartItems) {
+                            for (com.bloom.customer.data.model.Product liveProduct : liveProducts) {
+                                if (item.getProduct().getId().equals(liveProduct.getId())) {
+                                    if (item.getProduct().getPrice() != liveProduct.getPrice()) {
+                                        item.getProduct().setPrice(liveProduct.getPrice());
+                                        pricesChanged = true;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        if (pricesChanged) {
+                            viewModel.updateCart(cartItems);
+                            adapter.setItems(cartItems);
+                            updateSummary();
+                            Toast.makeText(this, "Prices for some items have been updated.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            });
+        }
+    }
+
     private void setupRecyclerView() {
         adapter = new CartAdapter();
         binding.rvCartItems.setLayoutManager(new LinearLayoutManager(this));
@@ -109,7 +147,16 @@ public class CartActivity extends AppCompatActivity {
                 Toast.makeText(this, "Promo code applied", Toast.LENGTH_SHORT).show());
         
         binding.btnCheckout.setOnClickListener(v -> {
-            startActivity(new Intent(this, com.bloom.customer.ui.checkout.AddressSelectActivity.class));
+            new android.app.AlertDialog.Builder(this)
+                .setTitle("How would you like to deliver?")
+                .setMessage("Choose standard delivery, or send a beautiful SMS to request their address.")
+                .setPositiveButton("Deliver to Address", (dialog, which) -> {
+                    startActivity(new Intent(this, com.bloom.customer.ui.checkout.AddressSelectActivity.class));
+                })
+                .setNegativeButton("Send via Phone Number ✨", (dialog, which) -> {
+                    startActivity(new Intent(this, com.bloom.customer.ui.checkout.AddresslessGiftingActivity.class));
+                })
+                .show();
         });
     }
 

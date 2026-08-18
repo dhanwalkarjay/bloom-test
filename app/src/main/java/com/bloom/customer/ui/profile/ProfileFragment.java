@@ -48,6 +48,10 @@ public class ProfileFragment extends Fragment {
 
     private void setupMenu() {
         // First Group
+        setupMenuItem(binding.itemOccasions.getRoot(), android.R.drawable.ic_menu_my_calendar, "Smart Occasions", "Never forget a date", v -> {
+            startActivity(new Intent(requireContext(), com.bloom.customer.ui.profile.OccasionsActivity.class));
+        });
+
         setupMenuItem(binding.itemAddresses.getRoot(), R.drawable.ic_home_location, "Saved Addresses", null, v -> {
             Intent intent = new Intent(requireContext(), com.bloom.customer.ui.checkout.AddressSelectActivity.class);
             intent.putExtra("selection_mode", false);

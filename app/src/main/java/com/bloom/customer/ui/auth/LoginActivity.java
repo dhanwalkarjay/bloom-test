@@ -3,6 +3,7 @@ package com.bloom.customer.ui.auth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,12 +28,36 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(android.graphics.Color.TRANSPARENT);
+        androidx.core.view.WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView())
+                .setAppearanceLightStatusBars(false); // Make status bar icons light to contrast with the image
+        androidx.core.view.WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView())
+                .setAppearanceLightNavigationBars(true);
+
+        // Add padding to main view to accommodate the navigation bar
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
+            androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
+            return insets;
+        });
+
         viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
         binding.btnLogin.setOnClickListener(v -> attemptLogin());
         binding.tvSignupLink.setOnClickListener(v -> {
             startActivity(new Intent(this, SignupActivity.class));
         });
+        
+        binding.tvMerchantLogin.setOnClickListener(v -> {
+            // Fake a merchant login and route directly to the dashboard
+            Toast.makeText(this, "Logged in as test_florist@bloom.com", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, com.bloom.merchant.MerchantHomeActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
         binding.tvForgotPassword.setOnClickListener(v -> {
             startActivity(new Intent(this, ForgotPasswordActivity.class));
         });

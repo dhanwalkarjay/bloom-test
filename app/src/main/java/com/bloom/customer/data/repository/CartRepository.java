@@ -75,7 +75,7 @@ public class CartRepository {
         cartLiveData.setValue(items);
     }
 
-    public void addToCart(CartItem item) {
+    public boolean addToCart(CartItem item) {
         List<CartItem> currentItems = cartLiveData.getValue();
         if (currentItems == null) currentItems = new ArrayList<>();
 
@@ -84,8 +84,8 @@ public class CartRepository {
 
         // Single Vendor Check
         if (currentShopId != null && !currentShopId.equals(itemShopId)) {
-            // This should be handled by the UI by calling clearCart() after user confirmation
-            return;
+            // UI should show prompt to clear cart
+            return false;
         }
 
         // Check if item already exists in cart (same product and size)
@@ -102,6 +102,7 @@ public class CartRepository {
             currentItems.add(item);
         }
         saveCart(currentItems, itemShopId);
+        return true;
     }
 
     public void removeFromCart(int position) {

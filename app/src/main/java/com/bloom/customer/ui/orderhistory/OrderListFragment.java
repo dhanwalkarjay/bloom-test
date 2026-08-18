@@ -83,6 +83,25 @@ public class OrderListFragment extends Fragment {
                 intent.putExtra("order_id", order.getId());
                 startActivity(intent);
             }
+
+            @Override
+            public void onDownloadInvoiceClick(com.bloom.customer.data.model.Order order) {
+                try {
+                    android.net.Uri pdfUri = com.bloom.customer.util.InvoiceGenerator.generateAndSaveInvoice(requireContext(), order);
+                    // Phase 4: Corporate Assistant One-Tap PDF sharing
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("application/pdf");
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, pdfUri);
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Invoice for Order #" + order.getId());
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, "Please find attached the invoice for my recent Bloom purchase.");
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    
+                    startActivity(Intent.createChooser(shareIntent, "Share Invoice"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    android.widget.Toast.makeText(requireContext(), "Failed to generate invoice", android.widget.Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
 
@@ -114,6 +133,35 @@ public class OrderListFragment extends Fragment {
                         } else {
                             if (!isDelivered) filtered.add(o);
                         }
+                    }
+                    
+                    if (isPast) {
+                        // Inject dummy order for testing PDF
+                        com.bloom.customer.data.model.Order dummyOrder = new com.bloom.customer.data.model.Order();
+                        dummyOrder.setId("test-849204");
+                        dummyOrder.setStatus("Delivered");
+                        dummyOrder.setTotalAmount(245.50);
+                        dummyOrder.setBouquetSubtotal(200.00);
+                        dummyOrder.setDeliveryFee(25.00);
+                        dummyOrder.setTaxAmount(20.50);
+                        dummyOrder.setCreatedAt("2023-11-05T10:00:00Z");
+                        
+                        com.bloom.customer.data.model.OrderItem dummyItem = new com.bloom.customer.data.model.OrderItem();
+                        dummyItem.setQuantity(2);
+                        dummyItem.setUnitPrice(100.0);
+                        com.bloom.customer.data.model.OrderItem.ProductInfo dummyProduct = new com.bloom.customer.data.model.OrderItem.ProductInfo();
+                        dummyProduct.setTitle("Premium Peony Arrangement");
+                        dummyItem.setProduct(dummyProduct);
+                        java.util.List<com.bloom.customer.data.model.OrderItem> dummyItems = new java.util.ArrayList<>();
+                        dummyItems.add(dummyItem);
+                        dummyOrder.setItems(dummyItems);
+                        
+                        com.bloom.customer.data.model.Address dummyAddress = new com.bloom.customer.data.model.Address();
+                        dummyAddress.setRecipientName("Executive Assistant");
+                        dummyAddress.setFullAddress("400 Corporate Blvd\nFloor 12, Marketing Dept\nSan Francisco, CA 94107");
+                        dummyOrder.setAddress(dummyAddress);
+                        
+                        filtered.add(0, dummyOrder);
                     }
                     
                     if (filtered.isEmpty()) {

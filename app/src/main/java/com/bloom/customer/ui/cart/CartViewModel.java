@@ -15,10 +15,16 @@ import java.util.List;
 public class CartViewModel extends AndroidViewModel {
 
     private final CartRepository repository;
+    private final com.bloom.customer.data.repository.ProductRepository productRepository;
 
     public CartViewModel(@NonNull Application application) {
         super(application);
         this.repository = CartRepository.getInstance(application);
+        this.productRepository = new com.bloom.customer.data.repository.ProductRepository(application);
+    }
+
+    public LiveData<com.bloom.customer.util.NetworkResult<List<com.bloom.customer.data.model.Product>>> getProductsByShop(String shopId) {
+        return productRepository.getProductsByShop(shopId);
     }
 
     public LiveData<List<CartItem>> getCartItems() {
@@ -37,8 +43,8 @@ public class CartViewModel extends AndroidViewModel {
         repository.updateCart(items);
     }
 
-    public void addToCart(CartItem item) {
-        repository.addToCart(item);
+    public boolean addToCart(CartItem item) {
+        return repository.addToCart(item);
     }
 
     public void clearCart() {

@@ -23,10 +23,14 @@ public class ResetPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityResetPasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        com.bloom.customer.util.SystemBarInsets.apply(this);
 
         viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         phone = getIntent().getStringExtra("phone");
 
+        if (binding.btnBack != null) {
+            binding.btnBack.setOnClickListener(v -> finish());
+        }
         binding.btnReset.setOnClickListener(v -> attemptReset());
     }
 

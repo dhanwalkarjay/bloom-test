@@ -23,17 +23,34 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     public interface OnAddressInteractionListener {
         void onAddressSelected(Address address);
         void onAddressDelete(Address address);
+        void onAddressEdit(Address address);
     }
 
     public void setListener(OnAddressInteractionListener listener) {
         this.listener = listener;
     }
 
-    public void setAddresses(List<Address> newAddresses) {
+    public void setAddresses(List<Address> newAddresses, String defaultId) {
         addresses.clear();
         if (newAddresses != null) {
             addresses.addAll(newAddresses);
         }
+        
+        selectedPosition = -1;
+        if (!addresses.isEmpty()) {
+            if (defaultId != null) {
+                for (int i = 0; i < addresses.size(); i++) {
+                    if (addresses.get(i).getId().equals(defaultId)) {
+                        selectedPosition = i;
+                        break;
+                    }
+                }
+            }
+            if (selectedPosition == -1) {
+                selectedPosition = 0; // Fallback
+            }
+        }
+        
         notifyDataSetChanged();
     }
 
@@ -80,11 +97,17 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
             // Visual selection state
             if (isSelected) {
-                binding.cvAddress.setStrokeColor(ContextCompat.getColor(itemView.getContext(), R.color.orders_primary));
-                binding.cvAddress.setStrokeWidth(4);
+                binding.cvAddress.setStrokeColor(ContextCompat.getColor(itemView.getContext(), R.color.home_primary));
+                binding.cvAddress.setStrokeWidth((int)(2 * itemView.getContext().getResources().getDisplayMetrics().density));
+                binding.cvAddress.setCardBackgroundColor(android.graphics.Color.parseColor("#0AE85D75")); // 4% opacity of primary
+                binding.iconContainer.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#1AE85D75")));
+                binding.ivAddressIcon.setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.home_primary));
             } else {
-                binding.cvAddress.setStrokeColor(ContextCompat.getColor(itemView.getContext(), R.color.orders_outline_variant));
-                binding.cvAddress.setStrokeWidth(2);
+                binding.cvAddress.setStrokeColor(android.graphics.Color.parseColor("#EAEAEA"));
+                binding.cvAddress.setStrokeWidth((int)(1 * itemView.getContext().getResources().getDisplayMetrics().density));
+                binding.cvAddress.setCardBackgroundColor(android.graphics.Color.WHITE);
+                binding.iconContainer.setBackgroundTintList(null);
+                binding.ivAddressIcon.setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.home_lux_dark));
             }
 
             itemView.setOnClickListener(v -> {
@@ -95,6 +118,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
             binding.btnDelete.setOnClickListener(v -> {
                 if (listener != null) listener.onAddressDelete(address);
+            });
+
+            binding.btnEdit.setOnClickListener(v -> {
+                if (listener != null) listener.onAddressEdit(address);
             });
         }
     }

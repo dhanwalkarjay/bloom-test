@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/search_surface"
+    android:background="?attr/colorSurface"
     tools:context=".customer.ui.explore.ExploreFragment">
 
     <!-- Luxury Hero Header -->
@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:paddingBottom="24dp"
+        android:paddingBottom="@dimen/spacing_l"
         app:layout_constraintTop_toTopOf="parent">
 
         <!-- Title + Cart on same row -->
@@ -24,8 +24,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingTop="20dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="8dp">
+            android:paddingStart="@dimen/spacing_l"
+            android:paddingEnd="@dimen/spacing_s">
 
             <TextView
                 android:id="@+id/tvHeroTitle"
@@ -40,10 +40,10 @@
 
             <ImageButton
                 android:id="@+id/btnCart"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/spacing_xxl"
+                android:layout_height="@dimen/spacing_xxl"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="12dp"
+                android:padding="@dimen/spacing_s"
                 android:src="@drawable/ic_cart"
                 app:tint="@color/home_lux_dark" />
 
@@ -55,11 +55,11 @@
             android:id="@+id/cvSearch"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:layout_marginHorizontal="24dp"
+            android:layout_marginHorizontal="@dimen/spacing_l"
             android:layout_marginTop="20dp"
             app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="29dp"
-            app:cardElevation="8dp"
+            app:cardElevation="@dimen/spacing_s"
             app:strokeWidth="0dp">
 
             <LinearLayout
@@ -79,7 +79,7 @@
                     android:id="@+id/etSearch"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="@dimen/spacing_s"
                     android:background="@null"
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:hint="Find the perfect bloom"
@@ -114,12 +114,12 @@
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="@dimen/spacing_xxxl"
+                android:layout_marginTop="@dimen/spacing_s"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
-                android:paddingStart="24dp"
-                android:paddingEnd="24dp"
+                android:paddingStart="@dimen/spacing_l"
+                android:paddingEnd="@dimen/spacing_l"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -132,12 +132,12 @@
                     <TextView
                         android:id="@+id/chipAll"
                         android:layout_width="wrap_content"
-                        android:layout_height="44dp"
-                        android:layout_marginEnd="12dp"
+                        android:layout_height="@dimen/button_height_small"
+                        android:layout_marginEnd="@dimen/spacing_s"
                         android:background="@drawable/bg_search_chip_lux_active"
                         android:gravity="center"
-                        android:paddingStart="24dp"
-                        android:paddingEnd="24dp"
+                        android:paddingStart="@dimen/spacing_l"
+                        android:paddingEnd="@dimen/spacing_l"
                         android:text="All"
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
@@ -146,12 +146,12 @@
                     <TextView
                         android:id="@+id/chipShops"
                         android:layout_width="wrap_content"
-                        android:layout_height="44dp"
-                        android:layout_marginEnd="12dp"
+                        android:layout_height="@dimen/button_height_small"
+                        android:layout_marginEnd="@dimen/spacing_s"
                         android:background="@drawable/bg_search_chip_lux_inactive"
                         android:gravity="center"
-                        android:paddingStart="24dp"
-                        android:paddingEnd="24dp"
+                        android:paddingStart="@dimen/spacing_l"
+                        android:paddingEnd="@dimen/spacing_l"
                         android:text="@string/filter_shops"
                         android:textColor="@color/home_lux_dark"
                         android:textSize="14sp"
@@ -160,12 +160,12 @@
                     <TextView
                         android:id="@+id/chipBouquets"
                         android:layout_width="wrap_content"
-                        android:layout_height="44dp"
-                        android:layout_marginEnd="12dp"
+                        android:layout_height="@dimen/button_height_small"
+                        android:layout_marginEnd="@dimen/spacing_s"
                         android:background="@drawable/bg_search_chip_lux_inactive"
                         android:gravity="center"
-                        android:paddingStart="24dp"
-                        android:paddingEnd="24dp"
+                        android:paddingStart="@dimen/spacing_l"
+                        android:paddingEnd="@dimen/spacing_l"
                         android:text="@string/filter_bouquets"
                         android:textColor="@color/home_lux_dark"
                         android:textSize="14sp"
@@ -179,7 +179,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="24dp"
+                android:paddingHorizontal="@dimen/spacing_l"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:visibility="gone">
@@ -188,7 +188,7 @@
                     android:id="@+id/tvResultsLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/spacing_m"
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:letterSpacing="0.05"
                     android:text="@string/search_results"
@@ -201,7 +201,7 @@
                     android:id="@+id/rvResults"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/spacing_m"
                     android:clipChildren="false"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"
@@ -214,7 +214,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="@dimen/spacing_xxl"
                 android:visibility="gone" />
 
             <!-- Default: nothing searched yet -->
@@ -225,7 +225,7 @@
                 android:layout_marginTop="40dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="32dp"
+                android:padding="@dimen/spacing_xl"
                 android:visibility="visible">
 
                 <ImageView
@@ -248,7 +248,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/spacing_s"
                     android:fontFamily="@font/work_sans"
                     android:gravity="center"
                     android:text="Type something above to discover flowers,\nbouquets, and local shops near you."
@@ -265,7 +265,7 @@
                 android:layout_marginTop="40dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="32dp"
+                android:padding="@dimen/spacing_xl"
                 android:visibility="gone">
 
                 <ImageView
@@ -290,7 +290,7 @@
                     android:id="@+id/tvEmptySubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/spacing_s"
                     android:fontFamily="@font/work_sans"
                     android:gravity="center"
                     android:text="We couldn't find anything matching your search.\nTry a different keyword."

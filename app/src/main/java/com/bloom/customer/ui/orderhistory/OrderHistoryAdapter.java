@@ -26,6 +26,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     public interface OnOrderHistoryClickListener {
         void onReviewClick(Order order);
         void onOrderClick(Order order);
+        void onDownloadInvoiceClick(Order order);
     }
 
     public void setListener(OnOrderHistoryClickListener listener) {
@@ -87,15 +88,21 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
                 binding.tvShopName.setText("Order #" + (order.getId() != null ? order.getId().substring(0, 5) : "---"));
             }
 
-            // Show Leave Review only if Delivered
+            // Show Leave Review and Download Invoice if Delivered
             if ("Delivered".equalsIgnoreCase(status)) {
                 binding.btnLeaveReview.setVisibility(View.VISIBLE);
+                binding.btnDownloadInvoice.setVisibility(View.VISIBLE);
                 binding.btnTrackOrder.setVisibility(View.GONE);
+                
                 binding.btnLeaveReview.setOnClickListener(v -> {
                     if (listener != null) listener.onReviewClick(order);
                 });
+                binding.btnDownloadInvoice.setOnClickListener(v -> {
+                    if (listener != null) listener.onDownloadInvoiceClick(order);
+                });
             } else {
                 binding.btnLeaveReview.setVisibility(View.GONE);
+                binding.btnDownloadInvoice.setVisibility(View.GONE);
                 binding.btnTrackOrder.setVisibility(View.VISIBLE);
                 binding.btnTrackOrder.setOnClickListener(v -> {
                     if (listener != null) listener.onOrderClick(order);

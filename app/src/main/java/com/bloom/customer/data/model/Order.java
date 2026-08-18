@@ -58,6 +58,18 @@ public class Order {
     @SerializedName("created_at")
     private String createdAt;
 
+    @SerializedName("is_anonymous")
+    private boolean isAnonymous;
+
+    @SerializedName("is_addressless")
+    private boolean isAddressless;
+
+    @SerializedName("recipient_name")
+    private String recipientName;
+
+    @SerializedName("recipient_phone")
+    private String recipientPhone;
+
     @SerializedName("shops")
     private ShopInfo shop;
 
@@ -174,7 +186,41 @@ public class Order {
     public void setRiderLat(double riderLat) { this.riderLat = riderLat; }
 
     public double getRiderLng() { return riderLng; }
-    public void setRiderLng(double riderLng) { this.riderLng = riderLng; }
+    public void setRiderLng(double riderLng) {
+        this.riderLng = riderLng;
+    }
+
+    public boolean isAnonymous() {
+        return isAnonymous;
+    }
+
+    public void setAnonymous(boolean anonymous) {
+        isAnonymous = anonymous;
+    }
+
+    public boolean isAddressless() {
+        return isAddressless;
+    }
+
+    public void setAddressless(boolean addressless) {
+        isAddressless = addressless;
+    }
+
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
+
+    public String getRecipientPhone() {
+        return recipientPhone;
+    }
+
+    public void setRecipientPhone(String recipientPhone) {
+        this.recipientPhone = recipientPhone;
+    }
 
     /**
      * Nested class to capture shop info from join.

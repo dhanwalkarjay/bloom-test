@@ -1,138 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bloom_background"
-    android:orientation="vertical">
+    android:background="@drawable/bg_profile_gradient">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/bg_circle_translucent"
+        android:backgroundTint="#33FFFFFF"
+        android:padding="12dp"
+        android:src="@drawable/ic_arrow_back"
+        app:tint="#FFFFFF"
+        app:layout_anchor="@id/nestedScrollView"
+        app:layout_anchorGravity="top|start" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="Support &amp; FAQ" />
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="wrap_content">
 
+            <!-- Decorative Floating Icon -->
+            <ImageView
+                android:id="@+id/ivEmblem"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="72dp"
+                android:layout_marginStart="32dp"
+                android:src="@drawable/ic_help_premium"
+                app:tint="#FFFFFF"
+                android:alpha="0.9"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Large Elegant Typography over Gradient -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Contact Us"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#333333" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnContactEmail"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Email Support"
-                android:textAllCaps="false"
-                app:icon="@android:drawable/ic_dialog_email" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnContactPhone"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Call Support"
-                android:textAllCaps="false"
-                app:icon="@android:drawable/ic_menu_call" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Frequently Asked Questions"
-                android:textSize="18sp"
+                android:layout_marginHorizontal="32dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Support &amp;\nFAQ"
+                android:textColor="#FFFFFF"
+                android:textSize="40sp"
                 android:textStyle="bold"
-                android:textColor="#333333" />
+                android:lineSpacingMultiplier="1.05"
+                app:layout_constraintTop_toBottomOf="@id/ivEmblem"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- FAQ 1 -->
+            <!-- Bottom Sheet Style Card -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardFaq1"
+                android:id="@+id/cvContentContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:strokeColor="#EEEEEE"
-                app:strokeWidth="1dp">
+                android:layout_height="0dp"
+                android:layout_marginTop="48dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardElevation="24dp"
+                app:strokeWidth="0dp"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.TopRounded"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:paddingHorizontal="32dp"
+                    android:paddingTop="48dp"
+                    android:paddingBottom="48dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="How do I track my order?"
+                        android:fontFamily="@font/work_sans"
+                        android:text="We're here to help. Reach out directly or browse our frequently asked questions."
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="16sp"
+                        android:lineSpacingMultiplier="1.3"
+                        android:layout_marginBottom="32dp" />
+
+                    <!-- Contact Buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnContactEmail"
+                            android:layout_width="0dp"
+                            android:layout_height="64dp"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            android:text="Email Us"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:textStyle="bold"
+                            android:textAllCaps="false"
+                            app:icon="@android:drawable/ic_dialog_email"
+                            app:iconGravity="textStart"
+                            app:backgroundTint="@color/cart_surface_container_low"
+                            android:textColor="?attr/colorPrimary"
+                            app:iconTint="?attr/colorPrimary"
+                            app:cornerRadius="16dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnContactPhone"
+                            android:layout_width="0dp"
+                            android:layout_height="64dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:text="Call Us"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:textStyle="bold"
+                            android:textAllCaps="false"
+                            app:icon="@android:drawable/ic_menu_call"
+                            app:iconGravity="textStart"
+                            app:backgroundTint="@color/cart_surface_container_low"
+                            android:textColor="?attr/colorPrimary"
+                            app:iconTint="?attr/colorPrimary"
+                            app:cornerRadius="16dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="48dp"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="Frequently Asked Questions"
+                        android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="#333333" />
+                        android:textColor="?attr/colorOnSurface" />
 
-                    <TextView
-                        android:id="@+id/tvFaqAnswer1"
+                    <!-- FAQ 1 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardFaq1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Go to the 'Orders' tab and select your active order to see real-time updates."
-                        android:textColor="#666666"
-                        android:visibility="gone" />
+                        android:layout_marginBottom="12dp"
+                        app:cardBackgroundColor="@color/cart_surface_container_low"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="20dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="How do I track my order?"
+                                android:fontFamily="@font/work_sans"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <TextView
+                                android:id="@+id/tvFaqAnswer1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:fontFamily="@font/work_sans"
+                                android:text="Go to the 'Orders' tab and select your active order to see real-time updates."
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:lineSpacingMultiplier="1.2"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- FAQ 2 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardFaq2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        app:cardBackgroundColor="@color/cart_surface_container_low"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="20dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Can I customize my bouquet?"
+                                android:fontFamily="@font/work_sans"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <TextView
+                                android:id="@+id/tvFaqAnswer2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:fontFamily="@font/work_sans"
+                                android:text="Yes! Select a product to see available sizes and add-ons. Custom bouquet studio coming soon."
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:lineSpacingMultiplier="1.2"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                    
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- FAQ 2 -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardFaq2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:strokeColor="#EEEEEE"
-                app:strokeWidth="1dp">
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Can I customize my bouquet?"
-                        android:textStyle="bold"
-                        android:textColor="#333333" />
-
-                    <TextView
-                        android:id="@+id/tvFaqAnswer2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Yes! Select a product to see available sizes and add-ons. Custom bouquet studio coming soon."
-                        android:textColor="#666666"
-                        android:visibility="gone" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

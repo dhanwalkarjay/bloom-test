@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.util.Constants;
+import com.bloom.BuildConfig;
 
 import okhttp3.Authenticator;
 import okhttp3.Interceptor;
@@ -34,7 +35,9 @@ public class RetrofitClient {
     public static synchronized Retrofit getClient(Context context) {
         if (retrofit == null) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            logging.setLevel(BuildConfig.DEBUG
+                    ? HttpLoggingInterceptor.Level.BODY
+                    : HttpLoggingInterceptor.Level.NONE);
 
             Interceptor headerInterceptor = chain -> {
                 Request original = chain.request();

@@ -40,6 +40,9 @@ public interface SupabaseAPI {
     @GET(Constants.REST_ENDPOINT + "shops")
     Call<List<Shop>> getShopById(@Query("id") String id);
 
+    @GET(Constants.REST_ENDPOINT + "shop_inventory")
+    Call<List<com.bloom.customer.data.model.ShopInventoryItem>> getShopInventory(@Query("shop_id") String shopId);
+
     /**
      * Get products for a specific florist/shop.
      */
@@ -145,7 +148,22 @@ public interface SupabaseAPI {
      * Update an order.
      */
     @PATCH(Constants.REST_ENDPOINT + "orders")
-    Call<Void> updateOrder(@Query("id") String id, @Body Map<String, Object> body);
+    Call<Void> updateOrder(@Query("id") String filter, @Body java.util.Map<String, Object> body);
+
+    /**
+     * Occasions
+     */
+    @GET(Constants.REST_ENDPOINT + "user_occasions")
+    Call<List<com.bloom.customer.data.model.Occasion>> getOccasions(@Query("user_id") String userIdFilter);
+
+    @POST(Constants.REST_ENDPOINT + "user_occasions")
+    Call<Void> createOccasion(@Body com.bloom.customer.data.model.Occasion occasion);
+
+    @PATCH(Constants.REST_ENDPOINT + "user_occasions")
+    Call<Void> updateOccasion(@Query("id") String filter, @Body java.util.Map<String, Object> body);
+
+    @retrofit2.http.DELETE(Constants.REST_ENDPOINT + "user_occasions")
+    Call<Void> deleteOccasion(@Query("id") String filter);
 
     /**
      * Submit a review for an order.

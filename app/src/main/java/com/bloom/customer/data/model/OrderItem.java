@@ -27,6 +27,9 @@ public class OrderItem {
     @SerializedName("card_message")
     private String cardMessage;
 
+    @SerializedName("media_url")
+    private String mediaUrl;
+
     // Getters and Setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -48,6 +51,9 @@ public class OrderItem {
 
     public String getCardMessage() { return cardMessage; }
     public void setCardMessage(String cardMessage) { this.cardMessage = cardMessage; }
+
+    public String getMediaUrl() { return mediaUrl; }
+    public void setMediaUrl(String mediaUrl) { this.mediaUrl = mediaUrl; }
 
     @SerializedName("products")
     private ProductInfo product;

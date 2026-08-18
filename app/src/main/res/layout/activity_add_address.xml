@@ -2,88 +2,212 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F7F6F4"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
+    <!-- ===== MAP BACKGROUND ===== -->
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!-- ===== MAP OVERLAYS ===== -->
+    
+    <!-- Top Gradient to ensure Back Button is visible -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/bg_shop_image_gradient"
+        android:rotation="180"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="@dimen/spacing_xxl"
+        android:layout_height="@dimen/spacing_xxl"
+        android:layout_margin="@dimen/spacing_m"
+        android:background="@drawable/bg_circle_translucent"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/home_lux_dark" />
+
+    <!-- Map Search Pill -->
+    <LinearLayout
+        android:id="@+id/searchPill"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/spacing_xxl"
+        android:layout_marginEnd="@dimen/spacing_m"
+        android:layout_marginStart="@dimen/spacing_s"
+        android:background="@drawable/bg_input_pill_lux"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/spacing_m"
+        android:elevation="@dimen/spacing_xs"
+        app:layout_constraintBottom_toBottomOf="@id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnBack"
+        app:layout_constraintTop_toTopOf="@id/btnBack">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_search_premium"
+            app:tint="#999999" />
+
+        <EditText
+            android:id="@+id/etMapSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/spacing_s"
+            android:background="@null"
+            android:fontFamily="@font/work_sans"
+            android:hint="Search a place..."
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textColor="@color/home_lux_dark"
+            android:textColorHint="#AAAAAA"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <!-- Center Pin -->
     <ImageView
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:src="@android:drawable/ic_menu_mylocation"
+        android:layout_width="@dimen/spacing_xxl"
+        android:layout_height="@dimen/spacing_xxl"
+        android:src="@drawable/ic_location_pin"
+        android:layout_marginBottom="@dimen/spacing_l"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tint="#E85D75" />
+        app:tint="?attr/colorPrimary" />
+
+    <!-- ===== BOTTOM FLOATING HUB ===== -->
+    
+    <!-- My Location FAB (Floating above the card) -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabMyLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_l"
+        android:layout_marginBottom="@dimen/spacing_m"
+        android:src="@drawable/ic_my_location"
+        app:tint="@color/home_lux_dark"
+        app:backgroundTint="@android:color/white"
+        app:elevation="@dimen/spacing_s"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toTopOf="@id/cardLocationHub"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardLocationHub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_16sdp"
-        app:cardCornerRadius="@dimen/_16sdp"
-        app:cardElevation="@dimen/_8sdp"
+        android:layout_marginHorizontal="@dimen/spacing_m"
+        android:layout_marginBottom="@dimen/spacing_l"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="@dimen/spacing_xl"
+        app:cardElevation="@dimen/spacing_s"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/_20sdp">
+            android:paddingHorizontal="@dimen/spacing_l"
+            android:paddingTop="28dp"
+            android:paddingBottom="@dimen/spacing_l">
 
+            <!-- Title -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Confirm Delivery Location"
-                android:textSize="@dimen/_18ssp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Confirm Delivery\nLocation"
+                android:textColor="@color/home_lux_dark"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="#333333" />
+                android:lineSpacingExtra="@dimen/spacing_xxs" />
 
-            <TextView
-                android:id="@+id/tvSelectedAddress"
+            <!-- Location Preview -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:text="Fetching address..."
-                android:textColor="#666666" />
+                android:layout_marginTop="@dimen/spacing_m"
+                android:orientation="horizontal">
+                
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_product_lightning"
+                    android:layout_marginTop="@dimen/spacing_xxs"
+                    app:tint="?attr/colorPrimary" />
+                    
+                <TextView
+                    android:id="@+id/tvSelectedAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/spacing_s"
+                    android:fontFamily="@font/work_sans"
+                    android:text="Fetching address..."
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="@dimen/spacing_xs" />
+            </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <!-- Custom Pill Input Field -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:hint="House/Flat No, Landmark">
-
-                <com.google.android.material.textfield.TextInputEditText
+                android:layout_height="@dimen/button_height"
+                android:layout_marginTop="@dimen/spacing_l"
+                android:background="@drawable/bg_input_pill_lux"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/spacing_m">
+                
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_home_person"
+                    app:tint="#999999" />
+                    
+                <EditText
                     android:id="@+id/etAddressDetail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/spacing_s"
+                    android:background="@null"
+                    android:fontFamily="@font/work_sans"
+                    android:hint="House/Flat No, Landmark"
+                    android:inputType="text"
+                    android:textColor="@color/home_lux_dark"
+                    android:textColorHint="#AAAAAA"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
+            <!-- Massive Pill CTA Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveAddress"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_56sdp"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_height="@dimen/spacing_xxxl"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:text="Save Address"
                 android:textAllCaps="false"
-                android:backgroundTint="#E85D75"
-                app:cornerRadius="@dimen/_12sdp" />
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:elevation="0dp"
+                app:cornerRadius="@dimen/spacing_xl" />
+                
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
-
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="@dimen/_48sdp"
-        android:layout_height="@dimen/_48sdp"
-        android:layout_margin="@dimen/_16sdp"
-        android:background="@drawable/bg_circle_translucent"
-        android:src="@drawable/ic_arrow_back"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:tint="#000000" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,87 +4,79 @@
     android:id="@+id/cvAddress"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="12dp"
+    android:layout_marginBottom="@dimen/spacing_m"
+    android:layout_marginHorizontal="20dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="20dp"
     app:cardElevation="0dp"
-    app:strokeColor="#A82D47"
-    app:strokeWidth="1.5dp">
+    app:strokeColor="#EAEAEA"
+    app:strokeWidth="1dp">
+
+    <!-- Note: We will handle selected state programmatically by changing strokeColor to ?attr/colorPrimary and backgroundColor to #08E85D75 -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="20dp">
 
-        <ImageView
-            android:id="@+id/ivAddressIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_home_home"
+        <!-- Custom Icon Container -->
+        <FrameLayout
+            android:id="@+id/iconContainer"
+            android:layout_width="@dimen/button_height_small"
+            android:layout_height="@dimen/button_height_small"
+            android:background="@drawable/bg_circle_translucent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="#A82D47" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivAddressIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_location_pin"
+                app:tint="@color/home_lux_dark" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tvAddressLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="@dimen/spacing_m"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="Home"
-            android:textColor="#333333"
-            android:textSize="15sp"
+            android:textColor="@color/home_lux_dark"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/ivAddressIcon"
-            app:layout_constraintEnd_toStartOf="@id/btnEdit"
-            app:layout_constraintStart_toEndOf="@id/ivAddressIcon"
-            app:layout_constraintTop_toTopOf="@id/ivAddressIcon" />
-
-        <ImageButton
-            android:id="@+id/btnDelete"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Delete Address"
-            android:padding="6dp"
-            android:src="@drawable/ic_delete_outline"
-            app:layout_constraintEnd_toStartOf="@id/btnEdit"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="#999999" />
-
-        <ImageButton
-            android:id="@+id/btnEdit"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Edit Address"
-            android:padding="6dp"
-            android:src="@android:drawable/ic_menu_edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="#999999" />
+            app:layout_constraintEnd_toStartOf="@id/actionsContainer"
+            android:layout_marginEnd="@dimen/spacing_m"
+            app:layout_constraintStart_toEndOf="@id/iconContainer"
+            app:layout_constraintTop_toTopOf="@id/iconContainer" />
 
         <TextView
             android:id="@+id/tvAddressLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/spacing_xxs"
             android:fontFamily="@font/work_sans"
-            android:lineSpacingExtra="2dp"
+            android:lineSpacingExtra="@dimen/spacing_xs"
             android:text="123 Maple Avenue, Apt 4B,\nBrooklyn, NY 11201"
             android:textColor="#666666"
             android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/ivAddressIcon"
-            app:layout_constraintTop_toBottomOf="@id/ivAddressIcon" />
+            app:layout_constraintEnd_toStartOf="@id/actionsContainer"
+            android:layout_marginEnd="@dimen/spacing_m"
+            app:layout_constraintStart_toStartOf="@id/tvAddressLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvAddressLabel" />
 
+        <!-- Recipient Info -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/spacing_m"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="88dp"
+            app:layout_constraintStart_toStartOf="@id/tvAddressLabel"
             app:layout_constraintTop_toBottomOf="@id/tvAddressLine">
 
             <ImageView
@@ -97,14 +89,45 @@
                 android:id="@+id/tvRecipient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/spacing_s"
                 android:fontFamily="@font/work_sans"
-                android:text="Alex Johnson, (555) 123-4567"
-                android:textColor="#666666"
+                android:text="Alex Johnson • (555) 123-4567"
+                android:textColor="#999999"
                 android:textSize="12sp" />
-
         </LinearLayout>
 
+        <!-- Actions Container -->
+        <LinearLayout
+            android:id="@+id/actionsContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="@dimen/spacing_s"
+                android:background="@drawable/bg_circle_translucent"
+                android:contentDescription="Delete Address"
+                android:padding="10dp"
+                android:src="@drawable/ic_lux_delete"
+                app:tint="@color/home_lux_dark" />
+
+            <ImageButton
+                android:id="@+id/btnEdit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_circle_translucent"
+                android:contentDescription="Edit Address"
+                android:padding="10dp"
+                android:src="@drawable/ic_lux_edit"
+                app:tint="@color/home_lux_dark" />
+        </LinearLayout>
+
+        <!-- Hide radio button, we rely on border color -->
         <RadioButton
             android:id="@+id/rbSelected"
             android:layout_width="wrap_content"

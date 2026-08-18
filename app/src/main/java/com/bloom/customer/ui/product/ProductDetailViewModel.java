@@ -33,8 +33,8 @@ public class ProductDetailViewModel extends AndroidViewModel {
         return cartRepository.getCartItems();
     }
 
-    public void addToCart(CartItem item) {
-        cartRepository.addToCart(item);
+    public boolean addToCart(CartItem item) {
+        return cartRepository.addToCart(item);
     }
 
     public void removeFromCart(String productId) {

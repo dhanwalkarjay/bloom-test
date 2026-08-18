@@ -1,6 +1,9 @@
 package com.bloom.customer.ui.orderhistory;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,12 +49,25 @@ public class RateOrderActivity extends AppCompatActivity {
 
     private void submitReview(int rating, String comment) {
         binding.btnSubmit.setEnabled(false);
+        binding.btnSubmit.setText("Submitting...");
         repository.submitReview(orderId, rating, comment).observe(this, result -> {
             if (result.status == NetworkResult.Status.SUCCESS) {
-                Toast.makeText(this, "Thank you for your feedback!", Toast.LENGTH_SHORT).show();
-                finish();
+                // Success Animation
+                binding.btnSubmit.animate().alpha(0f).setDuration(400).start();
+                binding.llForm.animate().alpha(0f).setDuration(400).withEndAction(() -> {
+                    binding.llForm.setVisibility(View.GONE);
+                    binding.btnSubmit.setVisibility(View.GONE);
+                    
+                    binding.llSuccessState.setAlpha(0f);
+                    binding.llSuccessState.setVisibility(View.VISIBLE);
+                    binding.llSuccessState.animate().alpha(1f).setDuration(400).start();
+                    
+                    new Handler(Looper.getMainLooper()).postDelayed(this::finish, 1500);
+                }).start();
+                
             } else if (result.status == NetworkResult.Status.ERROR) {
                 binding.btnSubmit.setEnabled(true);
+                binding.btnSubmit.setText("Submit Review");
                 Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show();
             }
         });

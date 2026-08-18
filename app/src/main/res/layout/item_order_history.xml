@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="24dp"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginTop="8dp"
-    app:cardBackgroundColor="@android:color/white"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="?attr/colorSurface"
     app:cardCornerRadius="24dp"
     app:cardElevation="6dp"
-    app:strokeWidth="0dp">
+    app:strokeColor="?attr/colorOutlineVariant"
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,20 +23,18 @@
             android:layout_height="96dp"
             android:scaleType="centerCrop"
             android:src="@drawable/bg_cart_image_placeholder"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/Bloom.HomeRounded12" />
+            app:shapeAppearanceOverlay="@style/Bloom.CartImageShape" />
 
         <TextView
             android:id="@+id/tvShopName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="Sunrise Roses"
-            android:textColor="@color/home_lux_dark"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/tvStatus"
@@ -44,31 +42,42 @@
             app:layout_constraintTop_toTopOf="@id/ivProduct" />
 
         <!-- Luxury Status Badge -->
-        <TextView
-            android:id="@+id/tvStatus"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_home_chip_inactive"
-            android:backgroundTint="#F0EFEF"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="4dp"
-            android:text="PREPARING"
-            android:textColor="@color/home_lux_dark"
-            android:textSize="10sp"
-            android:textStyle="bold"
+            app:cardBackgroundColor="#FFE9EA"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tvShopName"
-            app:layout_constraintBottom_toBottomOf="@id/tvShopName"/>
+            app:layout_constraintBottom_toBottomOf="@id/tvShopName">
+            
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="PREPARING"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05" />
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/tvDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/work_sans"
             android:text="Ordered on Oct 24, 2023"
-            android:textColor="@color/orders_on_surface_variant"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvShopName"
             app:layout_constraintTop_toBottomOf="@id/tvShopName" />
 
@@ -79,30 +88,30 @@
             android:layout_marginTop="12dp"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="₹97.50"
-            android:textColor="@color/orders_primary"
+            android:textColor="?attr/colorPrimary"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tvShopName"
-            app:layout_constraintTop_toBottomOf="@id/tvDate" />
+            app:layout_constraintBottom_toBottomOf="@id/ivProduct"
+            app:layout_constraintStart_toStartOf="@id/tvShopName" />
 
         <!-- Track Order Action Pill -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnTrackOrder"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:backgroundTint="@color/home_lux_dark"
+            android:backgroundTint="?attr/colorPrimary"
             android:fontFamily="@font/plus_jakarta_sans"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:paddingHorizontal="20dp"
+            android:paddingHorizontal="24dp"
             android:text="Track Order"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:cornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/ivProduct"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <LinearLayout
@@ -114,17 +123,45 @@
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/ivProduct" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLeaveReview"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
+        <!-- Review & Download buttons -->
+        <LinearLayout
+            android:id="@+id/llActions"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Leave Review"
-            android:textColor="@color/orders_primary"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/llItems" />
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/llItems">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLeaveReview"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Leave Review"
+                android:textColor="?attr/colorPrimary"
+                app:icon="@drawable/ic_order_review"
+                app:iconTint="?attr/colorPrimary"
+                app:strokeColor="?attr/colorPrimary"
+                app:cornerRadius="24dp"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDownloadInvoice"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Invoice"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:icon="@drawable/ic_order_download"
+                app:iconTint="?attr/colorOnSurfaceVariant"
+                app:cornerRadius="24dp"
+                android:visibility="gone" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

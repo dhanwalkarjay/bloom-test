@@ -1,25 +1,23 @@
 package com.bloom.customer.util;
 
+import com.bloom.BuildConfig;
+
 /**
  * Constants used throughout the app.
  * Principle: Single Responsibility - centralizing all configuration keys.
+ * API keys are injected via BuildConfig from local.properties (git-ignored).
  */
 public final class Constants {
-
-    // TEST number and otp
-    // 18005550123=789012
-    // 919876543210=123456
 
     private Constants() {
         // Private constructor to prevent instantiation
     }
 
-    // Supabase Configuration
-    public static final String SUPABASE_URL = "https://ddelmbcqxuwminhjyemz.supabase.co/";
-    public static final String SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkZWxtYmNxeHV3bWluaGp5ZW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMjUwMzUsImV4cCI6MjEwMDgwMTAzNX0.deso9CqFu1n1tS6k_zc7qGwk3RSjOgA0nOVnFM4gcWo";
-    // Razorpay Configuration
-    public static final String RAZORPAY_KEY_ID = "rzp_test_TIsA2hNZPtgwQT";
-    public static final String RAZORPAY_KEY_SECRET = "Tfovoe6CT4JDz753fNjVxFO5";
+    // Supabase Configuration (injected from local.properties via BuildConfig)
+    public static final String SUPABASE_URL = BuildConfig.SUPABASE_URL;
+    public static final String SUPABASE_ANON_KEY = BuildConfig.SUPABASE_ANON_KEY;
+    // Razorpay Configuration (KEY_ID is publishable — safe client-side)
+    public static final String RAZORPAY_KEY_ID = BuildConfig.RAZORPAY_KEY_ID;
     // API Endpoints
     public static final String AUTH_ENDPOINT = "auth/v1/";
     public static final String REST_ENDPOINT = "rest/v1/";

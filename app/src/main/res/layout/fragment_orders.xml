@@ -12,14 +12,14 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="64dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="4dp"
+        android:minHeight="@dimen/spacing_xxxl"
+        android:paddingTop="@dimen/spacing_s"
+        android:paddingBottom="@dimen/spacing_xs"
         android:background="@color/orders_surface"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="24dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="@dimen/spacing_l"
+        android:paddingEnd="@dimen/spacing_m"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -34,10 +34,10 @@
 
         <ImageButton
             android:id="@+id/btnCart"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/spacing_xxl"
+            android:layout_height="@dimen/spacing_xxl"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="12dp"
+            android:padding="@dimen/spacing_s"
             android:src="@drawable/ic_cart"
             app:tint="@color/home_lux_dark" />
 
@@ -46,8 +46,8 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="@dimen/spacing_xxl"
+        android:layout_marginTop="@dimen/spacing_s"
         app:layout_constraintTop_toBottomOf="@id/topBar"
         app:tabBackground="@color/orders_surface"
         app:tabIndicatorColor="@color/orders_primary"
