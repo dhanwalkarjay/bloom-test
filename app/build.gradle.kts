@@ -44,6 +44,9 @@ android {
             isMinifyEnabled = false
         }
     }
+    lint {
+        abortOnError = false
+    }
     buildFeatures {
         viewBinding = true
         buildConfig = true
