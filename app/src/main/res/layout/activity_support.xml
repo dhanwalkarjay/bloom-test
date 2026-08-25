@@ -31,19 +31,20 @@
             android:layout_height="wrap_content">
 
             <!-- Decorative Floating Icon -->
-            <ImageView
-                android:id="@+id/ivEmblem"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginTop="72dp"
-                android:layout_marginStart="32dp"
-                android:src="@drawable/ic_help_premium"
-                app:tint="#FFFFFF"
-                android:alpha="0.9"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
 
             <!-- Large Elegant Typography over Gradient -->
+            <ImageView
+                android:id="@+id/ivEmblem"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:alpha="0.9"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="48dp"
+                android:src="@drawable/ic_help_premium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#FFFFFF" />
+
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="0dp"
@@ -81,7 +82,8 @@
                     android:orientation="vertical"
                     android:paddingHorizontal="32dp"
                     android:paddingTop="48dp"
-                    android:paddingBottom="48dp">
+                    android:paddingBottom="48dp"
+                    android:animateLayoutChanges="true">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -111,13 +113,14 @@
                             android:textAllCaps="false"
                             app:icon="@android:drawable/ic_dialog_email"
                             app:iconGravity="textStart"
-                            app:backgroundTint="@color/cart_surface_container_low"
-                            android:textColor="?attr/colorPrimary"
-                            app:iconTint="?attr/colorPrimary"
+                            app:backgroundTint="?attr/colorPrimary"
+                            android:textColor="@android:color/white"
+                            app:iconTint="@android:color/white"
                             app:cornerRadius="16dp" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnContactPhone"
+                            style="?attr/materialButtonOutlinedStyle"
                             android:layout_width="0dp"
                             android:layout_height="64dp"
                             android:layout_weight="1"
@@ -128,9 +131,10 @@
                             android:textAllCaps="false"
                             app:icon="@android:drawable/ic_menu_call"
                             app:iconGravity="textStart"
-                            app:backgroundTint="@color/cart_surface_container_low"
-                            android:textColor="?attr/colorPrimary"
-                            app:iconTint="?attr/colorPrimary"
+                            android:textColor="?attr/colorOnSurface"
+                            app:iconTint="?attr/colorOnSurface"
+                            app:strokeColor="?attr/colorOutline"
+                            app:strokeWidth="1dp"
                             app:cornerRadius="16dp" />
                     </LinearLayout>
 
@@ -151,7 +155,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        app:cardBackgroundColor="@color/cart_surface_container_low"
+                        app:cardBackgroundColor="?attr/colorSurfaceVariant"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp"
                         app:strokeWidth="0dp">
@@ -162,14 +166,27 @@
                             android:orientation="vertical"
                             android:padding="20dp">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="How do I track my order?"
-                                android:fontFamily="@font/work_sans"
-                                android:textStyle="bold"
-                                android:textSize="16sp"
-                                android:textColor="?attr/colorOnSurface" />
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="How do I track my order?"
+                                    android:fontFamily="@font/work_sans"
+                                    android:textStyle="bold"
+                                    android:textSize="16sp"
+                                    android:textColor="?attr/colorOnSurface" />
+                                <ImageView
+                                    android:id="@+id/ivFaqChevron1"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_arrow_drop_down"
+                                    app:tint="?attr/colorOnSurface" />
+                            </LinearLayout>
 
                             <TextView
                                 android:id="@+id/tvFaqAnswer1"
@@ -191,7 +208,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        app:cardBackgroundColor="@color/cart_surface_container_low"
+                        app:cardBackgroundColor="?attr/colorSurfaceVariant"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp"
                         app:strokeWidth="0dp">
@@ -202,14 +219,27 @@
                             android:orientation="vertical"
                             android:padding="20dp">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Can I customize my bouquet?"
-                                android:fontFamily="@font/work_sans"
-                                android:textStyle="bold"
-                                android:textSize="16sp"
-                                android:textColor="?attr/colorOnSurface" />
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Can I customize my bouquet?"
+                                    android:fontFamily="@font/work_sans"
+                                    android:textStyle="bold"
+                                    android:textSize="16sp"
+                                    android:textColor="?attr/colorOnSurface" />
+                                <ImageView
+                                    android:id="@+id/ivFaqChevron2"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_arrow_drop_down"
+                                    app:tint="?attr/colorOnSurface" />
+                            </LinearLayout>
 
                             <TextView
                                 android:id="@+id/tvFaqAnswer2"

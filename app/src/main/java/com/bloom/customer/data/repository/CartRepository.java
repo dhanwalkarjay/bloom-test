@@ -37,7 +37,7 @@ public class CartRepository {
     }
 
     private CartRepository(Context context) {
-        this.sharedPreferences = context.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
+        this.sharedPreferences = context.getSharedPreferences("bloom_cart_prefs", Context.MODE_PRIVATE);
         this.gson = new Gson();
         loadCart();
     }
@@ -61,7 +61,7 @@ public class CartRepository {
                 cartLiveData.setValue(new ArrayList<>());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            timber.log.Timber.e(e, "Error converting cart to JSON");
             cartLiveData.setValue(new ArrayList<>());
         }
     }

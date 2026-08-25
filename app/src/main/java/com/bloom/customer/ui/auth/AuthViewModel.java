@@ -43,4 +43,28 @@ public class AuthViewModel extends AndroidViewModel {
     public LiveData<NetworkResult<Void>> updatePassword(String phone, String password) {
         return authRepository.updatePassword(phone, password);
     }
+
+    public LiveData<NetworkResult<AuthResponse>> loginWithGoogle(String idToken) {
+        return authRepository.loginWithGoogle(idToken);
+    }
+
+    public LiveData<NetworkResult<AuthResponse>> verifyTruecaller(String authorizationCode, String codeVerifier) {
+        return authRepository.verifyTruecaller(authorizationCode, codeVerifier);
+    }
+
+    public LiveData<NetworkResult<Void>> updateUserPhone(String phone) {
+        return authRepository.updateUserPhone(phone);
+    }
+
+    public LiveData<NetworkResult<Boolean>> checkRole(String userId, String role) {
+        return authRepository.checkRole(userId, role);
+    }
+
+    public LiveData<NetworkResult<String>> sendBackendOtp(String phone) {
+        return authRepository.sendBackendOtp(phone);
+    }
+
+    public LiveData<NetworkResult<AuthResponse>> verifyBackendOtp(String phone, String otp) {
+        return authRepository.verifyBackendOtp(phone, otp);
+    }
 }

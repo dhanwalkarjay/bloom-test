@@ -30,4 +30,23 @@
     <string name="notifications_subtitle">We\'ll notify you about orders and promos.</string>
     <string name="currently_unavailable">Currently Unavailable</string>
     <string name="no_matches_location">No matching flowers found in your location.</string>
+    
+    <!-- Agent App Strings -->
+    <string name="agent_login_title">Delivery Partner Login</string>
+    <string name="agent_phone_hint">Enter Phone Number</string>
+    <string name="agent_send_otp">Send OTP</string>
+    <string name="agent_login">Login</string>
+    <string name="agent_home_title">Delivery Dashboard</string>
+    <string name="agent_tab_pending">New Deliveries</string>
+    <string name="agent_tab_active">My Deliveries</string>
+    <string name="agent_history">Delivery History</string>
+    <string name="agent_mark_delivered">Mark Delivered</string>
+    <string name="agent_accept_order">Accept Order</string>
+    <string name="agent_view_details">View Details</string>
+    <string name="agent_call_customer">Call Customer</string>
+    <string name="agent_navigate">Navigate</string>
+    <string name="agent_language_toggle">🌐 हिंदी</string>
+
+    <!-- Google Sign-In -->
+    <string name="default_web_client_id">30496784723-nef67qb2og2q7u1ri07fcoa4pf90eun3.apps.googleusercontent.com</string>
 </resources>

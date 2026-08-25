@@ -27,6 +27,7 @@ import com.bloom.databinding.ActivityProductDetailBinding;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.android.material.snackbar.Snackbar;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
@@ -48,6 +49,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     private Product product;
     private boolean isShopOpen = true;
     private int quantity = 1;
+    private String selectedSize = "Regular";
+    private double sizeMarkup = 0.0;
     private Uri selectedVideoUri;
     private ActivityResultLauncher<Intent> videoPickerLauncher;
 
@@ -83,6 +86,19 @@ public class ProductDetailActivity extends AppCompatActivity {
                     insets.bottom
             );
             
+            binding.bottomActionBar.post(() -> {
+                int bottomBarHeight = binding.bottomActionBar.getHeight();
+                View scrollContent = binding.productScrollView.getChildAt(0);
+                if (scrollContent != null) {
+                    scrollContent.setPadding(
+                        scrollContent.getPaddingLeft(),
+                        scrollContent.getPaddingTop(),
+                        scrollContent.getPaddingRight(),
+                        bottomBarHeight + insets.bottom + paddingVertical
+                    );
+                }
+            });
+            
             return windowInsets;
         });
 
@@ -98,7 +114,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     selectedVideoUri = result.getData().getData();
-                    binding.tvVideoStatus.setText("Video Attached ✨");
+                    binding.tvVideoStatus.setText("Video Ready to Send");
+                    binding.ivVideoIcon.setImageResource(android.R.drawable.ic_media_play);
                     binding.btnRemoveVideo.setVisibility(View.VISIBLE);
                 }
             }
@@ -193,12 +210,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.tvDescription.setText(product.getDescription());
 
         // Setup Hero Carousel
-        int[] dummyImages = {
-                R.drawable.dummy_carousel_1,
-                R.drawable.dummy_carousel_2,
-                R.drawable.dummy_carousel_3
-        };
-        ImagePagerAdapter adapter = new ImagePagerAdapter(dummyImages);
+        String[] imageUrls;
+        if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
+            imageUrls = new String[]{product.getImageUrl()};
+        } else {
+            imageUrls = new String[]{"android.resource://" + getPackageName() + "/" + R.drawable.dummy_carousel_1};
+        }
+        ImagePagerAdapter adapter = new ImagePagerAdapter(imageUrls);
         binding.vpProductGallery.setAdapter(adapter);
 
         new TabLayoutMediator(binding.tabIndicator, binding.vpProductGallery,
@@ -219,8 +237,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
 
         if (distance > allowedRadiusKm * 1000) { // Convert KM to Meters
-            binding.flAction.setVisibility(View.GONE);
-            binding.btnCheckout.setVisibility(View.GONE);
+            binding.btnAdd.setEnabled(false);
+            binding.btnAdd.setBackgroundColor(getColor(android.R.color.darker_gray));
+            binding.btnCheckout.setEnabled(false);
+            binding.btnCheckout.setBackgroundColor(getColor(android.R.color.darker_gray));
             binding.tvOutOfRadius.setVisibility(View.VISIBLE);
             binding.tvOutOfRadius.setText("Shop delivery radius is " + allowedRadiusKm + "km. You are at " + String.format("%.1f", distance/1000) + "km.");
         } else if (!isShopOpen) {
@@ -229,6 +249,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             binding.btnAdd.setBackgroundColor(getColor(android.R.color.darker_gray));
             binding.btnCheckout.setEnabled(false);
             binding.btnCheckout.setBackgroundColor(getColor(android.R.color.darker_gray));
+            binding.tvOutOfRadius.setVisibility(View.VISIBLE);
+            binding.tvOutOfRadius.setText("This shop is currently closed.");
         }
         
         updateQuantityText();
@@ -247,8 +269,11 @@ public class ProductDetailActivity extends AppCompatActivity {
                 updateQuantityText();
                 updateCartQuantity();
             } else {
-                // Remove from cart when reaching 0
+                com.bloom.customer.util.HapticUtil.performSuccess(this);
                 viewModel.removeFromCart(product.getId());
+                Snackbar snackbar = Snackbar.make(binding.getRoot(), "Removed from cart", Snackbar.LENGTH_SHORT);
+                snackbar.setAnchorView(binding.bottomActionBar);
+                snackbar.show();
             }
         });
 
@@ -260,10 +285,40 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-        if (binding.chipBirthday != null) binding.chipBirthday.setOnClickListener(v -> setCardMessage("Happy Birthday!"));
-        if (binding.chipSympathy != null) binding.chipSympathy.setOnClickListener(v -> setCardMessage("With deepest sympathy"));
-        if (binding.chipThinking != null) binding.chipThinking.setOnClickListener(v -> setCardMessage("Thinking of you"));
-        if (binding.chipCongrats != null) binding.chipCongrats.setOnClickListener(v -> setCardMessage("Congratulations!"));
+        if (binding.cgSizeSelector != null) {
+            binding.cgSizeSelector.setOnCheckedStateChangeListener((group, checkedIds) -> {
+                if (checkedIds.isEmpty()) return;
+                int checkedId = checkedIds.get(0);
+                if (checkedId == binding.chipSizeDeluxe.getId()) {
+                    selectedSize = "Deluxe";
+                    sizeMarkup = product.getPrice() * 0.30;
+                } else if (checkedId == binding.chipSizePremium.getId()) {
+                    selectedSize = "Premium";
+                    sizeMarkup = product.getPrice() * 0.60;
+                } else {
+                    selectedSize = "Regular";
+                    sizeMarkup = 0.0;
+                }
+                updateTotalPrice();
+                if (binding.llQuantity.getVisibility() == View.VISIBLE) {
+                    updateCartQuantity();
+                }
+            });
+        }
+
+        if (binding.chipGroupMessage != null) {
+            binding.chipGroupMessage.setOnCheckedStateChangeListener((group, checkedIds) -> {
+                if (checkedIds.isEmpty()) {
+                    setCardMessage("");
+                    return;
+                }
+                int checkedId = checkedIds.get(0);
+                if (checkedId == binding.chipBirthday.getId()) setCardMessage("Happy Birthday!");
+                else if (checkedId == binding.chipSympathy.getId()) setCardMessage("With deepest sympathy");
+                else if (checkedId == binding.chipThinking.getId()) setCardMessage("Thinking of you");
+                else if (checkedId == binding.chipCongrats.getId()) setCardMessage("Congratulations!");
+            });
+        }
 
         if (binding.llAttachVideo != null) {
             binding.llAttachVideo.setOnClickListener(v -> {
@@ -275,14 +330,16 @@ public class ProductDetailActivity extends AppCompatActivity {
             binding.btnRemoveVideo.setOnClickListener(v -> {
                 selectedVideoUri = null;
                 binding.tvVideoStatus.setText("Attach Video Message ✨");
+                binding.ivVideoIcon.setImageResource(android.R.drawable.ic_menu_camera);
                 binding.btnRemoveVideo.setVisibility(View.GONE);
             });
         }
 
         binding.btnAdd.setOnClickListener(v -> {
+            com.bloom.customer.util.HapticUtil.performSuccess(this);
             CartItem cartItem = new CartItem(product);
             cartItem.setQuantity(1);
-            cartItem.setSize("Regular");
+            cartItem.setSize(selectedSize);
             String message = binding.etCardMessage != null ? binding.etCardMessage.getText().toString() : "";
             cartItem.setCardMessage(message);
             if (selectedVideoUri != null) {
@@ -295,6 +352,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
         binding.btnCheckout.setOnClickListener(v -> {
+            com.bloom.customer.util.HapticUtil.performSuccess(this);
             Intent intent = new Intent(this, com.bloom.customer.ui.cart.CartActivity.class);
             startActivity(intent);
         });
@@ -303,6 +361,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void updateCartQuantity() {
         CartItem cartItem = new CartItem(product);
         cartItem.setQuantity(quantity);
+        cartItem.setSize(selectedSize);
         String message = binding.etCardMessage != null ? binding.etCardMessage.getText().toString() : "";
         cartItem.setCardMessage(message);
         if (selectedVideoUri != null) {
@@ -324,7 +383,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void updateTotalPrice() {
-        double total = product.getPrice() * quantity;
+        double total = (product.getPrice() + sizeMarkup) * quantity;
         for (com.bloom.customer.data.model.Addon addon : addonAdapter.getSelectedAddons()) {
             total += addon.getPrice() * quantity; // Addons scale with bouquet quantity in this app's logic
         }
@@ -339,7 +398,9 @@ public class ProductDetailActivity extends AppCompatActivity {
             showClearCartDialog(item);
         } else {
             viewModel.addToCart(item);
-            Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
+            Snackbar snackbar = Snackbar.make(binding.getRoot(), "Added to cart", Snackbar.LENGTH_SHORT);
+            snackbar.setAnchorView(binding.bottomActionBar);
+            snackbar.show();
         }
     }
 
@@ -350,17 +411,19 @@ public class ProductDetailActivity extends AppCompatActivity {
                 .setPositiveButton("Clear & Add", (dialog, which) -> {
                     viewModel.clearCart();
                     viewModel.addToCart(item);
-                    Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(binding.getRoot(), "Added to cart", Snackbar.LENGTH_SHORT);
+                    snackbar.setAnchorView(binding.bottomActionBar);
+                    snackbar.show();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
     }
 
     private class ImagePagerAdapter extends RecyclerView.Adapter<ImagePagerAdapter.ViewHolder> {
-        private final int[] imageResIds;
+        private final String[] imageUrls;
 
-        public ImagePagerAdapter(int[] imageResIds) {
-            this.imageResIds = imageResIds;
+        public ImagePagerAdapter(String[] imageUrls) {
+            this.imageUrls = imageUrls;
         }
 
         @NonNull
@@ -378,13 +441,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Glide.with(holder.imageView.getContext())
-                    .load(imageResIds[position])
+                    .load(imageUrls[position])
                     .into(holder.imageView);
         }
 
         @Override
         public int getItemCount() {
-            return imageResIds.length;
+            return imageUrls.length;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {

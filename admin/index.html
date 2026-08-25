@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Auth Container -->
+    <div id="authContainer" class="flex items-center justify-center min-h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-md w-96">
+            <h1 class="text-2xl font-bold mb-6 text-center text-pink-600">Bloom Admin</h1>
+            <div id="authError" class="hidden text-red-500 text-sm mb-4"></div>
+            <input type="text" id="phoneInput" placeholder="Phone Number" class="w-full border rounded p-2 mb-4">
+            <input type="password" id="passwordInput" placeholder="Password" class="w-full border rounded p-2 mb-6">
+            <button id="loginBtn" class="w-full bg-pink-600 text-white rounded py-2 font-semibold hover:bg-pink-700">Login</button>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <div id="dashboardContainer" class="hidden min-h-screen flex flex-col">
+        <!-- Navbar -->
+        <nav class="bg-white shadow flex justify-between items-center px-6 py-4">
+            <h1 class="text-xl font-bold text-pink-600">Bloom Admin Dashboard</h1>
+            <div class="flex items-center space-x-4">
+                <span id="adminName" class="text-sm font-medium">Admin</span>
+                <button id="logoutBtn" class="text-sm text-red-500 font-semibold hover:underline">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-grow p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Merchant Approvals Column -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-lg font-bold mb-4 border-b pb-2">Pending Florists</h2>
+                    <div id="approvalsList" class="space-y-4">
+                        <div class="text-gray-500 text-sm italic">Loading...</div>
+                    </div>
+                </div>
+
+                <!-- Orders Overview Column -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-lg font-bold mb-4 border-b pb-2">Recent Orders</h2>
+                    <div id="ordersList" class="space-y-4">
+                        <div class="text-gray-500 text-sm italic">Loading...</div>
+                    </div>
+                </div>
+                
+                <!-- Payout Approvals Column -->
+                <div class="bg-white rounded-lg shadow p-6 md:col-span-2">
+                    <h2 class="text-lg font-bold mb-4 border-b pb-2">Pending Payouts</h2>
+                    <div id="payoutsList" class="space-y-4">
+                        <div class="text-gray-500 text-sm italic">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

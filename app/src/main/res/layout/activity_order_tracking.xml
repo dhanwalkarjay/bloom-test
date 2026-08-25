@@ -1,64 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?attr/colorSurface"
     tools:ignore="HardcodedText,SmallSp">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <!-- 1. Full Screen Map Background -->
+    <FrameLayout
+        android:id="@+id/mapContainer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height"
-        android:background="#FFFFFF"
-        app:contentInsetStart="0dp"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent"
+        android:layout_marginBottom="120dp">
+        <WebView
+            android:id="@+id/mapWebView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageButton
-                android:id="@+id/btnBack"
-                android:layout_width="@dimen/spacing_xxl"
-                android:layout_height="@dimen/spacing_xxl"
-                android:layout_marginStart="@dimen/spacing_xs"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Back"
-                android:padding="@dimen/spacing_s"
-                android:src="@drawable/ic_arrow_back"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/home_lux_dark" />
-
-            <TextView
-                android:id="@+id/tvTitle"
+            android:layout_height="match_parent" />
+            
+        <View
+            android:id="@+id/vShimmerMap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#E0E0E0" />
+            
+        <!-- Floating Time Dot over Map -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="100dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:cardCornerRadius="@dimen/spacing_l"
+            app:cardElevation="@dimen/spacing_s"
+            app:strokeColor="?attr/colorOutlineVariant"
+            app:strokeWidth="1dp">
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/plus_jakarta_sans"
-                android:text="Track Delivery"
-                android:textColor="@color/home_lux_dark"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="18dp"
+                android:paddingVertical="10dp">
+                <View
+                    android:id="@+id/vTimeDot"
+                    android:layout_width="@dimen/spacing_s"
+                    android:layout_height="@dimen/spacing_s"
+                    android:background="@drawable/bg_home_notification_dot"
+                    android:backgroundTint="#A82D47" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="ARRIVING IN 12 MINS"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="@dimen/spacing_m"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:strokeColor="#F0F0F0"
-                app:strokeWidth="1dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+    <!-- 2. Floating Toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentInsetStart="0dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="24dp"
+                android:paddingBottom="16dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="@dimen/spacing_m"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="@dimen/spacing_s"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <ImageButton
+                        android:id="@+id/btnBack"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_arrow_back"
+                        app:tint="?attr/colorOnSurface" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="@dimen/spacing_m"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="@dimen/spacing_s"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
                     <ImageView
                         android:id="@+id/btnHelp"
                         android:layout_width="match_parent"
@@ -66,327 +113,437 @@
                         android:scaleType="center"
                         android:src="@drawable/ic_help_premium"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Help"
-                        app:tint="@color/home_lux_dark" />
-            </com.google.android.material.card.MaterialCardView>
+                        app:tint="?attr/colorOnSurface" />
+                </com.google.android.material.card.MaterialCardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.appcompat.widget.Toolbar>
-
+    <!-- 3. Bottom Sheet for Timeline and Courier Info -->
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@id/cvCourierInfo"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_bottom_sheet_premium"
+        android:elevation="16dp"
+        app:behavior_peekHeight="420dp"
+        app:behavior_hideable="false"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="40dp">
 
-            <!-- Map Section -->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="320dp"
-                android:layout_marginHorizontal="20dp"
+            <!-- Drag Handle -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/spacing_m"
-                android:background="@drawable/bg_bottom_sheet_premium">
+                android:layout_marginBottom="@dimen/spacing_s"
+                android:background="@drawable/bg_input_pill_lux"
+                android:backgroundTint="?attr/colorOutlineVariant" />
 
-                <com.google.android.material.card.MaterialCardView
+            <!-- Pinned Courier Info (only visible when out for delivery) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvCourierInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_l"
+                android:layout_marginTop="@dimen/spacing_m"
+                android:visibility="gone"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardCornerRadius="@dimen/spacing_l"
+                app:cardElevation="0dp"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:strokeWidth="1dp">
+                
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cardCornerRadius="@dimen/spacing_l"
-                    app:cardElevation="0dp">
-                    <WebView
-                        android:id="@+id/mapWebView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/spacing_m"
-                    android:layout_gravity="top|center_horizontal"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="@dimen/spacing_l"
-                    app:cardElevation="@dimen/spacing_s"
-                    app:strokeColor="#EAEAEA"
-                    app:strokeWidth="1dp">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_m">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="@dimen/spacing_xxl"
+                        android:layout_height="@dimen/spacing_xxl"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_home_person"
+                        app:shapeAppearanceOverlay="@style/Bloom.HomeRounded12"
+                        app:tint="#999999" />
+
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="18dp"
-                        android:paddingVertical="10dp">
-                        <View
-                            android:id="@+id/vTimeDot"
-                            android:layout_width="@dimen/spacing_s"
-                            android:layout_height="@dimen/spacing_s"
-                            android:background="@drawable/bg_home_notification_dot"
-                            android:backgroundTint="#A82D47" />
+                        android:layout_marginStart="@dimen/spacing_s"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:fontFamily="@font/plus_jakarta_sans"
-                            android:text="ARRIVING IN 12 MINS"
-                            android:textColor="@color/home_lux_dark"
-                            android:textSize="12sp"
+                            android:fontFamily="@font/dm_sans"
+                            android:text="DELIVERY PARTNER"
+                            android:textColor="#AAAAAA"
+                            android:textSize="10sp"
                             android:textStyle="bold" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </FrameLayout>
 
-            <!-- Timeline -->
-            <LinearLayout
+                        <TextView
+                            android:id="@+id/tvCourierName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:text="David R."
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/work_sans"
+                            android:text="4.9 (250+ deliveries)"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/btnCall"
+                        android:layout_width="@dimen/button_height_small"
+                        android:layout_height="@dimen/button_height_small"
+                        android:background="@drawable/bg_circle_translucent"
+                        android:backgroundTint="#F2F8F4"
+                        android:src="@android:drawable/ic_menu_call"
+                        app:tint="#4A7C59" />
+
+                    <ImageButton
+                        android:id="@+id/btnChat"
+                        android:layout_width="@dimen/button_height_small"
+                        android:layout_height="@dimen/button_height_small"
+                        android:layout_marginStart="@dimen/spacing_s"
+                        android:background="@drawable/bg_circle_translucent"
+                        android:backgroundTint="#FEE9EE"
+                        android:src="@android:drawable/stat_notify_chat"
+                        app:tint="#A82D47" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvSheetTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xl"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Order Status"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <!-- Fluid ConstraintLayout Timeline -->
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/llTimeline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="28dp"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="16dp"
                 android:clipChildren="false"
                 android:clipToPadding="false">
 
-                <!-- Step 1 -->
-                <RelativeLayout
-                    android:id="@+id/rlStep1"
-                    android:layout_width="match_parent"
+                <!-- Helper vertical guideline to align all icons -->
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineIcons"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:clipChildren="false"
-                    android:clipToPadding="false">
-                    <View
-                        android:id="@+id/line1Bg"
-                        android:layout_width="@dimen/spacing_xxs"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="21dp"
-                        android:layout_marginTop="36dp"
-                        android:background="#F0F0F0" />
-                    <View
-                        android:id="@+id/line1"
-                        android:layout_width="@dimen/spacing_xxs"
-                        android:layout_height="0dp"
-                        android:layout_marginStart="21dp"
-                        android:layout_marginTop="36dp"
-                        android:background="#A82D47" />
-                    <View
-                        android:id="@+id/vRipple1"
-                        android:layout_width="@dimen/button_height_small"
-                        android:layout_height="@dimen/button_height_small"
-                        android:background="@drawable/bg_ripple_ring"
-                        android:alpha="0" />
-                    <ImageView
-                        android:id="@+id/ivStatus1"
-                        android:layout_width="@dimen/button_height_small"
-                        android:layout_height="@dimen/button_height_small"
-                        android:background="@drawable/bg_home_notification_dot"
-                        android:backgroundTint="#A82D47"
-                        android:padding="@dimen/spacing_s"
-                        app:tint="#FFFFFF"
-                        android:src="@drawable/ic_timeline_placed" />
-                    <TextView
-                        android:id="@+id/tvStatus1Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        android:layout_toEndOf="@id/ivStatus1"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:text="Order Placed"
-                        android:textColor="@color/home_lux_dark"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tvStatus1Desc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tvStatus1Title"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_toEndOf="@id/ivStatus1"
-                        android:fontFamily="@font/work_sans"
-                        android:text="We've received your order"
-                        android:textColor="#888888"
-                        android:textSize="13sp" />
-                    <TextView
-                        android:id="@+id/tvStatus1Time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:fontFamily="@font/work_sans"
-                        android:text="09:15 AM"
-                        android:textColor="#AAAAAA"
-                        android:textSize="11sp" />
-                </RelativeLayout>
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="40dp" />
+
+                <!-- Step 1 -->
+                <View
+                    android:id="@+id/vRipple1"
+                    android:layout_width="@dimen/button_height_small"
+                    android:layout_height="@dimen/button_height_small"
+                    android:background="@drawable/bg_ripple_ring"
+                    android:alpha="0"
+                    app:layout_constraintTop_toTopOf="@id/ivStatus1"
+                    app:layout_constraintBottom_toBottomOf="@id/ivStatus1"
+                    app:layout_constraintStart_toStartOf="@id/ivStatus1"
+                    app:layout_constraintEnd_toEndOf="@id/ivStatus1" />
+                <ImageView
+                    android:id="@+id/ivStatus1"
+                    android:layout_width="@dimen/button_height_small"
+                    android:layout_height="@dimen/button_height_small"
+                    android:background="@drawable/bg_home_notification_dot"
+                    android:backgroundTint="#A82D47"
+                    android:padding="@dimen/spacing_s"
+                    app:tint="#FFFFFF"
+                    android:src="@drawable/ic_timeline_placed"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guidelineIcons"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineIcons" />
+                <TextView
+                    android:id="@+id/tvStatus1Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="Order Placed"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="@id/ivStatus1"
+                    app:layout_constraintStart_toEndOf="@id/ivStatus1"
+                    app:layout_constraintEnd_toStartOf="@id/tvStatus1Time" />
+                <TextView
+                    android:id="@+id/tvStatus1Desc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/work_sans"
+                    android:text="We've received your order"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="13sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvStatus1Title"
+                    app:layout_constraintBottom_toTopOf="@id/tvStatus2Title"
+                    app:layout_constraintStart_toStartOf="@id/tvStatus1Title"
+                    app:layout_constraintEnd_toEndOf="@id/tvStatus1Title" />
+                <TextView
+                    android:id="@+id/tvStatus1Time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/work_sans"
+                    android:text="09:15 AM"
+                    android:textColor="?attr/colorOutline"
+                    android:textSize="11sp"
+                    app:layout_constraintTop_toTopOf="@id/tvStatus1Title"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <!-- Connecting Line 1 -->
+                <View
+                    android:id="@+id/line1Bg"
+                    android:layout_width="@dimen/spacing_xxs"
+                    android:layout_height="0dp"
+                    android:background="#F0F0F0"
+                    app:layout_constraintTop_toBottomOf="@id/ivStatus1"
+                    app:layout_constraintBottom_toTopOf="@id/ivStatus2"
+                    app:layout_constraintStart_toStartOf="@id/guidelineIcons"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineIcons" />
+                <View
+                    android:id="@+id/line1"
+                    android:layout_width="@dimen/spacing_xxs"
+                    android:layout_height="0dp"
+                    android:background="#A82D47"
+                    app:layout_constraintTop_toBottomOf="@id/ivStatus1"
+                    app:layout_constraintStart_toStartOf="@id/guidelineIcons"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineIcons" />
 
                 <!-- Step 2 -->
-                <RelativeLayout
-                    android:id="@+id/rlStep2"
-                    android:layout_width="match_parent"
+                <View
+                    android:id="@+id/vRipple2"
+                    android:layout_width="@dimen/button_height_small"
+                    android:layout_height="@dimen/button_height_small"
+                    android:background="@drawable/bg_ripple_ring"
+                    android:alpha="0"
+                    app:layout_constraintTop_toTopOf="@id/ivStatus2"
+                    app:layout_constraintBottom_toBottomOf="@id/ivStatus2"
+                    app:layout_constraintStart_toStartOf="@id/ivStatus2"
+                    app:layout_constraintEnd_toEndOf="@id/ivStatus2" />
+                <ImageView
+                    android:id="@+id/ivStatus2"
+                    android:layout_width="@dimen/button_height_small"
+                    android:layout_height="@dimen/button_height_small"
+                    android:background="@drawable/bg_home_notification_dot"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:padding="@dimen/spacing_s"
+                    app:tint="#FFFFFF"
+                    android:src="@drawable/ic_timeline_confirmed"
+                    app:layout_constraintTop_toTopOf="@id/tvStatus2Title"
+                    app:layout_constraintBottom_toBottomOf="@id/tvStatus2Title"
+                    app:layout_constraintStart_toStartOf="@id/guidelineIcons"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineIcons" />
+                <TextView
+                    android:id="@+id/tvStatus2Title"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_s"
-                    android:clipChildren="false"
-                    android:clipToPadding="false">
-                    <View
-                        android:id="@+id/line2Bg"
-                        android:layout_width="@dimen/spacing_xxs"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="21dp"
-                        android:layout_marginTop="36dp"
-                        android:background="#F0F0F0" />
-                    <View
-                        android:id="@+id/line2"
-                        android:layout_width="@dimen/spacing_xxs"
-                        android:layout_height="0dp"
-                        android:layout_marginStart="21dp"
-                        android:layout_marginTop="36dp"
-                        android:background="#A82D47" />
-                    <View
-                        android:id="@+id/vRipple2"
-                        android:layout_width="@dimen/button_height_small"
-                        android:layout_height="@dimen/button_height_small"
-                        android:background="@drawable/bg_ripple_ring"
-                        android:alpha="0" />
-                    <ImageView
-                        android:id="@+id/ivStatus2"
-                        android:layout_width="@dimen/button_height_small"
-                        android:layout_height="@dimen/button_height_small"
-                        android:background="@drawable/bg_home_notification_dot"
-                        android:backgroundTint="#A82D47"
-                        android:padding="@dimen/spacing_s"
-                        app:tint="#FFFFFF"
-                        android:src="@drawable/ic_timeline_confirmed" />
-                    <TextView
-                        android:id="@+id/tvStatus2Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        android:layout_toEndOf="@id/ivStatus2"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:text="Confirmed"
-                        android:textColor="@color/home_lux_dark"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tvStatus2Desc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tvStatus2Title"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_toEndOf="@id/ivStatus2"
-                        android:fontFamily="@font/work_sans"
-                        android:text="Seller has accepted your request"
-                        android:textColor="#888888"
-                        android:textSize="13sp" />
-                    <TextView
-                        android:id="@+id/tvStatus2Time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:fontFamily="@font/work_sans"
-                        android:text="09:22 AM"
-                        android:textColor="#AAAAAA"
-                        android:textSize="11sp" />
-                </RelativeLayout>
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="Confirmed"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/tvStatus1Desc"
+                    app:layout_constraintStart_toStartOf="@id/tvStatus1Title"
+                    app:layout_constraintEnd_toStartOf="@id/tvStatus2Time" />
+                <TextView
+                    android:id="@+id/tvStatus2Desc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/work_sans"
+                    android:text="Seller has accepted your request"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="13sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvStatus2Title"
+                    app:layout_constraintBottom_toTopOf="@id/tvStatus3Title"
+                    app:layout_constraintStart_toStartOf="@id/tvStatus2Title"
+                    app:layout_constraintEnd_toEndOf="@id/tvStatus2Title" />
+                <TextView
+                    android:id="@+id/tvStatus2Time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/work_sans"
+                    android:text="09:22 AM"
+                    android:textColor="?attr/colorOutline"
+                    android:textSize="11sp"
+                    app:layout_constraintTop_toTopOf="@id/tvStatus2Title"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <!-- Connecting Line 2 -->
+                <View
+                    android:id="@+id/line2Bg"
+                    android:layout_width="@dimen/spacing_xxs"
+                    android:layout_height="0dp"
+                    android:background="?attr/colorOutlineVariant"
+                    app:layout_constraintTop_toBottomOf="@id/ivStatus2"
+                    app:layout_constraintBottom_toTopOf="@id/ivStatus3"
+                    app:layout_constraintStart_toStartOf="@id/guidelineIcons"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineIcons" />
+                <View
+                    android:id="@+id/line2"
+                    android:layout_width="@dimen/spacing_xxs"
+                    android:layout_height="0dp"
+                    android:background="?attr/colorPrimary"
+                    app:layout_constraintTop_toBottomOf="@id/ivStatus2"
+                    app:layout_constraintStart_toStartOf="@id/guidelineIcons"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineIcons" />
 
                 <!-- Step 3 -->
-                <RelativeLayout
-                    android:id="@+id/rlStep3"
-                    android:layout_width="match_parent"
+                <View
+                    android:id="@+id/vRipple3"
+                    android:layout_width="@dimen/button_height_small"
+                    android:layout_height="@dimen/button_height_small"
+                    android:background="@drawable/bg_ripple_ring"
+                    android:alpha="0"
+                    app:layout_constraintTop_toTopOf="@id/ivStatus3"
+                    app:layout_constraintBottom_toBottomOf="@id/ivStatus3"
+                    app:layout_constraintStart_toStartOf="@id/ivStatus3"
+                    app:layout_constraintEnd_toEndOf="@id/ivStatus3" />
+                <ImageView
+                    android:id="@+id/ivStatus3"
+                    android:layout_width="@dimen/button_height_small"
+                    android:layout_height="@dimen/button_height_small"
+                    android:background="@drawable/bg_home_notification_dot"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:padding="@dimen/spacing_s"
+                    app:tint="#FFFFFF"
+                    android:src="@drawable/ic_timeline_preparing"
+                    app:layout_constraintTop_toTopOf="@id/tvStatus3Title"
+                    app:layout_constraintBottom_toBottomOf="@id/tvStatus3Title"
+                    app:layout_constraintStart_toStartOf="@id/guidelineIcons"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineIcons" />
+                <TextView
+                    android:id="@+id/tvStatus3Title"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_s"
-                    android:clipChildren="false"
-                    android:clipToPadding="false">
-                    <View
-                        android:id="@+id/line3Bg"
-                        android:layout_width="@dimen/spacing_xxs"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="21dp"
-                        android:layout_marginTop="36dp"
-                        android:background="#F0F0F0" />
-                    <View
-                        android:id="@+id/line3"
-                        android:layout_width="@dimen/spacing_xxs"
-                        android:layout_height="0dp"
-                        android:layout_marginStart="21dp"
-                        android:layout_marginTop="36dp"
-                        android:background="#A82D47" />
-                    <View
-                        android:id="@+id/vRipple3"
-                        android:layout_width="@dimen/button_height_small"
-                        android:layout_height="@dimen/button_height_small"
-                        android:background="@drawable/bg_ripple_ring"
-                        android:alpha="0" />
-                    <ImageView
-                        android:id="@+id/ivStatus3"
-                        android:layout_width="@dimen/button_height_small"
-                        android:layout_height="@dimen/button_height_small"
-                        android:background="@drawable/bg_home_notification_dot"
-                        android:backgroundTint="#A82D47"
-                        android:padding="@dimen/spacing_s"
-                        android:src="@drawable/ic_timeline_preparing"
-                        app:tint="#FFFFFF" />
-                    <TextView
-                        android:id="@+id/tvStatus3Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        android:layout_toEndOf="@id/ivStatus3"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:text="Preparing Your Bouquet"
-                        android:textColor="@color/home_lux_dark"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tvStatus3Desc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tvStatus3Title"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_toEndOf="@id/ivStatus3"
-                        android:fontFamily="@font/work_sans"
-                        android:text="Florist is hand-picking fresh blooms"
-                        android:textColor="#888888"
-                        android:textSize="13sp" />
-                    <TextView
-                        android:id="@+id/tvStatus3Time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:fontFamily="@font/work_sans"
-                        android:text="09:45 AM"
-                        android:textColor="#AAAAAA"
-                        android:textSize="11sp" />
-                </RelativeLayout>
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="Preparing Your Bouquet"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/tvStatus2Desc"
+                    app:layout_constraintStart_toStartOf="@id/tvStatus2Title"
+                    app:layout_constraintEnd_toStartOf="@id/tvStatus3Time" />
+                <TextView
+                    android:id="@+id/tvStatus3Desc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/work_sans"
+                    android:text="Florist is hand-picking fresh blooms"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="13sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvStatus3Title"
+                    app:layout_constraintBottom_toTopOf="@id/cvStep4"
+                    app:layout_constraintStart_toStartOf="@id/tvStatus3Title"
+                    app:layout_constraintEnd_toEndOf="@id/tvStatus3Title" />
+                <TextView
+                    android:id="@+id/tvStatus3Time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/work_sans"
+                    android:text="09:45 AM"
+                    android:textColor="?attr/colorOutline"
+                    android:textSize="11sp"
+                    app:layout_constraintTop_toTopOf="@id/tvStatus3Title"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-                <!-- Step 4 Highlighted -->
+                <!-- Connecting Line 3 -->
+                <View
+                    android:id="@+id/line3Bg"
+                    android:layout_width="@dimen/spacing_xxs"
+                    android:layout_height="0dp"
+                    android:background="?attr/colorOutlineVariant"
+                    app:layout_constraintTop_toBottomOf="@id/ivStatus3"
+                    app:layout_constraintBottom_toTopOf="@id/cvStep4"
+                    app:layout_constraintStart_toStartOf="@id/guidelineIcons"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineIcons" />
+                <View
+                    android:id="@+id/line3"
+                    android:layout_width="@dimen/spacing_xxs"
+                    android:layout_height="0dp"
+                    android:background="?attr/colorPrimary"
+                    app:layout_constraintTop_toBottomOf="@id/ivStatus3"
+                    app:layout_constraintStart_toStartOf="@id/guidelineIcons"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineIcons" />
+
+                <!-- Step 4 Highlighted Card -->
+                <!-- Because it's a card, it breaks the simple timeline a bit. 
+                     We constraint the card's top to the bottom of the previous description. -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cvStep4"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_s"
-                    app:cardBackgroundColor="#FCFCFC"
+                    android:layout_marginTop="8dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
                     app:cardCornerRadius="@dimen/spacing_m"
                     app:cardElevation="0dp"
-                    app:strokeColor="#FEE9EE"
-                    app:strokeWidth="1.2dp">
-
-                    <RelativeLayout
+                    app:strokeColor="?attr/colorOutlineVariant"
+                    app:strokeWidth="1.2dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvStatus3Desc"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+                    
+                    <!-- We still need a timeline icon inside or beside it. The original put it inside. -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_l"
-                        android:clipChildren="false"
-                        android:clipToPadding="false">
+                        android:paddingVertical="@dimen/spacing_m"
+                        android:paddingHorizontal="@dimen/spacing_m">
+                        
+                        <!-- Internal icon aligned with the external ones. Since card has margin 0 in parent now, 
+                             we can use an inner guideline at 40dp - spacing_m(16dp) = 24dp -->
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/innerGuideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_begin="24dp" />
+
                         <View
                             android:id="@+id/vRipple4"
                             android:layout_width="@dimen/button_height_small"
                             android:layout_height="@dimen/button_height_small"
                             android:background="@drawable/bg_ripple_ring"
-                            android:alpha="0" />
+                            android:alpha="0"
+                            app:layout_constraintTop_toTopOf="@id/ivStatus4"
+                            app:layout_constraintBottom_toBottomOf="@id/ivStatus4"
+                            app:layout_constraintStart_toStartOf="@id/ivStatus4"
+                            app:layout_constraintEnd_toEndOf="@id/ivStatus4" />
                         <ImageView
                             android:id="@+id/ivStatus4"
                             android:layout_width="@dimen/button_height_small"
@@ -395,56 +552,69 @@
                             android:backgroundTint="#A82D47"
                             android:padding="@dimen/spacing_s"
                             android:src="@drawable/ic_timeline_out"
-                            app:tint="#FFFFFF" />
+                            app:tint="#FFFFFF"
+                            app:layout_constraintTop_toTopOf="@id/tvStatus4Title"
+                            app:layout_constraintBottom_toBottomOf="@id/tvStatus4Title"
+                            app:layout_constraintStart_toStartOf="@id/innerGuideline"
+                            app:layout_constraintEnd_toEndOf="@id/innerGuideline" />
                         <TextView
                             android:id="@+id/tvStatus4Title"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="18dp"
-                            android:layout_toEndOf="@id/ivStatus4"
+                            android:layout_marginStart="16dp"
                             android:fontFamily="@font/plus_jakarta_sans"
                             android:text="Out for Delivery"
-                            android:textColor="#A82D47"
+                            android:textColor="?attr/colorPrimary"
                             android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/ivStatus4"
+                            app:layout_constraintEnd_toStartOf="@id/tvStatus4Time" />
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/tvStatus4Desc"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/tvStatus4Title"
-                            android:layout_marginStart="18dp"
-                            android:layout_marginTop="@dimen/spacing_xs"
-                            android:layout_toEndOf="@id/ivStatus4"
+                            android:layout_marginTop="2dp"
                             android:fontFamily="@font/work_sans"
                             android:text="David R. is nearby with your flowers"
-                            android:textColor="#666666"
-                            android:textSize="13sp" />
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="13sp"
+                            app:layout_constraintTop_toBottomOf="@id/tvStatus4Title"
+                            app:layout_constraintStart_toStartOf="@id/tvStatus4Title"
+                            app:layout_constraintEnd_toEndOf="@id/tvStatus4Title" />
                         <TextView
+                            android:id="@+id/tvStatus4Time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
                             android:fontFamily="@font/dm_sans"
                             android:text="JUST NOW"
-                            android:textColor="#A82D47"
+                            android:textColor="?attr/colorPrimary"
                             android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            app:layout_constraintTop_toTopOf="@id/tvStatus4Title"
+                            app:layout_constraintEnd_toEndOf="parent" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:id="@+id/cvOtp"
+                            android:layout_width="0dp"
                             android:layout_height="@dimen/button_height"
-                            android:layout_below="@id/ivStatus4"
                             android:layout_marginTop="@dimen/spacing_m"
                             android:background="@drawable/bg_input_pill_lux"
                             android:backgroundTint="#FAFAFA"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingHorizontal="@dimen/spacing_m">
+                            android:paddingHorizontal="@dimen/spacing_m"
+                            android:visibility="gone"
+                            app:layout_constraintTop_toBottomOf="@id/tvStatus4Desc"
+                            app:layout_constraintStart_toStartOf="@id/tvStatus4Title"
+                            app:layout_constraintEnd_toEndOf="parent">
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/plus_jakarta_sans"
                                 android:text="DELIVERY OTP"
-                                android:textColor="#999999"
+                                android:textColor="?attr/colorOutline"
                                 android:textSize="11sp"
                                 android:textStyle="bold" />
                             <TextView
@@ -454,166 +624,110 @@
                                 android:fontFamily="@font/plus_jakarta_sans"
                                 android:letterSpacing="0.2"
                                 android:text="--- ---"
-                                android:textColor="#A82D47"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
-                    </RelativeLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- Connecting Line 4 -->
+                <View
+                    android:id="@+id/line4Bg"
+                    android:layout_width="@dimen/spacing_xxs"
+                    android:layout_height="0dp"
+                    android:background="?attr/colorOutlineVariant"
+                    app:layout_constraintTop_toBottomOf="@id/cvStep4"
+                    app:layout_constraintBottom_toTopOf="@id/ivStatus5"
+                    app:layout_constraintStart_toStartOf="@id/guidelineIcons"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineIcons" />
+                <View
+                    android:id="@+id/line4"
+                    android:layout_width="@dimen/spacing_xxs"
+                    android:layout_height="0dp"
+                    android:background="?attr/colorPrimary"
+                    app:layout_constraintTop_toBottomOf="@id/cvStep4"
+                    app:layout_constraintStart_toStartOf="@id/guidelineIcons"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineIcons" />
+
                 <!-- Step 5 -->
-                <RelativeLayout
-                    android:id="@+id/rlStep5"
-                    android:layout_width="match_parent"
+                <View
+                    android:id="@+id/vRipple5"
+                    android:layout_width="@dimen/button_height_small"
+                    android:layout_height="@dimen/button_height_small"
+                    android:background="@drawable/bg_ripple_ring"
+                    android:alpha="0"
+                    app:layout_constraintTop_toTopOf="@id/ivStatus5"
+                    app:layout_constraintBottom_toBottomOf="@id/ivStatus5"
+                    app:layout_constraintStart_toStartOf="@id/ivStatus5"
+                    app:layout_constraintEnd_toEndOf="@id/ivStatus5" />
+                <ImageView
+                    android:id="@+id/ivStatus5"
+                    android:layout_width="@dimen/button_height_small"
+                    android:layout_height="@dimen/button_height_small"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/bg_home_notification_dot"
+                    android:backgroundTint="#F8F8F8"
+                    android:padding="@dimen/spacing_s"
+                    android:src="@drawable/ic_timeline_delivered"
+                    app:tint="#CCCCCC"
+                    app:layout_constraintTop_toBottomOf="@id/cvStep4"
+                    app:layout_constraintStart_toStartOf="@id/guidelineIcons"
+                    app:layout_constraintEnd_toEndOf="@id/guidelineIcons" />
+                <TextView
+                    android:id="@+id/tvStatus5Title"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:alpha="0.4"
-                    android:clipChildren="false"
-                    android:clipToPadding="false">
-                    <View
-                        android:id="@+id/vRipple5"
-                        android:layout_width="@dimen/button_height_small"
-                        android:layout_height="@dimen/button_height_small"
-                        android:background="@drawable/bg_ripple_ring"
-                        android:alpha="0" />
-                    <ImageView
-                        android:id="@+id/ivStatus5"
-                        android:layout_width="@dimen/button_height_small"
-                        android:layout_height="@dimen/button_height_small"
-                        android:background="@drawable/bg_home_notification_dot"
-                        android:backgroundTint="#F8F8F8"
-                        android:padding="@dimen/spacing_s"
-                        android:src="@drawable/ic_timeline_delivered"
-                        app:tint="#CCCCCC" />
-                    <TextView
-                        android:id="@+id/tvStatus5Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        android:layout_toEndOf="@id/ivStatus5"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:text="Delivered"
-                        android:textColor="#CCCCCC"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tvStatus5Desc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tvStatus5Title"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_toEndOf="@id/ivStatus5"
-                        android:fontFamily="@font/work_sans"
-                        android:text="Expect a knock at your door soon"
-                        android:textColor="#CCCCCC"
-                        android:textSize="13sp" />
-                </RelativeLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCancelOrder"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="Delivered"
+                    android:textColor="#CCCCCC"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="@id/ivStatus5"
+                    app:layout_constraintBottom_toBottomOf="@id/ivStatus5"
+                    app:layout_constraintStart_toEndOf="@id/ivStatus5"
+                    app:layout_constraintEnd_toEndOf="parent" />
+                <TextView
+                    android:id="@+id/tvStatus5Desc"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/spacing_xl"
-                    android:text="Cancel Order"
-                    android:textAllCaps="false"
-                    android:textColor="#AF314A"
-                    android:visibility="gone" />
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/work_sans"
+                    android:text="Expect a knock at your door soon"
+                    android:textColor="#CCCCCC"
+                    android:textSize="13sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvStatus5Title"
+                    app:layout_constraintStart_toStartOf="@id/tvStatus5Title"
+                    app:layout_constraintEnd_toEndOf="@id/tvStatus5Title" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelOrder"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:text="Cancel Order"
+                android:textAllCaps="false"
+                android:textColor="#AF314A"
+                android:visibility="gone" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="120dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReportOrder"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="Report Sender / Reject Gift"
+                android:textAllCaps="false"
+                android:textColor="#D32F2F"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cvCourierInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_m"
-        android:visibility="gone"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="@dimen/spacing_l"
-        app:cardElevation="@dimen/spacing_m"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="@dimen/spacing_m">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="@dimen/spacing_xxl"
-                android:layout_height="@dimen/spacing_xxl"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_home_person"
-                app:shapeAppearanceOverlay="@style/Bloom.HomeRounded12"
-                app:tint="#999999" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_s"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/dm_sans"
-                    android:text="DELIVERY PARTNER"
-                    android:textColor="#AAAAAA"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvCourierName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/plus_jakarta_sans"
-                    android:text="David R."
-                    android:textColor="@color/home_lux_dark"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/work_sans"
-                    android:text="4.9 (250+ deliveries)"
-                    android:textColor="#888888"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/btnCall"
-                android:layout_width="@dimen/button_height_small"
-                android:layout_height="@dimen/button_height_small"
-                android:background="@drawable/bg_circle_translucent"
-                android:backgroundTint="#F2F8F4"
-                android:contentDescription="Call Courier"
-                android:src="@android:drawable/ic_menu_call"
-                app:tint="#4A7C59" />
-
-            <ImageButton
-                android:id="@+id/btnChat"
-                android:layout_width="@dimen/button_height_small"
-                android:layout_height="@dimen/button_height_small"
-                android:layout_marginStart="@dimen/spacing_s"
-                android:background="@drawable/bg_circle_translucent"
-                android:backgroundTint="#FEE9EE"
-                android:contentDescription="Message Courier"
-                android:src="@android:drawable/stat_notify_chat"
-                app:tint="#A82D47" />
-
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

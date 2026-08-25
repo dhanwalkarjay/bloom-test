@@ -53,16 +53,36 @@ public class OrdersFragment extends Fragment {
                 }
         ).attach();
 
-        // Make tabs font bold when selected
-        for (int i = 0; i < binding.tabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = binding.tabLayout.getTabAt(i);
-            if (tab != null) {
-                View tabView = tab.view;
-                for (int j = 0; j < ((ViewGroup) tabView).getChildCount(); j++) {
-                    View child = ((ViewGroup) tabView).getChildAt(j);
-                    if (child instanceof TextView) {
-                        ((TextView) child).setTypeface(null, Typeface.BOLD);
-                    }
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                updateTabTypeface(tab, Typeface.BOLD);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                updateTabTypeface(tab, Typeface.NORMAL);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
+
+        // Initialize first tab
+        binding.tabLayout.post(() -> {
+            if (binding.tabLayout.getTabAt(0) != null) {
+                updateTabTypeface(binding.tabLayout.getTabAt(0), Typeface.BOLD);
+            }
+        });
+    }
+
+    private void updateTabTypeface(TabLayout.Tab tab, int typeface) {
+        if (tab != null && tab.view != null) {
+            View tabView = tab.view;
+            for (int j = 0; j < ((ViewGroup) tabView).getChildCount(); j++) {
+                View child = ((ViewGroup) tabView).getChildAt(j);
+                if (child instanceof TextView) {
+                    ((TextView) child).setTypeface(null, typeface);
                 }
             }
         }

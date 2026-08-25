@@ -37,11 +37,20 @@ public interface SupabaseAPI {
     @POST(Constants.REST_ENDPOINT + "rpc/nearby_shops")
     Call<List<Shop>> getNearbyShops(@Body Map<String, Object> body);
 
+    @POST(Constants.REST_ENDPOINT + "rpc/check_role")
+    Call<Boolean> checkRole(@Body Map<String, Object> body);
+
     @GET(Constants.REST_ENDPOINT + "shops")
     Call<List<Shop>> getShopById(@Query("id") String id);
 
+    @GET(Constants.REST_ENDPOINT + "shops")
+    Call<List<Shop>> getShopByOwnerId(@Query("owner_id") String ownerId);
+
     @GET(Constants.REST_ENDPOINT + "shop_inventory")
     Call<List<com.bloom.customer.data.model.ShopInventoryItem>> getShopInventory(@Query("shop_id") String shopId);
+
+    @PATCH(Constants.REST_ENDPOINT + "shop_inventory")
+    Call<Void> updateShopInventory(@Query("id") String id, @Body Map<String, Object> body);
 
     /**
      * Get products for a specific florist/shop.
@@ -122,17 +131,10 @@ public interface SupabaseAPI {
     Call<Void> deleteAddress(@Query("id") String id);
 
     /**
-     * Create a new order.
+     * Create a new order atomically (order + items).
      */
-    @Headers("Prefer: return=representation")
-    @POST(Constants.REST_ENDPOINT + "orders")
-    Call<List<Order>> createOrder(@Body Order order);
-
-    /**
-     * Add items to an order.
-     */
-    @POST(Constants.REST_ENDPOINT + "order_items")
-    Call<Void> createOrderItems(@Body List<OrderItem> items);
+    @POST(Constants.REST_ENDPOINT + "rpc/place_order")
+    Call<Order> placeOrderAtomic(@Body java.util.Map<String, Object> body);
 
     /**
      * Get orders for the current user.
@@ -140,6 +142,13 @@ public interface SupabaseAPI {
     @GET(Constants.REST_ENDPOINT + "orders")
     Call<List<Order>> getOrders(
         @Query("user_id") String userId,
+        @Query("select") String select,
+        @Query("order") String order
+    );
+
+    @GET(Constants.REST_ENDPOINT + "orders")
+    Call<List<Order>> getOrdersForShop(
+        @Query("shop_id") String shopId,
         @Query("select") String select,
         @Query("order") String order
     );
@@ -168,6 +177,7 @@ public interface SupabaseAPI {
     /**
      * Submit a review for an order.
      */
+    @Headers("Prefer: resolution=merge-duplicates")
     @POST(Constants.REST_ENDPOINT + "reviews")
     Call<Void> postReview(@Body Review review);
 
@@ -185,4 +195,10 @@ public interface SupabaseAPI {
         @Query("user_id") String userId,
         @Query("order") String order
     );
+
+    /**
+     * Check if a user has a specific role.
+     */
+    @POST(Constants.REST_ENDPOINT + "rpc/has_role")
+    Call<Boolean> hasRole(@Body Map<String, Object> body);
 }

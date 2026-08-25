@@ -31,51 +31,90 @@
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_order_history" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmerLoading"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="32dp"
-                android:visibility="gone" />
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:shimmer_auto_start="true">
 
-            <LinearLayout
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <include layout="@layout/layout_order_shimmer_item" />
+                    <include layout="@layout/layout_order_shimmer_item" />
+                    <include layout="@layout/layout_order_shimmer_item" />
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/emptyState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="32dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="48dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:strokeWidth="1dp"
                 android:visibility="gone">
 
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/ic_orders_receipt"
-                    app:tint="@color/orders_outline_variant" />
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:fontFamily="@font/plus_jakarta_sans"
-                    android:text="No orders found"
-                    android:textColor="@color/orders_on_surface"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/work_sans"
                     android:gravity="center"
-                    android:text="Looks like you haven't placed any orders here yet."
-                    android:textColor="@color/orders_on_surface_variant"
-                    android:textSize="14sp" />
+                    android:orientation="vertical"
+                    android:padding="32dp">
 
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/ivEmptyIcon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_orders_receipt"
+                        app:tint="?attr/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/tvEmptyTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="No orders found"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvEmptySubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/work_sans"
+                        android:gravity="center"
+                        android:text="Looks like you haven't placed any orders here yet."
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRetry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="24dp"
+                        android:backgroundTint="?attr/colorPrimary"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:paddingHorizontal="32dp"
+                        android:text="Shop Now"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:visibility="gone"
+                        app:cornerRadius="24dp"
+                        app:elevation="0dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

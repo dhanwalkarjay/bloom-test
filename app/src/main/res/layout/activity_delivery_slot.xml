@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F6F4"
+    android:background="?attr/colorSurface"
     android:clipChildren="false"
     android:clipToPadding="false">
 
@@ -27,7 +27,7 @@
             android:contentDescription="Back"
             android:padding="@dimen/spacing_s"
             android:src="@drawable/ic_arrow_back"
-            app:tint="@color/home_lux_dark" />
+            app:tint="?attr/colorOnSurface" />
 
         <TextView
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
             android:layout_marginStart="@dimen/spacing_s"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="When should we\ndeliver?"
-            android:textColor="@color/home_lux_dark"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="32sp"
             android:textStyle="bold"
             android:lineSpacingExtra="@dimen/spacing_xxs" />
@@ -112,7 +112,7 @@
                         android:layout_marginEnd="6dp"
                         android:layout_marginBottom="@dimen/spacing_s"
                         android:layout_marginTop="@dimen/spacing_s"
-                        app:cardBackgroundColor="@android:color/white"
+                        app:cardBackgroundColor="?attr/colorSurface"
                         app:cardCornerRadius="@dimen/spacing_l"
                         app:cardElevation="6dp"
                         app:strokeColor="?attr/colorPrimary"
@@ -152,10 +152,11 @@
                         android:layout_marginStart="6dp"
                         android:layout_marginBottom="@dimen/spacing_s"
                         android:layout_marginTop="@dimen/spacing_s"
-                        app:cardBackgroundColor="@android:color/white"
+                        app:cardBackgroundColor="?attr/colorSurface"
                         app:cardCornerRadius="@dimen/spacing_l"
                         app:cardElevation="@dimen/spacing_xxs"
-                        app:strokeWidth="0dp">
+                        app:strokeColor="?attr/colorOutline"
+                        app:strokeWidth="1dp">
                         
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -168,7 +169,7 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_product_calendar"
-                                app:tint="#AAAAAA" />
+                                app:tint="?attr/colorOnSurfaceVariant" />
                                 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -176,7 +177,7 @@
                                 android:layout_marginTop="@dimen/spacing_s"
                                 android:fontFamily="@font/plus_jakarta_sans"
                                 android:text="Scheduled"
-                                android:textColor="#999999"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -192,7 +193,6 @@
                     android:clipChildren="false"
                     android:clipToPadding="false">
 
-                    <!-- Content wrapper -->
                     <LinearLayout
                         android:id="@+id/llTimeSelection"
                         android:layout_width="match_parent"
@@ -208,73 +208,25 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/plus_jakarta_sans"
                             android:letterSpacing="0.05"
-                            android:text="ARRIVAL TIME"
-                            android:textColor="#AAAAAA"
+                            android:text="AVAILABLE SLOTS"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="11sp"
                             android:textStyle="bold" />
 
-                        <!-- Stunning Digital Clock Display -->
-                        <LinearLayout
+                        <!-- Dynamic Matrix of Time Slots -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvTimeSlots"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:layout_marginTop="@dimen/spacing_s"
-                            android:gravity="bottom">
-                            
-                            <TextView
-                                android:id="@+id/tvSelectedTime"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/plus_jakarta_sans"
-                                android:text="12:30"
-                                android:textColor="@color/home_lux_dark"
-                                android:textSize="64sp"
-                                android:textStyle="bold"
-                                android:includeFontPadding="false" />
-                                
-                            <TextView
-                                android:id="@+id/tvAmPm"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/spacing_s"
-                                android:layout_marginBottom="@dimen/spacing_s"
-                                android:fontFamily="@font/plus_jakarta_sans"
-                                android:text="PM"
-                                android:textColor="@color/home_lux_dark"
-                                android:textSize="24sp"
-                                android:textStyle="bold" />
-                                
-                            <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1" />
-                            
-                            <!-- Change Time Chip -->
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/cardChangeTime"
-                                android:layout_width="wrap_content"
-                                android:layout_height="40dp"
-                                android:layout_marginBottom="@dimen/spacing_m"
-                                app:cardBackgroundColor="#EBEBEB"
-                                app:cardCornerRadius="20dp"
-                                app:cardElevation="0dp"
-                                app:strokeWidth="0dp">
-                                
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:paddingHorizontal="@dimen/spacing_m"
-                                    android:fontFamily="@font/plus_jakarta_sans"
-                                    android:text="Change"
-                                    android:textColor="@color/home_lux_dark"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-                            </com.google.android.material.card.MaterialCardView>
-                        </LinearLayout>
+                            android:clipToPadding="false"
+                            android:overScrollMode="never" />
 
                         <!-- Info tag -->
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_s"
+                            android:layout_marginTop="@dimen/spacing_m"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
                             
@@ -282,20 +234,18 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:src="@drawable/ic_product_lightning"
-                                app:tint="#AAAAAA" />
+                                app:tint="?attr/colorPrimary" />
                                 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="6dp"
                                 android:fontFamily="@font/work_sans"
-                                android:text="Guaranteed delivery within 60 minutes"
-                                android:textColor="#999999"
+                                android:text="Guaranteed delivery within selected window"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 android:textSize="13sp" />
                         </LinearLayout>
-
                     </LinearLayout>
-                    
                 </FrameLayout>
             </LinearLayout>
 

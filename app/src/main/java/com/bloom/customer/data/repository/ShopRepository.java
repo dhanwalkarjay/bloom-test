@@ -52,7 +52,7 @@ public class ShopRepository {
                             errorMsg += " - " + response.errorBody().string();
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        timber.log.Timber.e(e, "Error parsing shops from json");
                     }
                     result.setValue(NetworkResult.error(errorMsg, null));
                 }

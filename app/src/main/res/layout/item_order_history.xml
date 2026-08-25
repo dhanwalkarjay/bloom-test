@@ -7,8 +7,8 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     app:cardBackgroundColor="?attr/colorSurface"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
     app:strokeColor="?attr/colorOutlineVariant"
     app:strokeWidth="1dp">
 
@@ -37,7 +37,9 @@
             android:textColor="?attr/colorOnSurface"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/tvStatus"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toStartOf="@id/cvStatus"
             app:layout_constraintStart_toEndOf="@id/ivProduct"
             app:layout_constraintTop_toTopOf="@id/ivProduct" />
 
@@ -46,7 +48,7 @@
             android:id="@+id/cvStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="#FFE9EA"
+            app:cardBackgroundColor="?attr/colorPrimaryContainer"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp"
@@ -109,7 +111,7 @@
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:cornerRadius="20dp"
+            app:cornerRadius="16dp"
             app:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="@id/ivProduct"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -145,7 +147,7 @@
                 app:icon="@drawable/ic_order_review"
                 app:iconTint="?attr/colorPrimary"
                 app:strokeColor="?attr/colorPrimary"
-                app:cornerRadius="24dp"
+                app:cornerRadius="16dp"
                 android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
@@ -159,9 +161,10 @@
                 android:textColor="?attr/colorOnSurfaceVariant"
                 app:icon="@drawable/ic_order_download"
                 app:iconTint="?attr/colorOnSurfaceVariant"
-                app:cornerRadius="24dp"
+                app:cornerRadius="16dp"
                 android:visibility="gone" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
+

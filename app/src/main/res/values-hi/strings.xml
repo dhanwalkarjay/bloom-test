@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="agent_login_title">डिलीवरी पार्टनर लॉगिन</string>
+    <string name="agent_phone_hint">फोन नंबर दर्ज करें</string>
+    <string name="agent_send_otp">ओटीपी (OTP) भेजें</string>
+    <string name="agent_login">लॉगिन करें</string>
+    <string name="agent_home_title">डिलीवरी डैशबोर्ड</string>
+    <string name="agent_tab_pending">नई डिलीवरी</string>
+    <string name="agent_tab_active">मेरी डिलीवरी</string>
+    <string name="agent_history">डिलीवरी इतिहास</string>
+    <string name="agent_mark_delivered">डिलीवर हो गया (मार्क डिलीवर्ड)</string>
+    <string name="agent_accept_order">ऑर्डर स्वीकार करें</string>
+    <string name="agent_view_details">विवरण देखें</string>
+    <string name="agent_call_customer">ग्राहक को कॉल करें</string>
+    <string name="agent_navigate">मैप पर देखें (Navigate)</string>
+    <string name="agent_language_toggle">Switch to English</string>
+</resources>

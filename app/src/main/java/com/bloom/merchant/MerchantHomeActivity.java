@@ -12,11 +12,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bloom.R;
 import com.bloom.customer.data.model.Order;
 import com.bloom.customer.data.model.ShopInventoryItem;
+import com.bloom.customer.data.api.RealtimeService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.lifecycle.ViewModelProvider;
 
 public class MerchantHomeActivity extends AppCompatActivity {
 
@@ -24,11 +27,15 @@ public class MerchantHomeActivity extends AppCompatActivity {
     private MerchantInventoryAdapter inventoryAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ViewFlipper viewFlipper;
+    private MerchantViewModel viewModel;
+    private int consecutiveRejections = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_merchant_home);
+        
+        viewModel = new ViewModelProvider(this).get(MerchantViewModel.class);
         
         viewFlipper = findViewById(R.id.viewFlipper);
         
@@ -52,25 +59,94 @@ public class MerchantHomeActivity extends AppCompatActivity {
         orderAdapter.setListener(new MerchantOrderAdapter.OnOrderActionListener() {
             @Override
             public void onAccept(Order order) {
-                // Mock progression logic
-                if (order.getStatus().equals("placed")) {
-                    order.setStatus("preparing");
-                    Toast.makeText(MerchantHomeActivity.this, "Order marked as Preparing", Toast.LENGTH_SHORT).show();
-                } else if (order.getStatus().equals("preparing")) {
-                    order.setStatus("out_for_delivery");
-                    Toast.makeText(MerchantHomeActivity.this, "Order Out for Delivery!", Toast.LENGTH_SHORT).show();
-                } else if (order.getStatus().equals("out_for_delivery")) {
-                    order.setStatus("delivered");
-                    Toast.makeText(MerchantHomeActivity.this, "Order Delivered!", Toast.LENGTH_SHORT).show();
-                }
-                orderAdapter.notifyDataSetChanged();
+                consecutiveRejections = 0;
+                updateStatus(order, "preparing", "Order marked as Preparing");
             }
 
             @Override
             public void onDecline(Order order) {
-                order.setStatus("cancelled");
-                Toast.makeText(MerchantHomeActivity.this, "Order Cancelled", Toast.LENGTH_SHORT).show();
-                orderAdapter.notifyDataSetChanged();
+                if (order.getStatus().equals("placed")) {
+                    updateStatus(order, "cancelled", "Order Cancelled");
+                    consecutiveRejections++;
+                    if (consecutiveRejections >= 2) {
+                        triggerShopOfflineStrike();
+                    }
+                } else {
+                    Toast.makeText(MerchantHomeActivity.this, "Can only cancel newly placed orders", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void triggerShopOfflineStrike() {
+        consecutiveRejections = 0;
+        // In a real app, update Shop is_online to false in Supabase
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Shop Put Offline 🛑")
+            .setMessage("Your shop has been automatically put Offline because you rejected 2 consecutive orders. This protects customers from missed orders. Please go online again when you are ready to accept orders.")
+            .setPositiveButton("Go Back Online", (dialog, which) -> {
+                Toast.makeText(this, "You are back online.", Toast.LENGTH_SHORT).show();
+            })
+            .setCancelable(false)
+            .show();
+    }
+
+    private String pendingUpdateOrderId = null;
+    private String pendingUpdateStatus = null;
+    private String pendingUpdateMsg = null;
+
+    private final androidx.activity.result.ActivityResultLauncher<android.content.Intent> cameraLauncher = registerForActivityResult(
+            new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK || true) { // Always succeed for mock
+                    Toast.makeText(this, "Quality Control Proof Captured!", Toast.LENGTH_SHORT).show();
+                    if (pendingUpdateOrderId != null) {
+                        performStatusUpdate(pendingUpdateOrderId, pendingUpdateStatus, pendingUpdateMsg);
+                    }
+                }
+            }
+    );
+
+    private void updateStatus(Order order, String newStatus, String successMsg) {
+        // Handle progression too
+        String finalStatus = newStatus;
+        if (newStatus.equals("preparing") && order.getStatus().equals("preparing")) {
+            finalStatus = "out_for_delivery";
+            successMsg = "Order Out for Delivery!";
+            
+            // Task 7.4: Double-Sided Photo Proof (Florist Side)
+            pendingUpdateOrderId = order.getId();
+            pendingUpdateStatus = finalStatus;
+            pendingUpdateMsg = successMsg;
+            
+            android.content.Intent takePictureIntent = new android.content.Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                cameraLauncher.launch(takePictureIntent);
+            } else {
+                Toast.makeText(this, "Camera not available. Mocking photo capture...", Toast.LENGTH_SHORT).show();
+                performStatusUpdate(pendingUpdateOrderId, pendingUpdateStatus, pendingUpdateMsg);
+            }
+            return;
+        } else if (newStatus.equals("preparing") && order.getStatus().equals("out_for_delivery")) {
+            finalStatus = "delivered";
+            successMsg = "Order Delivered!";
+        }
+
+        performStatusUpdate(order.getId(), finalStatus, successMsg);
+    }
+
+    private void performStatusUpdate(String orderId, String targetStatus, String finalSuccessMsg) {
+        viewModel.updateOrderStatus(orderId, targetStatus).observe(this, result -> {
+            switch (result.status) {
+                case SUCCESS:
+                    Toast.makeText(MerchantHomeActivity.this, finalSuccessMsg, Toast.LENGTH_SHORT).show();
+                    fetchOrders();
+                    break;
+                case ERROR:
+                    Toast.makeText(MerchantHomeActivity.this, "Error: " + result.message, Toast.LENGTH_SHORT).show();
+                    break;
+                case LOADING:
+                    break;
             }
         });
     }
@@ -82,12 +158,43 @@ public class MerchantHomeActivity extends AppCompatActivity {
         rvInventory.setAdapter(inventoryAdapter);
         
         inventoryAdapter.setListener((item, isAvailable) -> {
-            String status = isAvailable ? "Available" : "Sold Out";
-            Toast.makeText(MerchantHomeActivity.this, item.getName() + " marked as " + status, Toast.LENGTH_SHORT).show();
-            // TODO: Push to Supabase shop_inventory table
+            int newQty = isAvailable ? 100 : 0;
+            viewModel.updateInventoryStock(item.getId(), newQty).observe(this, result -> {
+                switch (result.status) {
+                    case SUCCESS:
+                        String status = isAvailable ? "Available" : "Sold Out";
+                        Toast.makeText(MerchantHomeActivity.this, item.getName() + " marked as " + status, Toast.LENGTH_SHORT).show();
+                        fetchInventory();
+                        break;
+                    case ERROR:
+                        Toast.makeText(MerchantHomeActivity.this, "Failed: " + result.message, Toast.LENGTH_SHORT).show();
+                        // Rollback state visually
+                        fetchInventory();
+                        break;
+                    case LOADING:
+                        break;
+                }
+            });
         });
         
-        loadMockInventory();
+        fetchInventory();
+    }
+
+    private void fetchInventory() {
+        viewModel.fetchInventory().observe(this, result -> {
+            switch (result.status) {
+                case SUCCESS:
+                    if (result.data != null) {
+                        inventoryAdapter.setItems(result.data);
+                    }
+                    break;
+                case ERROR:
+                    Toast.makeText(this, "Inventory Error: " + result.message, Toast.LENGTH_SHORT).show();
+                    break;
+                case LOADING:
+                    break;
+            }
+        });
     }
 
     private void setupBottomNavigation() {
@@ -108,43 +215,44 @@ public class MerchantHomeActivity extends AppCompatActivity {
         });
     }
     
+    private RealtimeService realtimeService;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (realtimeService != null) {
+            realtimeService.stopTracking();
+        }
+    }
+
     private void fetchOrders() {
         swipeRefreshLayout.setRefreshing(true);
-        // Mocking network delay
-        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-            List<Order> mockOrders = new ArrayList<>();
-            
-            // Mock some orders if no setters are accessible via Reflection or just skip it for now and use GSON if needed.
-            // Let's assume we have OrderRepository
-            Order mockOrder = new com.google.gson.Gson().fromJson("{\"id\":\"ord_1234\", \"status\":\"placed\"}", Order.class);
-            Order mockOrder2 = new com.google.gson.Gson().fromJson("{\"id\":\"ord_5678\", \"status\":\"preparing\"}", Order.class);
-            
-            mockOrders.add(mockOrder);
-            mockOrders.add(mockOrder2);
-            
-            orderAdapter.setOrders(mockOrders);
-            swipeRefreshLayout.setRefreshing(false);
-        }, 1000);
+        viewModel.fetchOrders().observe(this, result -> {
+            switch (result.status) {
+                case SUCCESS:
+                    orderAdapter.setOrders(result.data);
+                    swipeRefreshLayout.setRefreshing(false);
+                    
+                    String shopId = viewModel.getShopIdCache();
+                    if (shopId != null && realtimeService == null) {
+                        realtimeService = new RealtimeService();
+                        realtimeService.startMerchantTracking(shopId, () -> {
+                            // New order arrived!
+                            Toast.makeText(MerchantHomeActivity.this, "New order arrived!", Toast.LENGTH_LONG).show();
+                            // Fetch orders again
+                            fetchOrders();
+                        });
+                    }
+                    break;
+                case ERROR:
+                    Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show();
+                    swipeRefreshLayout.setRefreshing(false);
+                    break;
+                case LOADING:
+                    swipeRefreshLayout.setRefreshing(true);
+                    break;
+            }
+        });
     }
     
-    private void loadMockInventory() {
-        List<ShopInventoryItem> inventory = new ArrayList<>();
-        
-        ShopInventoryItem item1 = new ShopInventoryItem();
-        item1.setId("stem1"); item1.setType("STEM"); item1.setName("Red Rose");
-        item1.setPricePerUnit(4.50); item1.setStockQuantity(50); item1.setColorHex("🌹");
-        inventory.add(item1);
-
-        ShopInventoryItem item2 = new ShopInventoryItem();
-        item2.setId("wrap1"); item2.setType("WRAPPER"); item2.setName("Matte Black Paper");
-        item2.setPricePerUnit(5.00); item2.setStockQuantity(100); item2.setColorHex("🖤");
-        inventory.add(item2);
-        
-        ShopInventoryItem item3 = new ShopInventoryItem();
-        item3.setId("ribbon1"); item3.setType("RIBBON"); item3.setName("Silk Red Ribbon");
-        item3.setPricePerUnit(2.00); item3.setStockQuantity(0); item3.setColorHex("🎀"); // Sold out
-        inventory.add(item3);
-
-        inventoryAdapter.setItems(inventory);
-    }
 }

@@ -2,12 +2,15 @@ package com.bloom.customer.ui.location;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -16,12 +19,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.content.Context;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bloom.R;
 import com.bloom.customer.data.model.Address;
@@ -35,6 +41,8 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -51,6 +59,17 @@ public class ManualLocationActivity extends AppCompatActivity {
     private AddressRepository addressRepository;
     private BottomSheetBehavior<View> bottomSheetBehavior;
     
+    // Search debounce
+    private final Handler searchHandler = new Handler(Looper.getMainLooper());
+    private Runnable searchRunnable;
+    private static final long SEARCH_DEBOUNCE_MS = 350;
+    
+    // Recent searches
+    private static final String PREFS_RECENT = "bloom_location_recent";
+    private static final String KEY_RECENT_LIST = "recent_searches";
+    private static final int MAX_RECENT = 3;
+    
+    // Map state
     private double currentMapLat = 20.5937;
     private double currentMapLng = 78.9629;
     private String lastSearchedText = "";
@@ -91,42 +110,66 @@ public class ManualLocationActivity extends AppCompatActivity {
         setupMap();
         setupBottomSheet();
         setupListeners();
+        startPinPulseAnimation();
         loadSavedAddresses();
+        loadRecentSearches();
+    }
+    
+    private void startPinPulseAnimation() {
+        android.view.animation.Animation pulseAnim = AnimationUtils.loadAnimation(this, R.anim.pulse_ring);
+        binding.vPinPulse.setAlpha(0.5f);
+        binding.vPinPulse.startAnimation(pulseAnim);
     }
     
     private void setupBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet);
-        // Ensure it starts in the collapsed state (1st stage)
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     private void setupMap() {
         WebSettings webSettings = binding.mapWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         binding.mapWebView.addJavascriptInterface(new WebAppInterface(), "Android");
 
+        // Detect dark mode for tile choice
+        boolean isDark = (getResources().getConfiguration().uiMode & 
+                android.content.res.Configuration.UI_MODE_NIGHT_MASK) == 
+                android.content.res.Configuration.UI_MODE_NIGHT_YES;
+        String tileLayer = isDark 
+                ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
+        String bgColor = isDark ? "#1a1a2e" : "#f8f5f2";
+        
         String html = "<html><head>" +
                 "<link rel='stylesheet' href='https://unpkg.com/leaflet@1.7.1/dist/leaflet.css' />" +
                 "<script src='https://unpkg.com/leaflet@1.7.1/dist/leaflet.js'></script>" +
-                "<style>#map { height: 100%; width: 100%; margin: 0; padding: 0; }</style>" +
+                "<style>body{margin:0;background:" + bgColor + ";}#map { height: 100%; width: 100%; margin: 0; padding: 0; }</style>" +
                 "</head><body>" +
                 "<div id='map'></div>" +
                 "<script>" +
                 "var map = L.map('map', {zoomControl: false}).setView([20.5937, 78.9629], 5);" +
-                "L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);" +
+                "L.tileLayer('" + tileLayer + "').addTo(map);" +
                 "map.on('moveend', function() { " +
                 "  var center = map.getCenter();" +
                 "  Android.onMapMoved(center.lat, center.lng);" +
                 "});" +
                 "</script></body></html>";
 
-        binding.mapWebView.setWebViewClient(new WebViewClient());
+        binding.mapWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                runOnUiThread(() -> {
+                    binding.llOfflineFallback.setVisibility(View.VISIBLE);
+                    binding.mapWebView.setVisibility(View.INVISIBLE);
+                });
+            }
+        });
         binding.mapWebView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
     }
 
     /**
-     * Load the user's real saved addresses from Supabase and populate
-     * the Home and Work cards with actual data.
+     * Load the user's saved addresses using stable ViewBinding IDs (not fragile getChildAt).
      */
     private void loadSavedAddresses() {
         addressRepository.getAddresses().observe(this, result -> {
@@ -145,43 +188,66 @@ public class ManualLocationActivity extends AppCompatActivity {
                     }
                 }
 
-                // Populate Home card
+                // P0 Fix: Use stable ViewBinding IDs instead of fragile getChildAt()
                 if (homeAddr != null) {
                     final Address finalHomeAddr = homeAddr;
-                    // Find the subtitle TextView inside cvHome — index 0 is LinearLayout, [1] is
-                    // subtitle TextView
-                    android.widget.LinearLayout homeLL = (android.widget.LinearLayout) binding.cvHome.getChildAt(0);
-                    if (homeLL != null && homeLL.getChildCount() >= 3) {
-                        ((android.widget.TextView) homeLL.getChildAt(2)).setText(finalHomeAddr.getFullAddress());
-                    }
-                    binding.cvHome.setOnClickListener(v -> returnLocation(finalHomeAddr.getLabel(),
-                            finalHomeAddr.getLatitude(), finalHomeAddr.getLongitude()));
+                    binding.tvHomeSubtitle.setText(finalHomeAddr.getFullAddress());
+                    binding.cvHome.setOnClickListener(v -> returnLocation(
+                            finalHomeAddr.getLabel(), finalHomeAddr.getLatitude(), finalHomeAddr.getLongitude()));
                     binding.cvHome.setVisibility(View.VISIBLE);
                 } else {
                     binding.cvHome.setVisibility(View.GONE);
                 }
 
-                // Populate Work card
                 if (workAddr != null) {
                     final Address finalWorkAddr = workAddr;
-                    android.widget.LinearLayout workLL = (android.widget.LinearLayout) binding.cvWork.getChildAt(0);
-                    if (workLL != null && workLL.getChildCount() >= 3) {
-                        ((android.widget.TextView) workLL.getChildAt(2)).setText(finalWorkAddr.getFullAddress());
-                    }
-                    binding.cvWork.setOnClickListener(v -> returnLocation(finalWorkAddr.getLabel(),
-                            finalWorkAddr.getLatitude(), finalWorkAddr.getLongitude()));
+                    binding.tvWorkSubtitle.setText(finalWorkAddr.getFullAddress());
+                    binding.cvWork.setOnClickListener(v -> returnLocation(
+                            finalWorkAddr.getLabel(), finalWorkAddr.getLatitude(), finalWorkAddr.getLongitude()));
                     binding.cvWork.setVisibility(View.VISIBLE);
                 } else {
                     binding.cvWork.setVisibility(View.GONE);
                 }
                 
-                if (homeAddr == null && workAddr == null) {
-                    binding.cvAddNew.setVisibility(View.VISIBLE);
-                } else {
-                    binding.cvAddNew.setVisibility(View.GONE);
-                }
+                // Add New always shown — removed conditional hiding
+                binding.cvAddNew.setVisibility(View.VISIBLE);
             }
         });
+    }
+    
+    /**
+     * Load real recent searches from SharedPreferences.
+     */
+    private void loadRecentSearches() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_RECENT, Context.MODE_PRIVATE);
+        String raw = prefs.getString(KEY_RECENT_LIST, "");
+        if (raw.isEmpty()) return;
+        
+        String[] items = raw.split("\\|\\|");
+        List<android.widget.LinearLayout> rows = Arrays.asList(binding.llRecent1, binding.llRecent2, binding.llRecent3);
+        List<android.widget.TextView> labels = Arrays.asList(binding.tvRecent1, binding.tvRecent2, binding.tvRecent3);
+        
+        binding.tvRecentSearches.setVisibility(items.length > 0 ? View.VISIBLE : View.GONE);
+        
+        for (int i = 0; i < items.length && i < MAX_RECENT; i++) {
+            final String location = items[i];
+            labels.get(i).setText(location);
+            rows.get(i).setVisibility(View.VISIBLE);
+            rows.get(i).setOnClickListener(v -> geocodeAndProceedToStep2(location));
+        }
+    }
+    
+    /**
+     * Save a searched address to SharedPreferences recent list.
+     */
+    private void saveRecentSearch(String areaName) {
+        SharedPreferences prefs = getSharedPreferences(PREFS_RECENT, Context.MODE_PRIVATE);
+        String raw = prefs.getString(KEY_RECENT_LIST, "");
+        List<String> items = new ArrayList<>(Arrays.asList(raw.isEmpty() ? new String[0] : raw.split("\\|\\|")));
+        items.remove(areaName);
+        items.add(0, areaName);
+        if (items.size() > MAX_RECENT) items = items.subList(0, MAX_RECENT);
+        prefs.edit().putString(KEY_RECENT_LIST, String.join("||", items)).apply();
     }
 
     private void setupListeners() {
@@ -190,9 +256,7 @@ public class ManualLocationActivity extends AppCompatActivity {
         binding.ivClear.setOnClickListener(v -> binding.etManualAddress.setText(""));
 
         binding.etManualAddress.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -200,36 +264,44 @@ public class ManualLocationActivity extends AppCompatActivity {
                 binding.ivClear.setVisibility(hasText ? View.VISIBLE : View.GONE);
                 binding.btnConfirmMapLocation.setEnabled(hasText);
                 binding.btnConfirmMapLocation.setAlpha(hasText ? 1.0f : 0.5f);
+                
+                // Debounced live suggestions
+                if (searchHandler != null && searchRunnable != null) {
+                    searchHandler.removeCallbacks(searchRunnable);
+                }
+                if (hasText && s.length() >= 3) {
+                    searchRunnable = () -> fetchLiveSuggestions(s.toString().trim());
+                    searchHandler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_MS);
+                } else {
+                    binding.rvSuggestions.setVisibility(View.GONE);
+                }
             }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
+            @Override public void afterTextChanged(Editable s) {}
         });
         
         binding.etManualAddress.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            } else {
+                // Half-expand instead of staying full, so map stays visible
+                if (binding.vfBottomSheetSteps.getDisplayedChild() == 0) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+                }
+                binding.rvSuggestions.setVisibility(View.GONE);
             }
         });
         
-        binding.etManualAddress.setOnClickListener(v -> {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        });
+        binding.etManualAddress.setOnClickListener(v ->
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
         
         binding.etManualAddress.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH) {
                 String addressText = binding.etManualAddress.getText().toString().trim();
-                
-                // Hide keyboard
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-                
-                // Drop down to 1st stage (Collapsed)
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                
+                if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+                binding.rvSuggestions.setVisibility(View.GONE);
                 if (!addressText.isEmpty()) {
                     lastSearchedText = addressText;
                     geocodeAndMoveMap(addressText);
@@ -241,38 +313,33 @@ public class ManualLocationActivity extends AppCompatActivity {
             return false;
         });
 
-        // "Use Current Location" — now requests REAL GPS
         binding.llCurrentLocation.setOnClickListener(v -> requestCurrentLocation());
 
-        // "Confirm Address" button for typed text
         binding.btnConfirmMapLocation.setOnClickListener(v -> {
             String addressText = binding.etManualAddress.getText().toString().trim();
             if (!addressText.isEmpty() && !addressText.equals(lastSearchedText)) {
-                // Typed a new search but pressed confirm without hitting keyboard search
                 binding.btnConfirmMapLocation.setEnabled(false);
                 binding.btnConfirmMapLocation.setText("Confirming...");
                 geocodeAndProceedToStep2(addressText);
             } else {
-                // Confirm the map pin
                 binding.btnConfirmMapLocation.setEnabled(false);
                 binding.btnConfirmMapLocation.setText("Confirming...");
                 reverseGeocodeAndProceedToStep2(currentMapLat, currentMapLng);
             }
         });
 
-        // Setup Recent Searches
-        binding.tvRecentSearches.setVisibility(View.VISIBLE);
-        binding.llRecent1.setVisibility(View.VISIBLE);
-        binding.llRecent2.setVisibility(View.VISIBLE);
+        // Change Area back link in Step 2
+        binding.tvChangeArea.setOnClickListener(v -> {
+            binding.vfBottomSheetSteps.setDisplayedChild(0);
+            binding.btnConfirmMapLocation.setVisibility(View.VISIBLE);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+        });
+
+        binding.cvAddNew.setOnClickListener(v ->
+                Toast.makeText(this, "Add new address — coming soon!", Toast.LENGTH_SHORT).show());
         
-        binding.llRecent1.setOnClickListener(v -> proceedToAddressDetails("Koregaon Park, Pune", 18.5362, 73.8939));
-        binding.llRecent2.setOnClickListener(v -> proceedToAddressDetails("Bandra West, Mumbai", 19.0596, 72.8295));
-        
-        // Add new address placeholder
-        binding.cvAddNew.setOnClickListener(v -> Toast.makeText(this, "Add new address coming soon!", Toast.LENGTH_SHORT).show());
-        
-        // Step 2: Save Address button
         binding.btnSaveAddressDetails.setOnClickListener(v -> {
+            String recipientName = binding.etRecipientName.getText() != null ? binding.etRecipientName.getText().toString().trim() : "";
             String houseNo = binding.etHouseNo.getText().toString().trim();
             if (houseNo.isEmpty()) {
                 binding.etHouseNo.setError("House No. is required");
@@ -286,31 +353,38 @@ public class ManualLocationActivity extends AppCompatActivity {
             else if (checkedId == R.id.chipOther) label = "Other";
             
             String addressText = houseNo + ", " + finalAreaName;
-            if (!landmark.isEmpty()) {
-                addressText += " (Near " + landmark + ")";
-            }
+            if (!landmark.isEmpty()) addressText += " (Near " + landmark + ")";
             final String finalFullAddress = addressText;
             
             binding.btnSaveAddressDetails.setEnabled(false);
             binding.btnSaveAddressDetails.setText("Saving...");
             
             Address newAddress = new Address();
-            newAddress.setUserId("user_id_mock");
+            // P0 Fix: RLS handles user_id server-side via session token. No mock ID needed.
             newAddress.setFullAddress(finalFullAddress);
             newAddress.setLabel(label);
             newAddress.setLatitude(finalLat);
             newAddress.setLongitude(finalLng);
             newAddress.setDefault(true);
+            if (!recipientName.isEmpty()) {
+                newAddress.setRecipientName(recipientName);
+            }
             
             addressRepository.addAddress(newAddress).observe(this, result -> {
-                returnLocation(finalFullAddress, finalLat, finalLng);
+                if (result.status == NetworkResult.Status.SUCCESS) {
+                    returnLocation(finalFullAddress, finalLat, finalLng);
+                } else if (result.status == NetworkResult.Status.ERROR) {
+                    binding.btnSaveAddressDetails.setEnabled(true);
+                    binding.btnSaveAddressDetails.setText("Save Address");
+                    Snackbar.make(binding.getRoot(), "Failed to save address. Please try again.", Snackbar.LENGTH_LONG)
+                            .setAction("Retry", sv -> binding.btnSaveAddressDetails.performClick()).show();
+                }
             });
         });
     }
 
     /**
      * Request real GPS. If permission is missing, ask for it.
-     * If already granted, directly get the fused last location.
      */
     private void requestCurrentLocation() {
         boolean hasFine = ContextCompat.checkSelfPermission(this,
@@ -327,30 +401,34 @@ public class ManualLocationActivity extends AppCompatActivity {
             });
         }
     }
+    
+    private void setGpsLoading(boolean isLoading) {
+        binding.ivGpsIcon.setVisibility(isLoading ? View.GONE : View.VISIBLE);
+        binding.progressGps.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        binding.tvGpsSubtitle.setText(isLoading ? "Detecting your location..." : "Enable GPS for precise delivery");
+        binding.llCurrentLocation.setEnabled(!isLoading);
+    }
 
     /**
-     * Actually fetches the device's current GPS position using
-     * FusedLocationProviderClient.
-     * Falls back to a fresh location request if last known location is null (e.g.
-     * device just started).
+     * Fetch current GPS, showing a proper loading indicator in the card.
      */
     private void fetchRealCurrentLocation() {
-        binding.llCurrentLocation.setAlpha(0.6f);
+        setGpsLoading(true);
         try {
             fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
-                binding.llCurrentLocation.setAlpha(1f);
+                setGpsLoading(false);
                 if (location != null) {
                     reverseGeocodeAndProceedToStep2(location.getLatitude(), location.getLongitude());
                 } else {
-                    // Last location was null, request a fresh fix
                     requestFreshLocationFix();
                 }
             }).addOnFailureListener(e -> {
-                binding.llCurrentLocation.setAlpha(1f);
-                Toast.makeText(this, "Could not get location. Please type your area.", Toast.LENGTH_SHORT).show();
+                setGpsLoading(false);
+                Snackbar.make(binding.getRoot(), "Could not get location. Please type your area.", Snackbar.LENGTH_LONG)
+                        .setAction("Retry", sv -> fetchRealCurrentLocation()).show();
             });
         } catch (SecurityException e) {
-            binding.llCurrentLocation.setAlpha(1f);
+            setGpsLoading(false);
             Toast.makeText(this, "Location permission required.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -367,12 +445,16 @@ public class ManualLocationActivity extends AppCompatActivity {
                     if (loc != null) {
                         reverseGeocodeAndProceedToStep2(loc.getLatitude(), loc.getLongitude());
                     } else {
-                        runOnUiThread(() -> Toast.makeText(ManualLocationActivity.this,
-                                "Could not detect location. Please type your area.", Toast.LENGTH_SHORT).show());
+                        runOnUiThread(() -> {
+                            setGpsLoading(false);
+                            Snackbar.make(binding.getRoot(), "Could not detect location. Please type your area.", Snackbar.LENGTH_LONG)
+                                    .setAction("Retry", v -> requestCurrentLocation()).show();
+                        });
                     }
                 }
             }, Looper.getMainLooper());
         } catch (SecurityException e) {
+            setGpsLoading(false);
             Toast.makeText(this, "Location permission required.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -443,6 +525,90 @@ public class ManualLocationActivity extends AppCompatActivity {
         binding.btnConfirmMapLocation.setEnabled(true);
         binding.btnConfirmMapLocation.setText("Confirm");
         binding.btnConfirmMapLocation.setVisibility(View.GONE);
+        
+        // Save to recent searches
+        saveRecentSearch(areaName);
+    }
+    
+    /**
+     * Fetch live suggestions for the typed query using debounced Geocoder.
+     */
+    private void fetchLiveSuggestions(String query) {
+        binding.progressSearch.setVisibility(View.VISIBLE);
+        binding.ivClear.setVisibility(View.GONE);
+        new Thread(() -> {
+            try {
+                android.location.Geocoder geocoder = new android.location.Geocoder(this, java.util.Locale.getDefault());
+                List<android.location.Address> results = geocoder.getFromLocationName(query, 5);
+                runOnUiThread(() -> {
+                    binding.progressSearch.setVisibility(View.GONE);
+                    binding.ivClear.setVisibility(View.VISIBLE);
+                    if (results != null && !results.isEmpty()) {
+                        showSuggestions(results, query);
+                    } else {
+                        binding.rvSuggestions.setVisibility(View.GONE);
+                    }
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    binding.progressSearch.setVisibility(View.GONE);
+                    binding.ivClear.setVisibility(View.VISIBLE);
+                    binding.rvSuggestions.setVisibility(View.GONE);
+                });
+            }
+        }).start();
+    }
+    
+    private void showSuggestions(List<android.location.Address> addresses, String query) {
+        List<String[]> items = new ArrayList<>();
+        for (android.location.Address addr : addresses) {
+            String title = addr.getSubLocality() != null ? addr.getSubLocality() 
+                    : addr.getLocality() != null ? addr.getLocality() : query;
+            String subtitle = addr.getLocality() != null && addr.getSubLocality() != null
+                    ? addr.getLocality() + (addr.getAdminArea() != null ? ", " + addr.getAdminArea() : "")
+                    : (addr.getAdminArea() != null ? addr.getAdminArea() : "");
+            items.add(new String[]{title, subtitle, String.valueOf(addr.getLatitude()), String.valueOf(addr.getLongitude())});
+        }
+        
+        androidx.recyclerview.widget.RecyclerView.Adapter<?> adapter = new androidx.recyclerview.widget.RecyclerView.Adapter<>() {
+            @NonNull
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull android.view.ViewGroup parent, int viewType) {
+                android.view.View v = android.view.LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_location_suggestion, parent, false);
+                return new RecyclerView.ViewHolder(v) {};
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+                String[] item = items.get(position);
+                android.widget.TextView tvTitle = holder.itemView.findViewById(R.id.tvSuggestionTitle);
+                android.widget.TextView tvSub = holder.itemView.findViewById(R.id.tvSuggestionSubtitle);
+                tvTitle.setText(item[0]);
+                if (!item[1].isEmpty()) {
+                    tvSub.setText(item[1]);
+                    tvSub.setVisibility(View.VISIBLE);
+                }
+                holder.itemView.setOnClickListener(v -> {
+                    binding.rvSuggestions.setVisibility(View.GONE);
+                    binding.etManualAddress.setText(item[0]);
+                    binding.etManualAddress.clearFocus();
+                    double lat = Double.parseDouble(item[2]);
+                    double lng = Double.parseDouble(item[3]);
+                    binding.mapWebView.evaluateJavascript("map.setView([" + lat + ", " + lng + "], 15);", null);
+                    currentMapLat = lat;
+                    currentMapLng = lng;
+                    lastSearchedText = item[0];
+                    proceedToAddressDetails(item[0], lat, lng);
+                });
+            }
+
+            @Override public int getItemCount() { return items.size(); }
+        };
+        
+        binding.rvSuggestions.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvSuggestions.setAdapter(adapter);
+        binding.rvSuggestions.setVisibility(View.VISIBLE);
     }
     
     /**
@@ -519,11 +685,19 @@ public class ManualLocationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (binding.vfBottomSheetSteps.getDisplayedChild() == 1) {
-            // If in Step 2, go back to Step 1
             binding.vfBottomSheetSteps.setDisplayedChild(0);
             binding.btnConfirmMapLocation.setVisibility(View.VISIBLE);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
         } else {
             super.onBackPressed();
+        }
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (searchHandler != null && searchRunnable != null) {
+            searchHandler.removeCallbacks(searchRunnable);
         }
     }
 }

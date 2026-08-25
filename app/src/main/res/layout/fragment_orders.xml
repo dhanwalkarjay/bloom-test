@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orders_surface"
+    android:background="?attr/colorSurface"
     tools:context=".customer.ui.orderhistory.OrdersFragment">
 
     <!-- Luxury Top Bar -->
@@ -15,7 +15,7 @@
         android:minHeight="@dimen/spacing_xxxl"
         android:paddingTop="@dimen/spacing_s"
         android:paddingBottom="@dimen/spacing_xs"
-        android:background="@color/orders_surface"
+        android:background="?attr/colorSurface"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="@dimen/spacing_l"
@@ -28,7 +28,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="My Orders"
-            android:textColor="@color/home_lux_dark"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -39,7 +39,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="@dimen/spacing_s"
             android:src="@drawable/ic_cart"
-            app:tint="@color/home_lux_dark" />
+            app:tint="?attr/colorOnSurface" />
 
     </LinearLayout>
 
@@ -49,13 +49,14 @@
         android:layout_height="@dimen/spacing_xxl"
         android:layout_marginTop="@dimen/spacing_s"
         app:layout_constraintTop_toBottomOf="@id/topBar"
-        app:tabBackground="@color/orders_surface"
-        app:tabIndicatorColor="@color/orders_primary"
+        app:tabIndicatorAnimationMode="elastic"
+        app:tabIndicatorColor="?attr/colorPrimary"
         app:tabIndicatorFullWidth="false"
         app:tabIndicatorHeight="3dp"
-        app:tabSelectedTextColor="@color/home_lux_dark"
+        app:tabRippleColor="@null"
+        app:tabSelectedTextColor="?attr/colorOnSurface"
         app:tabTextAppearance="@style/TextAppearance.AppCompat.Small"
-        app:tabTextColor="@color/orders_on_surface_variant">
+        app:tabTextColor="?attr/colorOnSurfaceVariant">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -76,3 +77,4 @@
         app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -9,6 +9,9 @@ public class Shop {
     @SerializedName("id")
     private String id;
 
+    @SerializedName("owner_id")
+    private String ownerId;
+
     @SerializedName("shop_name")
     private String shopName;
 
@@ -55,6 +58,9 @@ public class Shop {
     // Getters and Setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
+
+    public String getOwnerId() { return ownerId; }
+    public void setOwnerId(String ownerId) { this.ownerId = ownerId; }
 
     public String getName() {
         if (name != null) return name;

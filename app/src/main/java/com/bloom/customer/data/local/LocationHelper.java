@@ -48,7 +48,7 @@ public class LocationHelper {
                 }
             });
         } catch (SecurityException e) {
-            e.printStackTrace();
+            timber.log.Timber.e(e, "Location permission missing or denied");
         }
     }
 
@@ -65,7 +65,7 @@ public class LocationHelper {
                 }
             }, Looper.getMainLooper());
         } catch (SecurityException e) {
-            e.printStackTrace();
+            timber.log.Timber.e(e, "Location permission missing or denied");
         }
     }
 }

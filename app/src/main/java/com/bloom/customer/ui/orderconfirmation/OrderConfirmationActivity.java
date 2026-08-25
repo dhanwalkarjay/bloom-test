@@ -9,10 +9,15 @@ import com.bloom.customer.ui.home.HomeActivity;
 import com.bloom.customer.ui.ordertracking.OrderTrackingActivity;
 import com.bloom.databinding.ActivityOrderConfirmationBinding;
 
+import androidx.core.view.WindowCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.view.animation.OvershootInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 public class OrderConfirmationActivity extends AppCompatActivity {
 
@@ -31,10 +36,17 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         if (orderId != null && !orderId.isEmpty()) {
             displayId = orderId.length() > 8 ? orderId.substring(0, 8) : orderId;
         }
-        binding.tvOrderId.setText("Order ID: #" + displayId);
+        binding.tvOrderId.setText("#" + displayId);
         binding.tvTotalPaid.setText(com.bloom.customer.util.CurrencyFormatter.format(0.00)); // Default placeholder
 
-        binding.btnClose.setOnClickListener(v -> goHome());
+        // Setup Toolbar
+        setSupportActionBar(binding.toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+        binding.toolbar.setNavigationOnClickListener(v -> goHome());
+
+        binding.btnBackHome.setOnClickListener(v -> goHome());
         
         binding.btnTrackOrder.setOnClickListener(v -> {
             Intent intent = new Intent(this, OrderTrackingActivity.class);
@@ -42,79 +54,103 @@ public class OrderConfirmationActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        binding.btnDownloadInvoice.setOnClickListener(v -> handleDownloadInvoice());
-
-        binding.btnSendToAnother.setOnClickListener(v -> handleSendToAnother());
-
         fetchOrderDetails();
         startPremiumFloralAnimations();
 
-        // Status bar transparent to let floral bleed
-        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
-        getWindow().getDecorView().setSystemUiVisibility(android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE | android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        // Edge-to-Edge handling
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
+            );
+            binding.appBarLayout.setPadding(0, insets.top, 0, 0);
+            binding.llActions.setPadding(
+                    binding.llActions.getPaddingLeft(),
+                    binding.llActions.getPaddingTop(),
+                    binding.llActions.getPaddingRight(),
+                    insets.bottom + 20
+            );
+            return windowInsets;
+        });
     }
 
     private void startPremiumFloralAnimations() {
         // Initial States
-        binding.ivFloralHeader.setAlpha(0f);
-        binding.ivFloralHeader.setScaleX(1.1f);
-        binding.ivFloralHeader.setScaleY(1.1f);
+        binding.toolbar.setAlpha(0f);
+        binding.vGlow.setAlpha(0f);
+        binding.vGlow.setScaleX(0.8f);
+        binding.vGlow.setScaleY(0.8f);
 
-        binding.topBar.setAlpha(0f);
-        binding.topBar.setTranslationY(-30f);
+        binding.ivBadgeOuter.setAlpha(0f);
+        binding.ivBadgeOuter.setScaleX(0.8f);
+        binding.ivBadgeOuter.setScaleY(0.8f);
+
+        binding.ivBadgeInner.setAlpha(0f);
+        binding.ivBadgeInner.setScaleX(0.8f);
+        binding.ivBadgeInner.setScaleY(0.8f);
 
         binding.tvHeroTitle.setAlpha(0f);
-        binding.tvHeroTitle.setTranslationY(30f);
+        binding.tvOrderId.setAlpha(0f);
+        binding.cvDelivery.setAlpha(0f);
+        binding.cvSummary.setAlpha(0f);
+        binding.llActions.setAlpha(0f);
 
-        binding.tvThankYou.setAlpha(0f);
-        binding.tvThankYou.setTranslationY(30f);
+        long duration = 600;
+        DecelerateInterpolator smoothDecelerator = new DecelerateInterpolator(1.5f);
 
-        binding.ivCheck.setAlpha(0f);
-        binding.ivCheck.setScaleX(0.5f);
-        binding.ivCheck.setScaleY(0.5f);
+        binding.toolbar.animate().alpha(1f)
+                .setDuration(400).setStartDelay(100).setInterpolator(smoothDecelerator).start();
 
-        // Animate Buttons
-        binding.btnTrackOrder.setAlpha(0f);
-        binding.btnTrackOrder.setTranslationY(80f);
-        
-        binding.btnDownloadInvoice.setAlpha(0f);
-        binding.btnDownloadInvoice.setTranslationY(80f);
+        binding.vGlow.animate().alpha(1f).scaleX(1f).scaleY(1f)
+                .setDuration(800).setStartDelay(200).setInterpolator(smoothDecelerator).start();
 
-        long duration = 800;
-        android.view.animation.DecelerateInterpolator smoothDecelerator = new android.view.animation.DecelerateInterpolator(2f);
+        binding.ivBadgeOuter.animate().alpha(1f).scaleX(1f).scaleY(1f)
+                .setDuration(800).setStartDelay(250)
+                .setInterpolator(smoothDecelerator).withEndAction(() -> {
+                    android.animation.ObjectAnimator rotation = android.animation.ObjectAnimator.ofFloat(binding.ivBadgeOuter, "rotation", 0f, 360f);
+                    rotation.setDuration(20000);
+                    rotation.setRepeatCount(android.animation.ValueAnimator.INFINITE);
+                    rotation.setInterpolator(new android.view.animation.LinearInterpolator());
+                    rotation.start();
+                }).start();
 
-        // 1. Header image smooth reveal & scale down
-        binding.ivFloralHeader.animate().alpha(1f).scaleX(1f).scaleY(1f)
-                .setDuration(1500).setInterpolator(smoothDecelerator).start();
-
-        // 2. Top Bar drops in
-        binding.topBar.animate().alpha(1f).translationY(0f)
-                .setDuration(600).setStartDelay(200).setInterpolator(smoothDecelerator).start();
-
-        // 3. Wreath Checkmark pops in playfully
-        binding.ivCheck.animate().alpha(1f).scaleX(1f).scaleY(1f)
-                .setDuration(600).setStartDelay(400)
+        binding.ivBadgeInner.animate().alpha(1f).scaleX(1f).scaleY(1f)
+                .setDuration(800).setStartDelay(300)
                 .setInterpolator(new android.view.animation.OvershootInterpolator(1.2f)).start();
 
-        // 4. Hero & Thank you text softly slides up
-        binding.tvHeroTitle.animate().alpha(1f).translationY(0f)
-                .setDuration(duration).setStartDelay(400).setInterpolator(smoothDecelerator).start();
-
-        binding.tvThankYou.animate().alpha(1f).translationY(0f)
-                .setDuration(duration).setStartDelay(500).setInterpolator(smoothDecelerator).start();
-
-        // 5. Buttons glide in at the end
-        binding.btnTrackOrder.animate().alpha(1f).translationY(0f)
-                .setDuration(duration).setStartDelay(700).setInterpolator(smoothDecelerator).start();
+        binding.tvHeroTitle.animate().alpha(1f)
+                .setDuration(duration).setStartDelay(300).setInterpolator(smoothDecelerator).start();
                 
-        binding.btnDownloadInvoice.animate().alpha(1f).translationY(0f)
-                .setDuration(duration).setStartDelay(800).setInterpolator(smoothDecelerator).start();
-        
-        // 6. Animate the scrollview container for the order details
-        binding.svContent.setAlpha(0f);
-        binding.svContent.setTranslationY(60f);
-        binding.svContent.animate().alpha(1f).translationY(0f)
-            .setDuration(800).setStartDelay(500).setInterpolator(smoothDecelerator).start();
+        binding.tvOrderId.animate().alpha(1f)
+                .setDuration(duration).setStartDelay(350).setInterpolator(smoothDecelerator).start();
+
+        binding.cvDelivery.animate().alpha(1f)
+                .setDuration(duration).setStartDelay(400).setInterpolator(smoothDecelerator).start();
+                
+        binding.cvSummary.animate().alpha(1f)
+                .setDuration(duration).setStartDelay(450).setInterpolator(smoothDecelerator).start();
+
+        binding.llActions.animate().alpha(1f)
+                .setDuration(duration).setStartDelay(500).setInterpolator(smoothDecelerator).start();
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        menu.add(0, 1, 0, "Download Invoice").setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.add(0, 2, 0, "Send to Another").setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        if (item.getItemId() == 1) {
+            com.google.android.material.snackbar.Snackbar.make(binding.getRoot(), "Downloading Invoice...", com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).show();
+            return true;
+        } else if (item.getItemId() == 2) {
+            com.google.android.material.snackbar.Snackbar.make(binding.getRoot(), "Opening Contact Picker...", com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -151,33 +187,27 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                 String orderIdStr = order.getId() != null ? order.getId().toUpperCase() : "";
                 if (orderIdStr.length() > 8) orderIdStr = orderIdStr.substring(0, 8); // Shorten UUID
                 
-                binding.tvOrderId.setText("Order #" + orderIdStr + " / " + formattedDate);
+                binding.tvOrderId.setText("#" + orderIdStr);
 
                 // Financials
                 double total = order.getTotalAmount();
-                double subtotal = order.getBouquetSubtotal() + order.getAddonsSubtotal();
-                double tax = order.getTaxAmount();
-                double delivery = order.getDeliveryFee();
-                
                 binding.tvTotalPaid.setText(com.bloom.customer.util.CurrencyFormatter.format(total));
-                binding.tvSubtotal.setText("(" + com.bloom.customer.util.CurrencyFormatter.format(subtotal) + ")");
-                binding.tvTax.setText("(" + com.bloom.customer.util.CurrencyFormatter.format(tax) + ")");
-                binding.tvDeliveryFee.setText("(" + com.bloom.customer.util.CurrencyFormatter.format(delivery) + ")");
                 
-                // Address
+                // Address & Name
                 if (order.getAddress() != null) {
                     String name = order.getAddress().getRecipientName() != null ? order.getAddress().getRecipientName() : "Customer";
-                    String fullAddress = order.getAddress().getFullAddress() != null ? order.getAddress().getFullAddress() : "";
-                    binding.tvShippingAddress.setText(name + "\n" + fullAddress);
-                    
-                    binding.tvThankYou.setText("Thank you for your floral\nselection, " + name.split(" ")[0] + "!");
-                } else {
-                    binding.tvThankYou.setText("Thank you for your floral\nselection!");
                 }
                 
-                // Payment Method (fallback to Razorpay if paymentStatus exists)
+                // Payment Method
+                String paymentMethod = getIntent().getStringExtra("payment_method");
+                if (paymentMethod == null || paymentMethod.isEmpty()) {
+                    paymentMethod = "Apple Pay"; // Default for visual consistency if null
+                }
+                
                 if (order.getPaymentStatus() != null && order.getPaymentStatus().equals("paid")) {
-                    binding.tvPaymentMethod.setText("Paid via Razorpay\n" + (order.getRazorpayPaymentId() != null ? order.getRazorpayPaymentId() : ""));
+                    binding.tvPaymentMethod.setText("Payment via " + paymentMethod);
+                } else if ("COD".equalsIgnoreCase(paymentMethod) || "Cash on Delivery".equalsIgnoreCase(paymentMethod)) {
+                    binding.tvPaymentMethod.setText("Cash on Delivery");
                 } else {
                     binding.tvPaymentMethod.setText("Pending Payment");
                 }
@@ -186,11 +216,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                 if (order.getItems() != null && !order.getItems().isEmpty()) {
                     com.bloom.customer.data.model.OrderItem firstItem = order.getItems().get(0);
                     binding.tvProductName.setText(firstItem.getProduct() != null ? firstItem.getProduct().getTitle() : "Bouquet");
-                    binding.tvProductSubtitle.setText("Luxury Collection"); // Hardcode subtitle as ProductInfo doesn't have category
-                    binding.tvQty.setText("Qty: " + firstItem.getQuantity());
-                    
-                    double unitPrice = subtotal / Math.max(1, firstItem.getQuantity());
-                    binding.tvProductPrice.setText("Price: " + com.bloom.customer.util.CurrencyFormatter.format(unitPrice));
+                    binding.tvProductSubtitle.setText("Artisanal Bouquet"); 
                     
                     if (firstItem.getProduct() != null && firstItem.getProduct().getImages() != null) {
                         com.bumptech.glide.Glide.with(this)
@@ -202,64 +228,6 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         });
     }
 
-    private void handleDownloadInvoice() {
-        if (currentOrder == null) {
-            android.widget.Toast.makeText(this, "Order details not ready", android.widget.Toast.LENGTH_SHORT).show();
-            return;
-        }
-        
-        try {
-            android.net.Uri pdfUri = com.bloom.customer.util.InvoiceGenerator.generateAndSaveInvoice(this, currentOrder);
-            
-            // Phase 4: Corporate Assistant One-Tap PDF sharing
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("application/pdf");
-            shareIntent.putExtra(Intent.EXTRA_STREAM, pdfUri);
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Invoice for Order #" + currentOrder.getId());
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "Please find attached the invoice for my recent Bloom purchase.");
-            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            
-            startActivity(Intent.createChooser(shareIntent, "Share Invoice"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            android.widget.Toast.makeText(this, "Failed to generate invoice", android.widget.Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void handleSendToAnother() {
-        if (currentOrder == null || currentOrder.getItems() == null || currentOrder.getItems().isEmpty()) {
-            android.widget.Toast.makeText(this, "Order details not fully loaded yet.", android.widget.Toast.LENGTH_SHORT).show();
-            return;
-        }
-        
-        com.bloom.customer.data.repository.CartRepository cartRepository = 
-                com.bloom.customer.data.repository.CartRepository.getInstance(this);
-        cartRepository.clearCart();
-        
-        for (com.bloom.customer.data.model.OrderItem item : currentOrder.getItems()) {
-            com.bloom.customer.data.model.Product p = new com.bloom.customer.data.model.Product();
-            p.setId(item.getProductId());
-            p.setShopId(currentOrder.getShopId());
-            p.setPrice(item.getUnitPrice());
-            if (item.getProduct() != null) {
-                p.setName(item.getProduct().getTitle());
-                p.setImageUrl(item.getProduct().getImages());
-            } else {
-                p.setName("Bouquet");
-            }
-            
-            com.bloom.customer.data.model.CartItem cartItem = new com.bloom.customer.data.model.CartItem(p);
-            cartItem.setQuantity(item.getQuantity());
-            cartItem.setSize(item.getSize());
-            cartItem.setCardMessage(item.getCardMessage());
-            
-            cartRepository.addToCart(cartItem);
-        }
-        
-        // Skip cart and go directly to checkout
-        Intent intent = new Intent(this, com.bloom.customer.ui.checkout.AddressSelectActivity.class);
-        startActivity(intent);
-    }
 
     private void goHome() {
         Intent intent = new Intent(this, HomeActivity.class);

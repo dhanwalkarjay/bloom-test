@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF8F7">
+    android:background="?attr/colorSurface">
 
     <ImageView
         android:id="@+id/ivSplashBackground"
@@ -18,21 +18,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvLogo"
-        android:layout_width="0dp"
+    <!--
+      Logo composition: circles sit behind and to the upper-left of the "B".
+      The FrameLayout allows overlapping elements naturally.
+    -->
+    <FrameLayout
+        android:id="@+id/logoContainer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/mea_culpa_regular"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:text="Bloom"
-        android:textColor="#912E42"
-        android:textSize="103sp"
-        android:translationX="@dimen/_8sdp"
-        android:translationY="@dimen/_minus4sdp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Two overlapping decorative circles -->
+        <ImageView
+            android:id="@+id/ivLogoCircles"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_gravity="start|top"
+            android:contentDescription="@null"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_bloom_logo_circles"
+            android:translationX="@dimen/_minus20sdp"
+            android:translationY="@dimen/_minus8sdp"
+            app:tint="?attr/colorPrimary"
+            android:alpha="0.15" />
+
+        <!-- "Bloom" cursive text -->
+        <TextView
+            android:id="@+id/tvLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/mea_culpa_regular"
+            android:includeFontPadding="false"
+            android:text="Bloom"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="103sp" />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

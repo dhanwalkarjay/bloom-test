@@ -40,6 +40,7 @@ public class AddAddressActivity extends AppCompatActivity {
     private LatLng selectedLatLng;
     private String selectedCity = "Unknown";
     private FusedLocationProviderClient fusedLocationClient;
+    private boolean hasMovedPin = false;
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -131,8 +132,8 @@ public class AddAddressActivity extends AppCompatActivity {
                             Toast.makeText(this, "Could not determine location", Toast.LENGTH_SHORT).show();
                         }
                     });
-        } catch (SecurityException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            timber.log.Timber.e(e, "Error finding location for address");
         }
     }
 
@@ -170,6 +171,7 @@ public class AddAddressActivity extends AppCompatActivity {
         @JavascriptInterface
         public void onLocationChanged(double lat, double lng) {
             runOnUiThread(() -> {
+                hasMovedPin = true;
                 selectedLatLng = new LatLng(lat, lng);
                 updateAddressText(lat, lng);
             });
@@ -204,8 +206,8 @@ public class AddAddressActivity extends AppCompatActivity {
     }
 
     private void saveAddress() {
-        if (selectedLatLng == null) {
-            Toast.makeText(this, "Please select a location on the map", Toast.LENGTH_SHORT).show();
+        if (selectedLatLng == null || !hasMovedPin) {
+            Toast.makeText(this, "Please drag the map to your exact delivery location", Toast.LENGTH_SHORT).show();
             return;
         }
 

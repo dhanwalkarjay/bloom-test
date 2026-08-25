@@ -3,6 +3,10 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     id("org.jetbrains.kotlin.android")
+
+    // Uncomment when google-services.json is added
+    id("com.google.gms.google-services")
+    // id("com.google.firebase.crashlytics")
 }
 
 // Load local.properties for API keys
@@ -41,7 +45,9 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     lint {
@@ -75,6 +81,19 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
 
+    // Logging & Analytics
+    implementation("com.jakewharton.timber:timber:5.0.1")
+    // Firebase & Google Sign-In
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    
+    // Truecaller
+    implementation("com.truecaller.android.sdk:truecaller-sdk:3.0.0")
+
+    // Supabase
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.5.0")
+
     // Security & Local Data
     implementation(libs.security.crypto)
 
@@ -84,6 +103,8 @@ dependencies {
 
     // UI & Images
     implementation(libs.glide)
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+    implementation("com.airbnb.android:lottie:6.4.0")
 
     // Location & Maps
     implementation(libs.play.services.location)
@@ -97,6 +118,8 @@ dependencies {
     implementation("io.github.sceneview:sceneview:2.0.3")
 
     testImplementation(libs.junit)
+    testImplementation("org.mockito:mockito-core:5.3.1")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
 }

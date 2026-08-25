@@ -1,55 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/colorBackground">
 
-    <!-- Premium Edge-to-Edge Header Background -->
-    <View
-        android:id="@+id/headerBackground"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_profile_gradient"
-        app:layout_constraintHeight_percent="0.30"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="250dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="@drawable/bg_profile_gradient">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:id="@+id/scrollContainer"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingBottom="100dp">
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?attr/colorPrimary"
+            app:titleEnabled="false">
 
-            <!-- Profile Info Container -->
+            <!-- Profile Info Container (Authenticated) -->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clAuthenticatedHeader"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/button_height"
-                android:paddingHorizontal="@dimen/spacing_l">
-
+                android:layout_height="match_parent"
+                android:paddingTop="50dp"
+                android:paddingHorizontal="@dimen/spacing_l"
+                app:layout_collapseMode="parallax">
+                
                 <FrameLayout
                     android:id="@+id/flAvatarContainer"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:cardCornerRadius="60dp"
+                        app:cardCornerRadius="50dp"
                         app:cardElevation="@dimen/spacing_s"
-                        app:strokeColor="@android:color/white"
-                        app:strokeWidth="@dimen/spacing_xs">
+                        app:strokeColor="?attr/colorSurface"
+                        app:strokeWidth="3dp">
 
                         <ImageView
                             android:id="@+id/ivAvatar"
@@ -59,24 +54,24 @@
                             android:src="@drawable/ic_home_person" />
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Glassmorphism Edit Button -->
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="@dimen/spacing_xl"
-                        android:layout_height="@dimen/spacing_xl"
+                        android:id="@+id/cvEditAvatar"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_gravity="bottom|end"
-                        android:layout_margin="@dimen/spacing_xs"
+                        android:layout_margin="4dp"
                         app:cardBackgroundColor="#40FFFFFF"
-                        app:cardCornerRadius="@dimen/spacing_m"
-                        app:cardElevation="@dimen/spacing_m"
-                        app:strokeColor="@android:color/white"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        app:strokeColor="?attr/colorSurface"
                         app:strokeWidth="1dp">
 
                         <ImageView
-                            android:layout_width="@dimen/spacing_m"
-                            android:layout_height="@dimen/spacing_m"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
                             android:layout_gravity="center"
                             android:src="@android:drawable/ic_menu_edit"
-                            app:tint="@android:color/black" />
+                            app:tint="?attr/colorSurface" />
                     </com.google.android.material.card.MaterialCardView>
                 </FrameLayout>
 
@@ -90,153 +85,381 @@
                     app:layout_constraintStart_toEndOf="@id/flAvatarContainer"
                     app:layout_constraintTop_toTopOf="@id/flAvatarContainer">
 
+                    <!-- Shimmer Placeholders -->
+                    <View
+                        android:id="@+id/shimmerName"
+                        android:layout_width="150dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/bg_rounded_grey"
+                        android:backgroundTint="#40FFFFFF"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/shimmerEmail"
+                        android:layout_width="180dp"
+                        android:layout_height="16dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_rounded_grey"
+                        android:backgroundTint="#40FFFFFF"
+                        android:visibility="gone" />
+
                     <TextView
                         android:id="@+id/tvFullName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/plus_jakarta_sans"
-                        android:text="Test User"
+                        tools:text="Test User"
                         android:textColor="@android:color/white"
-                        android:textSize="26sp"
-                        android:textStyle="bold" />
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
 
                     <TextView
                         android:id="@+id/tvEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_xs"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/plus_jakarta_sans"
-                        android:text="test@bloom.com"
+                        tools:text="test@bloom.com"
                         android:textColor="#E6FFFFFF"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- First Group (Overlapping gradient) -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- Profile Info Container (Guest) -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clGuestHeader"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="@dimen/spacing_xl"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="@dimen/spacing_l"
-                app:cardElevation="@dimen/spacing_s">
+                android:layout_height="match_parent"
+                android:paddingTop="50dp"
+                android:paddingHorizontal="@dimen/spacing_l"
+                app:layout_collapseMode="parallax"
+                android:visibility="gone"
+                tools:visibility="gone">
+
+                <FrameLayout
+                    android:id="@+id/flGuestAvatarContainer"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:cardCornerRadius="50dp"
+                        app:cardElevation="@dimen/spacing_s"
+                        app:cardBackgroundColor="#40FFFFFF"
+                        app:strokeColor="?attr/colorSurface"
+                        app:strokeWidth="3dp">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_home_person"
+                            app:tint="?attr/colorSurface" />
+                    </com.google.android.material.card.MaterialCardView>
+                </FrameLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:orientation="vertical"
-                    android:paddingVertical="@dimen/spacing_s">
-
-                    <include
-                        android:id="@+id/itemOccasions"
-                        layout="@layout/item_profile_menu"
-                        app:icon="@android:drawable/ic_menu_my_calendar"
-                        app:title="Smart Occasions"
-                        app:subtitle="Never forget a date" />
-
-                    <include
-                        android:id="@+id/itemAddresses"
-                        layout="@layout/item_profile_menu"
-                        app:icon="@drawable/ic_home_location"
-                        app:title="Saved Addresses" />
-
-                    <include
-                        android:id="@+id/itemPayment"
-                        layout="@layout/item_profile_menu"
-                        app:icon="@drawable/ic_orders_payments"
-                        app:title="Payment Methods" />
-
-                    <include
-                        android:id="@+id/itemLanguage"
-                        layout="@layout/item_profile_menu"
-                        app:icon="@drawable/ic_search_tune"
-                        app:subtitle="English"
-                        app:title="Language" />
-
-                    <include
-                        android:id="@+id/itemCurrency"
-                        layout="@layout/item_profile_menu"
-                        app:icon="@drawable/ic_orders_payments"
-                        app:subtitle="INR"
-                        app:title="Currency" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Second Group -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="20dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="@dimen/spacing_l"
-                app:cardElevation="@dimen/spacing_s">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/spacing_s">
-
-                    <include
-                        android:id="@+id/itemNotifications"
-                        layout="@layout/item_profile_menu"
-                        app:icon="@drawable/ic_home_notification"
-                        app:title="Notifications" />
-
-                    <include
-                        android:id="@+id/itemHistory"
-                        layout="@layout/item_profile_menu"
-                        app:icon="@drawable/ic_orders_receipt"
-                        app:title="Order History" />
-
-                    <include
-                        android:id="@+id/itemHelp"
-                        layout="@layout/item_profile_menu"
-                        app:icon="@drawable/ic_lux_menu"
-                        app:title="Help &amp; Support" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Premium Logout Button -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cvLogout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/spacing_xxxl"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="@dimen/spacing_xl"
-                app:cardBackgroundColor="@color/home_lux_dark"
-                app:cardCornerRadius="@dimen/spacing_xl"
-                app:cardElevation="@dimen/spacing_m">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/spacing_l">
+                    app:layout_constraintBottom_toBottomOf="@id/flGuestAvatarContainer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/flGuestAvatarContainer"
+                    app:layout_constraintTop_toTopOf="@id/flGuestAvatarContainer">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:fontFamily="@font/plus_jakarta_sans"
-                        android:text="Sign Out"
+                        android:text="Welcome to Bloom"
                         android:textColor="@android:color/white"
-                        android:textSize="16sp"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
-                    <ImageView
-                        android:layout_width="@dimen/spacing_l"
-                        android:layout_height="@dimen/spacing_l"
-                        android:src="@drawable/ic_arrow_forward"
-                        app:tint="@android:color/white" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGuestSignIn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Sign In / Register"
+                        android:textAllCaps="false"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:textColor="?attr/colorPrimary"
+                        app:backgroundTint="?attr/colorSurface"
+                        app:cornerRadius="20dp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/scrollContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="100dp">
+
+            <!-- Authenticated Menu Items -->
+            <LinearLayout
+                android:id="@+id/llAuthenticatedMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="@dimen/spacing_xl"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardCornerRadius="@dimen/spacing_l"
+                    app:cardElevation="@dimen/spacing_s">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingVertical="@dimen/spacing_s">
+
+                        <include
+                            android:id="@+id/itemOccasions"
+                            layout="@layout/item_profile_menu"
+                            app:icon="@android:drawable/ic_menu_my_calendar"
+                            app:title="Smart Occasions"
+                            app:subtitle="Never forget a date" />
+
+                        <include
+                            android:id="@+id/itemAddresses"
+                            layout="@layout/item_profile_menu"
+                            app:icon="@drawable/ic_home_location"
+                            app:title="Saved Addresses" />
+
+                        <include
+                            android:id="@+id/itemPayment"
+                            layout="@layout/item_profile_menu"
+                            app:icon="@drawable/ic_orders_payments"
+                            app:title="Payment Methods" />
+
+                        <include
+                            android:id="@+id/itemLanguage"
+                            layout="@layout/item_profile_menu"
+                            app:icon="@drawable/ic_search_tune"
+                            app:subtitle="English"
+                            app:title="Language" />
+
+                        <include
+                            android:id="@+id/itemCurrency"
+                            layout="@layout/item_profile_menu"
+                            app:icon="@drawable/ic_orders_payments"
+                            app:subtitle="INR"
+                            app:title="Currency" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="20dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardCornerRadius="@dimen/spacing_l"
+                    app:cardElevation="@dimen/spacing_s">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingVertical="@dimen/spacing_s">
+
+                        <include
+                            android:id="@+id/itemNotifications"
+                            layout="@layout/item_profile_menu"
+                            app:icon="@drawable/ic_home_notification"
+                            app:title="Notifications" />
+
+                        <include
+                            android:id="@+id/itemHistory"
+                            layout="@layout/item_profile_menu"
+                            app:icon="@drawable/ic_orders_receipt"
+                            app:title="Order History" />
+
+                        <include
+                            android:id="@+id/itemHelp"
+                            layout="@layout/item_profile_menu"
+                            app:icon="@drawable/ic_lux_menu"
+                            app:title="Help &amp; Support" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Premium Logout Button -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="@dimen/spacing_xl"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/home_lux_dark"
+                    app:cardCornerRadius="28dp"
+                    app:cardElevation="@dimen/spacing_m">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:background="?attr/selectableItemBackground"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/spacing_l">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:text="Sign Out"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_arrow_forward"
+                            app:tint="@android:color/white" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Guest Menu / Value Prop -->
+            <LinearLayout
+                android:id="@+id/llGuestMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <!-- Value Proposition Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="@dimen/spacing_xl"
+                    app:cardBackgroundColor="?attr/colorSurfaceVariant"
+                    app:cardCornerRadius="@dimen/spacing_l"
+                    app:cardElevation="0dp"
+                    app:strokeColor="?attr/colorOutlineVariant"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+                        
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:text="Join Bloom Premium ✨"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/work_sans"
+                            android:text="Unlock exclusive perks, save important dates, and track your orders in real-time."
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="14sp"
+                            android:lineSpacingMultiplier="1.2" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnJoinNow"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="16dp"
+                            android:backgroundTint="?attr/colorPrimary"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:text="Create Free Account"
+                            android:textColor="?attr/colorSurface"
+                            android:textStyle="bold"
+                            app:cornerRadius="24dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Static Guest Settings -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="20dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardCornerRadius="@dimen/spacing_l"
+                    app:cardElevation="@dimen/spacing_s">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingVertical="@dimen/spacing_s">
+
+                        <include
+                            android:id="@+id/itemGuestLanguage"
+                            layout="@layout/item_profile_menu"
+                            app:icon="@drawable/ic_search_tune"
+                            app:subtitle="English"
+                            app:title="Language" />
+
+                        <include
+                            android:id="@+id/itemGuestCurrency"
+                            layout="@layout/item_profile_menu"
+                            app:icon="@drawable/ic_orders_payments"
+                            app:subtitle="INR"
+                            app:title="Currency" />
+
+                        <include
+                            android:id="@+id/itemGuestHelp"
+                            layout="@layout/item_profile_menu"
+                            app:icon="@drawable/ic_lux_menu"
+                            app:title="Help &amp; Support" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -244,11 +467,10 @@
                 android:layout_marginTop="@dimen/spacing_xl"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:text="Bloom Premium Edition v0.0.1"
-                android:textColor="#999999"
+                android:textColor="?attr/colorOutline"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

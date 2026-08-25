@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <application android:name=".customer.BloomApplication" android:allowBackup="true" android:dataExtractionRules="@xml/data_extraction_rules" android:fullBackupContent="@xml/backup_rules" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="true" android:theme="@style/Theme.Bloom">
+    <application android:name=".customer.BloomApplication" android:networkSecurityConfig="@xml/network_security_config" android:allowBackup="true" android:dataExtractionRules="@xml/data_extraction_rules" android:fullBackupContent="@xml/backup_rules" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="true" android:theme="@style/Theme.Bloom">
 
         <activity android:name=".customer.ui.splash.SplashActivity" android:exported="true" android:theme="@style/Theme.Bloom">
             <intent-filter>
@@ -21,11 +21,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".customer.ui.auth.LoginActivity" android:windowSoftInputMode="adjustResize" />
+        <meta-data
+            android:name="com.truecaller.android.sdk.ClientId"
+            android:value="p1neytsiar1dvxogkaahekmp5uv4svgiomyxfooumjc"/>
 
-        <activity android:name=".customer.ui.auth.SignupActivity" />
+        <activity android:name=".customer.ui.onboarding.OnboardingActivity" />
+
+        <activity android:name=".customer.ui.auth.LoginActivity" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".customer.ui.auth.OtpVerifyActivity" />
-        <activity android:name=".customer.ui.auth.ForgotPasswordActivity" />
         <activity android:name=".customer.ui.home.HomeActivity" />
         <activity android:name=".customer.ui.home.ShopMapActivity" />
         <activity android:name=".customer.ui.home.InAppCallActivity" />
@@ -41,8 +44,10 @@
         <activity android:name=".customer.ui.ordertracking.OrderTrackingActivity" />
         <activity android:name=".customer.ui.notifications.NotificationActivity" />
         <activity android:name=".customer.ui.orderhistory.RateOrderActivity" />
-        <activity android:name=".customer.ui.support.HelpCenterActivity" />
+
+        <activity android:name=".merchant.auth.MerchantLoginActivity" />
         <activity android:name=".customer.ui.support.SupportActivity" />
+        <activity android:name=".customer.ui.support.HelpCenterActivity" />
         <activity android:name=".customer.ui.profile.OccasionsActivity" />
         <activity android:name=".customer.ui.profile.AddOccasionActivity" />
 
@@ -59,6 +64,18 @@
         <activity android:name=".customer.ui.home.AllShopsActivity" android:exported="false" />
         <activity
             android:name=".customer.ui.bespoke.CreateBouquetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".agent.AgentHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".agent.auth.AgentLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".agent.DeliveryDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".agent.AgentHistoryActivity"
             android:exported="false" />
         <activity
             android:name=".merchant.MerchantHomeActivity"

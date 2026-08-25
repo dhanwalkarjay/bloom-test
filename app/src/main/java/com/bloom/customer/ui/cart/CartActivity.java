@@ -143,20 +143,19 @@ public class CartActivity extends AppCompatActivity {
     private void setupListeners() {
         binding.btnStartShopping.setOnClickListener(v -> finish());
 
-        binding.btnApplyPromo.setOnClickListener(v ->
-                Toast.makeText(this, "Promo code applied", Toast.LENGTH_SHORT).show());
+        if (binding.tilPromo != null) {
+            binding.tilPromo.setEndIconOnClickListener(v -> {
+                String code = binding.etPromoCode.getText() != null ? binding.etPromoCode.getText().toString() : "";
+                if (!code.isEmpty()) {
+                    Toast.makeText(this, "Promo code applied", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
         
         binding.btnCheckout.setOnClickListener(v -> {
-            new android.app.AlertDialog.Builder(this)
-                .setTitle("How would you like to deliver?")
-                .setMessage("Choose standard delivery, or send a beautiful SMS to request their address.")
-                .setPositiveButton("Deliver to Address", (dialog, which) -> {
-                    startActivity(new Intent(this, com.bloom.customer.ui.checkout.AddressSelectActivity.class));
-                })
-                .setNegativeButton("Send via Phone Number ✨", (dialog, which) -> {
-                    startActivity(new Intent(this, com.bloom.customer.ui.checkout.AddresslessGiftingActivity.class));
-                })
-                .show();
+            com.bloom.customer.util.HapticUtil.performSuccess(this);
+            DeliveryOptionsBottomSheet bottomSheet = new DeliveryOptionsBottomSheet();
+            bottomSheet.show(getSupportFragmentManager(), "DeliveryOptions");
         });
     }
 

@@ -38,6 +38,18 @@ public interface SupabaseAuthApi {
             @Body Map<String, Object> body
     );
 
+    @POST(Constants.AUTH_ENDPOINT + "user")
+    Call<Void> updateUserPhone(@Body Map<String, Object> body);
+
+    @POST
+    Call<AuthResponse> verifyTruecaller(@retrofit2.http.Url String url, @Body Map<String, Object> body);
+
+    @POST
+    Call<Map<String, String>> sendBackendOtp(@retrofit2.http.Url String url, @Body Map<String, Object> body);
+
+    @POST
+    Call<AuthResponse> verifyBackendOtp(@retrofit2.http.Url String url, @Body Map<String, Object> body);
+
     @PUT(Constants.AUTH_ENDPOINT + "user")
     Call<Void> updateUser(@Body Map<String, Object> body);
 }

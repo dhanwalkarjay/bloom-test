@@ -27,15 +27,17 @@ public class SupportActivity extends AppCompatActivity {
         binding.btnContactPhone.setOnClickListener(v -> 
             Toast.makeText(this, "Calling Support", Toast.LENGTH_SHORT).show());
         
-        binding.cardFaq1.setOnClickListener(v -> toggleFaq(binding.tvFaqAnswer1));
-        binding.cardFaq2.setOnClickListener(v -> toggleFaq(binding.tvFaqAnswer2));
+        binding.cardFaq1.setOnClickListener(v -> toggleFaq(binding.tvFaqAnswer1, binding.ivFaqChevron1));
+        binding.cardFaq2.setOnClickListener(v -> toggleFaq(binding.tvFaqAnswer2, binding.ivFaqChevron2));
     }
 
-    private void toggleFaq(android.view.View answerView) {
+    private void toggleFaq(android.view.View answerView, android.widget.ImageView chevronView) {
         if (answerView.getVisibility() == android.view.View.VISIBLE) {
             answerView.setVisibility(android.view.View.GONE);
+            chevronView.animate().rotation(0).setDuration(200).start();
         } else {
             answerView.setVisibility(android.view.View.VISIBLE);
+            chevronView.animate().rotation(180).setDuration(200).start();
         }
     }
 }

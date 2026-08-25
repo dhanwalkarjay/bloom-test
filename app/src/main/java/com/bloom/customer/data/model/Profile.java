@@ -16,6 +16,9 @@ public class Profile {
     @SerializedName("phone")
     private String phone;
 
+    @SerializedName("email")
+    private String email;
+
     @SerializedName("avatar_url")
     private String avatarUrl;
 
@@ -31,6 +34,9 @@ public class Profile {
 
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
     public String getAvatarUrl() { return avatarUrl; }
     public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }

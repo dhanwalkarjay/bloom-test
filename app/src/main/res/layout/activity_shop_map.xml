@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFBF7">
+    android:background="?attr/colorSurface">
 
     <WebView
         android:id="@+id/mapWebView"
@@ -24,8 +24,8 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="52dp"
-        app:cardBackgroundColor="#FFFFFF"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:cardCornerRadius="22dp"
         app:cardElevation="8dp"
         app:strokeWidth="0dp"
@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
-            app:tint="#2B2B2B" />
+            app:tint="?attr/colorOnSurface" />
     </com.google.android.material.card.MaterialCardView>
 
     <!-- Centered Brand Title -->
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/playfair_display"
         android:text="FLEURISTE"
-        android:textColor="#2B2B2B"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="22sp"
         android:textStyle="bold"
         android:letterSpacing="0.08"
@@ -64,7 +64,7 @@
         android:layout_height="52dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="24dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:cardCornerRadius="26dp"
         app:cardElevation="8dp"
         app:strokeWidth="0dp"
@@ -81,7 +81,7 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:src="@drawable/ic_home_search"
-                app:tint="#888888" />
+                app:tint="?attr/colorOnSurfaceVariant" />
 
             <TextView
                 android:layout_width="0dp"
@@ -90,20 +90,20 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/dm_sans"
                 android:text="Search flower shops..."
-                android:textColor="#888888"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="14sp" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="20dp"
                 android:layout_marginHorizontal="12dp"
-                android:background="#E0E0E0" />
+                android:background="?attr/colorOutlineVariant" />
 
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_location_pin"
-                app:tint="#555555" />
+                app:tint="?attr/colorOnSurfaceVariant" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
                 android:layout_marginStart="6dp"
                 android:fontFamily="@font/dm_sans"
                 android:text="London"
-                android:textColor="#2B2B2B"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -141,14 +141,14 @@
                 android:layout_marginEnd="12dp"
                 android:fontFamily="@font/dm_sans"
                 android:text="Nearby"
-                android:textColor="#2B2B2B"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="14sp"
                 android:elevation="4dp"
-                app:chipBackgroundColor="#FFFFFF"
+                app:chipBackgroundColor="?attr/colorSurface"
                 app:chipCornerRadius="18dp"
                 app:chipIcon="@drawable/ic_help_outline"
                 app:chipIconSize="18dp"
-                app:chipIconTint="#2B2B2B"
+                app:chipIconTint="?attr/colorOnSurface"
                 app:chipStrokeWidth="0dp" />
 
             <com.google.android.material.chip.Chip
@@ -158,10 +158,10 @@
                 android:layout_marginEnd="12dp"
                 android:fontFamily="@font/dm_sans"
                 android:text="Top Rated"
-                android:textColor="#2B2B2B"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="14sp"
                 android:elevation="4dp"
-                app:chipBackgroundColor="#FFFFFF"
+                app:chipBackgroundColor="?attr/colorSurface"
                 app:chipCornerRadius="18dp"
                 app:chipStrokeWidth="0dp" />
 
@@ -171,10 +171,10 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/dm_sans"
                 android:text="Delivery"
-                android:textColor="#2B2B2B"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="14sp"
                 android:elevation="4dp"
-                app:chipBackgroundColor="#FFFFFF"
+                app:chipBackgroundColor="?attr/colorSurface"
                 app:chipCornerRadius="18dp"
                 app:chipStrokeWidth="0dp" />
         </LinearLayout>
@@ -186,7 +186,7 @@
         android:layout_height="88dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="120dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:cardCornerRadius="22dp"
         app:cardElevation="8dp"
         app:strokeWidth="0dp"
@@ -205,13 +205,13 @@
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
                 android:src="@drawable/ic_add"
-                app:tint="#2B2B2B" />
+                app:tint="?attr/colorOnSurface" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="#E0E0E0" />
+                android:background="?attr/colorOutlineVariant" />
 
             <ImageButton
                 android:id="@+id/btnZoomOut"
@@ -220,7 +220,7 @@
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
                 android:src="@drawable/ic_remove"
-                app:tint="#2B2B2B" />
+                app:tint="?attr/colorOnSurface" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -231,19 +231,20 @@
         android:layout_height="48dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="40dp"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="?attr/colorSurface"
         android:elevation="8dp"
         android:fontFamily="@font/dm_sans"
         android:paddingHorizontal="18dp"
         android:text="Recenter"
         android:textAllCaps="false"
-        android:textColor="#2B2B2B"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="14sp"
         android:textStyle="bold"
         app:cornerRadius="24dp"
         app:icon="@drawable/ic_compass"
-        app:iconTint="#2B2B2B"
+        app:iconTint="?attr/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

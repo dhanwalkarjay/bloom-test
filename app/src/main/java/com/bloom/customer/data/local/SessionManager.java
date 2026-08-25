@@ -79,5 +79,13 @@ public class SessionManager {
     public boolean isLoggedIn() {
         return getAccessToken() != null;
     }
+
+    public boolean isFirstLaunch() {
+        return sharedPreferences.getBoolean("is_first_launch", true);
+    }
+
+    public void setFirstLaunch(boolean isFirstLaunch) {
+        sharedPreferences.edit().putBoolean("is_first_launch", isFirstLaunch).apply();
+    }
 }
 

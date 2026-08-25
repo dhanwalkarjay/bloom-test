@@ -23,7 +23,7 @@
             android:id="@+id/cvIcon"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            app:cardBackgroundColor="#FFF0F1"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp"
@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:backgroundTint="#FFF0F1"
+            android:backgroundTint="?attr/colorSurfaceVariant"
             android:fontFamily="@font/work_sans"
             android:textColor="?attr/colorPrimary"
             android:textSize="13sp"
@@ -108,3 +108,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
+

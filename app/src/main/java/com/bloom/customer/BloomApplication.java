@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bloom.customer.util.SystemBarInsets;
+import com.bloom.BuildConfig;
 
 /**
  * Main application class.
@@ -18,6 +19,14 @@ public class BloomApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        
+        if (BuildConfig.DEBUG) {
+            timber.log.Timber.plant(new timber.log.Timber.DebugTree());
+        } else {
+            // Uncomment when Firebase Crashlytics is added
+            // timber.log.Timber.plant(new CrashReportingTree());
+        }
+
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {

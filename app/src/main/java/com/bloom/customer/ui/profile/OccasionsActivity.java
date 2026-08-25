@@ -28,14 +28,20 @@ public class OccasionsActivity extends AppCompatActivity {
         androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
         getWindow().setNavigationBarColor(android.graphics.Color.TRANSPARENT);
+        
+        // Ensure status bar icons are light (white) to show up against the image hero
         androidx.core.view.WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView())
-                .setAppearanceLightStatusBars(false); // White icons over hero image
-        androidx.core.view.WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView())
-                .setAppearanceLightNavigationBars(true);
+                .setAppearanceLightStatusBars(false); 
 
-        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar, (v, insets) -> {
+        // Let the system handle navigation bar icons based on the theme naturally
+        int uiMode = getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+        boolean isDarkMode = uiMode == android.content.res.Configuration.UI_MODE_NIGHT_YES;
+        androidx.core.view.WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView())
+                .setAppearanceLightNavigationBars(!isDarkMode);
+
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
-            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
+            v.setPadding(0, 0, 0, systemBars.bottom); // Only pad bottom since CoordinatorLayout handles the top
             return insets;
         });
 

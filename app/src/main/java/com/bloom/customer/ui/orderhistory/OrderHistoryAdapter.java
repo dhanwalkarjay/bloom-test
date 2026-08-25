@@ -129,8 +129,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
                 bgColor = Color.parseColor("#E3F2FD");
                 textColor = Color.parseColor("#1565C0");
             }
-
-            binding.tvStatus.setBackgroundTintList(ColorStateList.valueOf(bgColor));
+            binding.cvStatus.setCardBackgroundColor(bgColor);
             binding.tvStatus.setTextColor(textColor);
         }
     }

@@ -65,48 +65,36 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/promoRow"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPromo"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_cart_promo_input"
-                android:paddingEnd="@dimen/spacing_s">
-
-                <EditText
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_l"
+                app:boxBackgroundColor="?attr/colorSurfaceVariant"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="1dp"
+                app:boxStrokeColor="?attr/colorPrimary"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_forward"
+                app:endIconTint="?attr/colorPrimary"
+                app:hintEnabled="false"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPromoCode"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:fontFamily="@font/plus_jakarta_sans"
-                    android:hint="Promo code"
-                    android:textColorHint="#9E9E9E"
-                    android:textColor="?attr/colorOnSurface"
-                    android:inputType="text"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="@dimen/spacing_s"
-                    android:singleLine="true"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btnApplyPromo" />
-
-                <TextView
-                    android:id="@+id/btnApplyPromo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:text="Apply"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/plus_jakarta_sans"
-                    android:background="?attr/selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="16dp"
                     android:paddingHorizontal="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:background="@null"
+                    android:hint="Promo code (Optional)"
+                    android:fontFamily="@font/work_sans"
+                    android:textSize="14sp"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/summaryCard"
@@ -173,57 +161,106 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:elevation="@dimen/spacing_m"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingHorizontal="@dimen/spacing_l"
-        android:paddingVertical="@dimen/spacing_m"
+        android:paddingTop="@dimen/spacing_m"
+        android:paddingBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/work_sans"
-                android:text="Grand Total"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:textSize="12sp" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvTotalAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxs"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/work_sans"
+                    android:text="Grand Total"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvTotalAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xxs"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:text="₹0.00"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCheckout"
+                android:layout_width="160dp"
+                android:layout_height="@dimen/button_height"
+                android:backgroundTint="@color/cart_cta"
                 android:fontFamily="@font/plus_jakarta_sans"
-                android:text="₹0.00"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Checkout"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="100dp"
+                app:icon="@drawable/ic_arrow_forward"
+                app:iconGravity="textEnd"
+                app:iconPadding="@dimen/spacing_s"
+                app:iconTint="@android:color/white" />
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCheckout"
-            android:layout_width="160dp"
-            android:layout_height="@dimen/button_height"
-            android:backgroundTint="@color/cart_cta"
-            android:fontFamily="@font/plus_jakarta_sans"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="Checkout"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:cornerRadius="100dp"
-            app:icon="@drawable/ic_arrow_forward"
-            app:iconGravity="textEnd"
-            app:iconPadding="@dimen/spacing_s"
-            app:iconTint="@android:color/white" />
+        <!-- Trust Signals -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp">
 
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_search_star"
+                app:tint="?attr/colorPrimary" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Secure Checkout"
+                android:textSize="12sp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:fontFamily="@font/work_sans"/>
+                
+            <View
+                android:layout_width="1dp"
+                android:layout_height="12dp"
+                android:background="?attr/colorOutlineVariant"
+                android:layout_marginHorizontal="12dp"/>
+                
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_search_heart"
+                app:tint="?attr/colorPrimary" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Bloom Guarantee"
+                android:textSize="12sp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:fontFamily="@font/work_sans"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -238,25 +275,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
+        <!-- Custom empty state asset using Material Icon -->
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_shop"
+            app:tint="?attr/colorSurfaceVariant"
+            android:layout_marginBottom="24dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/plus_jakarta_sans"
-            android:text="Your cart is empty"
+            android:text="Your cart is waiting"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="16sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="48dp"
+            android:textAlignment="center"
+            android:fontFamily="@font/work_sans"
+            android:text="Looks like you haven't added any beautiful arrangements yet."
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="15sp"
+            android:lineSpacingMultiplier="1.2" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnStartShopping"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/button_height_small"
-            android:layout_marginTop="@dimen/spacing_s"
-            android:backgroundTint="?attr/colorSurfaceVariant"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="?attr/colorPrimary"
             android:text="Start Shopping"
             android:textAllCaps="false"
-            android:textColor="?attr/colorPrimary"
-            app:cornerRadius="@dimen/spacing_s" />
+            android:textColor="?attr/colorSurface"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="32dp"
+            app:cornerRadius="100dp" />
 
     </LinearLayout>
 

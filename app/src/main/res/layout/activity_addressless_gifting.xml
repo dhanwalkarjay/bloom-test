@@ -17,7 +17,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="#673AB7" 
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:expandedTitleMarginStart="24dp"
             app:expandedTitleMarginBottom="24dp"
@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/bg_bottom_sheet_premium"
-                app:tint="?attr/colorPrimaryContainer"
+                app:tint="#9C27B0"
                 android:alpha="0.8"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7" />
@@ -41,8 +41,8 @@
                 android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:src="@android:drawable/ic_menu_send"
-                app:tint="?attr/colorPrimary"
-                android:alpha="0.85"
+                app:tint="#FFD700"
+                android:alpha="0.95"
                 android:layout_marginBottom="24dp"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.5" />
@@ -61,7 +61,7 @@
                     android:backgroundTint="#40FFFFFF"
                     android:padding="12dp"
                     android:src="@drawable/ic_arrow_back"
-                    app:tint="?attr/colorPrimary"
+                    app:tint="#FFD700"
                     android:layout_marginStart="8dp" />
 
                 <!-- The title is hidden here and managed by CollapsingToolbar, or shown here if custom -->
@@ -71,7 +71,7 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/plus_jakarta_sans"
                     android:text="Addressless Gifting"
-                    android:textColor="?attr/colorPrimary"
+                    android:textColor="#FFD700"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:visibility="gone" />
@@ -152,10 +152,10 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 app:boxCornerRadiusBottomEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
                 app:boxCornerRadiusTopEnd="16dp"
@@ -164,6 +164,10 @@
                 app:boxStrokeWidth="1dp"
                 app:startIconDrawable="@android:drawable/ic_menu_call"
                 app:startIconTint="?attr/colorPrimary"
+                app:endIconMode="custom"
+                app:endIconDrawable="@android:drawable/ic_menu_add"
+                app:endIconTint="?attr/colorPrimary"
+                app:endIconContentDescription="Pick from Contacts"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -175,7 +179,120 @@
                     android:padding="16dp"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
-            
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="Make it Personal"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+                
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/work_sans"
+                android:text="We'll include this note in the SMS so they know it's really from you."
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="14sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:boxCornerRadiusBottomEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxStrokeColor="?attr/colorPrimary"
+                app:boxStrokeWidth="1dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="150"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPersonalNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/work_sans"
+                    android:hint="e.g. Happy Birthday! I sent you a gift!"
+                    android:gravity="top|start"
+                    android:lines="3"
+                    android:inputType="textMultiLine|textCapSentences" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="When should we ask them?"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/cgSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:singleSelection="true"
+                app:selectionRequired="true"
+                app:checkedChip="@+id/chipNow">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipNow"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Right Now" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTomorrow"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tomorrow Morning" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Trust & Transparency -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="#E8F5E9"
+                app:strokeWidth="0dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+                    
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_dialog_info"
+                        app:tint="#2E7D32"/>
+                        
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/work_sans"
+                        android:text="100% Refund Guarantee if they live outside our delivery zones."
+                        android:textColor="#2E7D32"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

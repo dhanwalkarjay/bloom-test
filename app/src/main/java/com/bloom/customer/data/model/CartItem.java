@@ -45,7 +45,13 @@ public class CartItem {
         double unitPrice = product.getPrice();
         
         // Size pricing logic
-        if ("Large".equals(size)) unitPrice *= 2.0;
+        if ("Deluxe".equals(size)) {
+            unitPrice *= 1.30;
+        } else if ("Premium".equals(size)) {
+            unitPrice *= 1.60;
+        } else if ("Large".equals(size)) {
+            unitPrice *= 2.0;
+        }
 
         double addonsPrice = 0;
         if (addons != null) {

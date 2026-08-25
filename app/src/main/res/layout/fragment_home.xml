@@ -307,20 +307,22 @@
                         android:paddingEnd="@dimen/spacing_l">
 
                         <TextView
+                            android:id="@+id/tvHeroTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/plus_jakarta_sans"
-                            android:text="Spring Awakening Sale"
+                            tools:text="Spring Awakening Sale"
                             android:textColor="@android:color/white"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvHeroSubtitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_xxs"
                             android:fontFamily="@font/work_sans"
-                            android:text="Save up to 30% on seasonal favorites"
+                            tools:text="Save up to 30% on seasonal favorites"
                             android:textColor="#EFFFFFFF"
                             android:textSize="12sp" />
 
@@ -345,236 +347,238 @@
                     </LinearLayout>
                 </FrameLayout>
 
-                <!-- Lux promo card -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/luxPromo"
+                <!-- Services Carousel -->
+                <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginStart="@dimen/spacing_m"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_l"
-                    android:layout_marginEnd="@dimen/spacing_m"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="@color/home_lux_dark"
-                    app:cardCornerRadius="@dimen/spacing_m"
-                    app:cardElevation="@dimen/spacing_s"
-                    app:strokeWidth="0dp">
+                    android:clipToPadding="false"
+                    android:paddingStart="@dimen/spacing_m"
+                    android:paddingEnd="@dimen/spacing_m"
+                    android:scrollbars="none"
+                    android:overScrollMode="never">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="20dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:id="@+id/luxTextGroup"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/luxArrowCircle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                        <!-- Lux Promo -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/luxPromo"
+                            android:layout_width="300dp"
+                            android:layout_height="130dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardBackgroundColor="@color/home_lux_dark"
+                            app:cardCornerRadius="@dimen/spacing_m"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="20dp">
+
+                                <LinearLayout
+                                    android:id="@+id/luxTextGroup"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@id/luxArrowCircle"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:orientation="horizontal">
+
+                                        <ImageView
+                                            android:layout_width="@dimen/spacing_m"
+                                            android:layout_height="@dimen/spacing_m"
+                                            android:src="@drawable/ic_home_flare"
+                                            app:tint="@color/home_lux_gold" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="@dimen/spacing_s"
+                                            android:fontFamily="@font/dm_sans"
+                                            android:letterSpacing="0.2"
+                                            android:text="CURATED LUXURY"
+                                            android:textColor="@color/home_lux_gold"
+                                            android:textSize="10sp"
+                                            android:textStyle="bold" />
+
+                                    </LinearLayout>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="6dp"
+                                        android:fontFamily="@font/playfair_display"
+                                        android:text="Discover LUX —\nPremium Blooms"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:id="@+id/luxArrowCircle"
+                                    android:layout_width="@dimen/spacing_xxl"
+                                    android:layout_height="@dimen/spacing_xxl"
+                                    app:cardBackgroundColor="@android:color/transparent"
+                                    app:cardCornerRadius="@dimen/spacing_l"
+                                    app:cardElevation="0dp"
+                                    app:strokeColor="#33FFFFFF"
+                                    app:strokeWidth="1dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/spacing_l"
+                                        android:layout_height="@dimen/spacing_l"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_arrow_forward"
+                                        app:tint="@color/home_lux_gold" />
+                                </com.google.android.material.card.MaterialCardView>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Smart Occasions Promo -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/occasionsPromo"
+                            android:layout_width="300dp"
+                            android:layout_height="130dp"
+                            android:layout_marginStart="@dimen/spacing_m"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardBackgroundColor="?attr/colorSurfaceVariant"
+                            app:cardCornerRadius="@dimen/spacing_m"
+                            app:cardElevation="0dp"
+                            app:strokeColor="?attr/colorOutlineVariant"
+                            app:strokeWidth="1dp">
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
                                 android:gravity="center_vertical"
-                                android:orientation="horizontal">
+                                android:padding="20dp">
 
                                 <ImageView
-                                    android:layout_width="@dimen/spacing_m"
-                                    android:layout_height="@dimen/spacing_m"
-                                    android:src="@drawable/ic_home_flare"
-                                    app:tint="@color/home_lux_gold" />
+                                    android:layout_width="@dimen/spacing_xl"
+                                    android:layout_height="@dimen/spacing_xl"
+                                    android:src="@android:drawable/ic_menu_my_calendar"
+                                    app:tint="?attr/colorPrimary" />
 
+                                <TextView
+                                    android:id="@+id/tvOccasionTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="12dp"
+                                    android:text="Never Forget a Special Day"
+                                    android:textColor="?attr/colorOnSurface"
+                                    android:textStyle="bold"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:id="@+id/tvOccasionSubtitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="Add dates and let us remind you"
+                                    android:textColor="?attr/colorOutline"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Create Your Own Bouquet entry point -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cvCreateOwn"
+                            android:layout_width="140dp"
+                            android:layout_height="130dp"
+                            android:layout_marginStart="@dimen/spacing_m"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardBackgroundColor="@color/bloom_chip_bg"
+                            app:cardCornerRadius="@dimen/spacing_m"
+                            app:cardElevation="0dp"
+                            app:strokeColor="@color/bloom_card_stroke"
+                            app:strokeWidth="1dp">
+                            
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:padding="@dimen/spacing_s">
+                                
+                                <ImageView
+                                    android:layout_width="@dimen/spacing_xl"
+                                    android:layout_height="@dimen/spacing_xl"
+                                    android:src="@drawable/ic_home_flare"
+                                    app:tint="?attr/colorPrimary" />
+                                    
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/spacing_s"
-                                    android:fontFamily="@font/dm_sans"
-                                    android:letterSpacing="0.2"
-                                    android:text="CURATED LUXURY"
-                                    android:textColor="@color/home_lux_gold"
-                                    android:textSize="10sp"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/plus_jakarta_sans"
+                                    android:text="Create\nYour Own"
+                                    android:textAlignment="center"
+                                    android:textColor="?attr/colorOnSurface"
+                                    android:textSize="13sp"
                                     android:textStyle="bold" />
-
                             </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:fontFamily="@font/playfair_display"
-                                android:text="Discover LUX —\nPremium Blooms"
-                                android:textColor="@android:color/white"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/luxArrowCircle"
-                            android:layout_width="@dimen/spacing_xxl"
-                            android:layout_height="@dimen/spacing_xxl"
-                            app:cardBackgroundColor="@android:color/transparent"
-                            app:cardCornerRadius="@dimen/spacing_l"
-                            app:cardElevation="0dp"
-                            app:strokeColor="#33FFFFFF"
-                            app:strokeWidth="1dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <ImageView
-                                android:layout_width="@dimen/spacing_l"
-                                android:layout_height="@dimen/spacing_l"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_arrow_forward"
-                                app:tint="@color/home_lux_gold" />
-
                         </com.google.android.material.card.MaterialCardView>
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Smart Occasions Promo -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/occasionsPromo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_m"
-                    android:layout_marginTop="@dimen/spacing_m"
-                    android:layout_marginEnd="@dimen/spacing_m"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="?attr/colorSurfaceVariant"
-                    app:cardCornerRadius="@dimen/spacing_m"
-                    app:cardElevation="0dp"
-                    app:strokeColor="?attr/colorOutlineVariant"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_m">
-
-                        <ImageView
-                            android:layout_width="@dimen/spacing_xl"
-                            android:layout_height="@dimen/spacing_xl"
-                            android:src="@android:drawable/ic_menu_my_calendar"
-                            app:tint="?attr/colorPrimary" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                        <!-- Surprise Me entry point -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cvSurpriseMe"
+                            android:layout_width="140dp"
+                            android:layout_height="130dp"
                             android:layout_marginStart="@dimen/spacing_m"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Never Forget a Special Day"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textStyle="bold"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Add dates and let us remind you"
-                                android:textColor="?attr/colorOutline"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_arrow_forward"
-                            app:tint="?attr/colorOnSurfaceVariant" />
-
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardBackgroundColor="@color/cart_surface_container"
+                            app:cardCornerRadius="@dimen/spacing_m"
+                            app:cardElevation="0dp"
+                            app:strokeColor="?attr/colorOutlineVariant"
+                            app:strokeWidth="1dp">
+                            
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:padding="@dimen/spacing_s">
+                                
+                                <ImageView
+                                    android:layout_width="@dimen/spacing_xl"
+                                    android:layout_height="@dimen/spacing_xl"
+                                    android:src="@android:drawable/ic_menu_help"
+                                    app:tint="?attr/colorPrimary" />
+                                    
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/plus_jakarta_sans"
+                                    android:text="Surprise\nMe!"
+                                    android:textAlignment="center"
+                                    android:textColor="?attr/colorOnSurface"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                        
                     </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Create Your Own Bouquet entry point -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cvCreateOwn"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="@dimen/spacing_m"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="@dimen/spacing_m"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="@color/bloom_chip_bg"
-                    app:cardCornerRadius="@dimen/spacing_m"
-                    app:cardElevation="0dp"
-                    app:strokeColor="@color/bloom_card_stroke"
-                    app:strokeWidth="1dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/spacing_m">
-
-                        <ImageView
-                            android:id="@+id/ivCreateIcon"
-                            android:layout_width="@dimen/spacing_xxl"
-                            android:layout_height="@dimen/spacing_xxl"
-                            android:src="@drawable/ic_home_flare"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="?attr/colorPrimary" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/spacing_m"
-                            android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/tvComingSoon"
-                            app:layout_constraintStart_toEndOf="@id/ivCreateIcon"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/plus_jakarta_sans"
-                                android:text="Create Your Own"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/work_sans"
-                                android:text="Design a unique bouquet"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="12sp" />
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/tvComingSoon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_home_chip_inactive"
-                            android:paddingHorizontal="@dimen/spacing_s"
-                            android:paddingVertical="@dimen/spacing_xs"
-                            android:text="Coming Soon"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            android:textSize="10sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
+                </HorizontalScrollView>
 
                 <!-- New Arrivals section -->
                 <LinearLayout
@@ -608,15 +612,32 @@
 
                 </LinearLayout>
 
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerNewArrivals"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    app:shimmer_auto_start="true">
+                    
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/spacing_m">
+                        <include layout="@layout/layout_product_shimmer_item" />
+                        <include layout="@layout/layout_product_shimmer_item" />
+                        <include layout="@layout/layout_product_shimmer_item" />
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvNewArrivals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_m"
+                    android:layout_marginTop="@dimen/spacing_s"
                     android:clipToPadding="false"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/spacing_m"
-                    android:paddingEnd="@dimen/spacing_m"
+                    android:paddingHorizontal="@dimen/spacing_m"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_product" />
 
@@ -652,15 +673,32 @@
 
                 </LinearLayout>
 
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerSeasonal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    app:shimmer_auto_start="true">
+                    
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/spacing_m">
+                        <include layout="@layout/layout_product_shimmer_item" />
+                        <include layout="@layout/layout_product_shimmer_item" />
+                        <include layout="@layout/layout_product_shimmer_item" />
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvSeasonal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_m"
+                    android:layout_marginTop="@dimen/spacing_s"
                     android:clipToPadding="false"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/spacing_m"
-                    android:paddingEnd="@dimen/spacing_m"
+                    android:paddingHorizontal="@dimen/spacing_m"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_product" />
 
@@ -696,15 +734,32 @@
 
                 </LinearLayout>
 
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerBestsellers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    app:shimmer_auto_start="true">
+                    
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/spacing_m">
+                        <include layout="@layout/layout_product_shimmer_item" />
+                        <include layout="@layout/layout_product_shimmer_item" />
+                        <include layout="@layout/layout_product_shimmer_item" />
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvBestsellers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_m"
+                    android:layout_marginTop="@dimen/spacing_s"
                     android:clipToPadding="false"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/spacing_m"
-                    android:paddingEnd="@dimen/spacing_m"
+                    android:paddingHorizontal="@dimen/spacing_m"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_product" />
 
@@ -763,54 +818,85 @@
                     android:visibility="visible"
                     tools:listitem="@layout/item_shop" />
 
-                <!-- Login prompt (shown when logged out) -->
-                <LinearLayout
+                <!-- Login Prompt for Guest Users -->
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/llLoginPrompt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/spacing_xl"
-                    android:visibility="gone">
+                    android:layout_marginHorizontal="@dimen/spacing_m"
+                    android:layout_marginVertical="@dimen/spacing_xxl"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/home_lux_dark"
+                    app:cardCornerRadius="@dimen/spacing_l"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:text="@string/discover_florists"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="@dimen/_20ssp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_s"
-                        android:fontFamily="@font/work_sans"
                         android:gravity="center"
-                        android:text="@string/login_to_view_shops"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textSize="@dimen/_15ssp" />
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_xxl">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnLogin"
-                        android:layout_width="@dimen/_160sdp"
-                        android:layout_height="@dimen/_56sdp"
-                        android:layout_marginTop="@dimen/spacing_l"
-                        android:backgroundTint="?attr/colorPrimary"
-                        android:text="@string/login_signup"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        app:cornerRadius="@dimen/spacing_s" />
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/ic_home_flare"
+                            app:tint="@color/home_lux_gold" />
 
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_m"
+                            android:fontFamily="@font/playfair_display"
+                            android:text="Welcome to Bloom"
+                            android:textColor="@color/home_lux_gold"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
 
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_s"
+                            android:fontFamily="@font/work_sans"
+                            android:gravity="center"
+                            android:text="Sign in to discover curated bouquets\nand bespoke floral arrangements."
+                            android:textColor="#CCFFFFFF"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnLogin"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:layout_marginTop="@dimen/spacing_xl"
+                            android:backgroundTint="@color/home_lux_gold"
+                            android:text="Join or Sign In"
+                            android:textAllCaps="false"
+                            android:textColor="@color/home_lux_dark"
+                            android:textSize="16sp"
+                            app:cornerRadius="@dimen/spacing_m" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Shimmer Loading State -->
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerLoading"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="gone" />
+                    android:layout_marginTop="@dimen/spacing_s"
+                    android:visibility="gone"
+                    app:shimmer_auto_start="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        
+                        <include layout="@layout/layout_shop_shimmer_item" />
+                        <include layout="@layout/layout_shop_shimmer_item" />
+                        
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
                 <!-- Empty state -->
                 <LinearLayout

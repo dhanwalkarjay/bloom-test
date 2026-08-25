@@ -1,22 +1,30 @@
 package com.bloom.customer.ui.ordertracking;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bloom.customer.data.local.LocationHelper;
 import com.bloom.customer.data.model.Order;
 import com.bloom.customer.data.repository.OrderRepository;
-import com.bloom.customer.data.local.LocationHelper;
 import com.bloom.customer.util.NetworkResult;
 import com.bloom.databinding.ActivityOrderTrackingBinding;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class OrderTrackingActivity extends AppCompatActivity {
 
@@ -41,31 +49,29 @@ public class OrderTrackingActivity extends AppCompatActivity {
         binding.btnBack.setOnClickListener(v -> finish());
         binding.btnCancelOrder.setOnClickListener(v -> cancelOrder());
 
-        binding.btnHelp.setOnClickListener(v -> {
-            android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_DIAL);
-            intent.setData(android.net.Uri.parse("tel:18001234567"));
-            startActivity(intent);
-        });
+        binding.btnHelp.setOnClickListener(v -> dialNumber("18001234567"));
 
         binding.btnCall.setOnClickListener(v -> {
             if (pendingOrderData != null && pendingOrderData.getRiderPhone() != null) {
-                android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_DIAL);
-                intent.setData(android.net.Uri.parse("tel:" + pendingOrderData.getRiderPhone()));
-                startActivity(intent);
+                dialNumber(pendingOrderData.getRiderPhone());
             } else {
-                Toast.makeText(this, "Rider phone not available", Toast.LENGTH_SHORT).show();
+                showSnackbar("Rider phone not available");
             }
         });
 
         binding.btnChat.setOnClickListener(v -> {
             if (pendingOrderData != null && pendingOrderData.getRiderPhone() != null) {
-                android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW);
-                intent.setData(android.net.Uri.parse("sms:" + pendingOrderData.getRiderPhone()));
-                startActivity(intent);
+                openSms(pendingOrderData.getRiderPhone());
             } else {
-                Toast.makeText(this, "Rider phone not available", Toast.LENGTH_SHORT).show();
+                showSnackbar("Rider phone not available");
             }
         });
+
+        // Initialize line scales to 0 for animation
+        binding.line1.setScaleY(0f);
+        binding.line2.setScaleY(0f);
+        binding.line3.setScaleY(0f);
+        binding.line4.setScaleY(0f);
 
         setupMap();
         setupObservers();
@@ -73,6 +79,65 @@ public class OrderTrackingActivity extends AppCompatActivity {
         if (orderId != null) {
             viewModel.startTracking(orderId);
             fetchOrderData();
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
+            );
+
+            // Apply top padding to toolbar container
+            binding.toolbar.setPadding(0, insets.top, 0, 0);
+            
+            // Adjust Bottom Sheet padding
+            binding.bottomSheet.setPadding(
+                binding.bottomSheet.getPaddingLeft(),
+                binding.bottomSheet.getPaddingTop(),
+                binding.bottomSheet.getPaddingRight(),
+                insets.bottom
+            );
+
+            return windowInsets;
+        });
+        ViewCompat.requestApplyInsets(binding.getRoot());
+    }
+    
+    private void dialNumber(String number) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + number));
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            showSnackbar("No dialer app found");
+        }
+    }
+    
+    private void openSms(String number) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("sms:" + number));
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            showSnackbar("No messaging app found");
+        }
+    }
+
+    private void showSnackbar(String message) {
+        Snackbar snackbar = Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopSonarRipple(binding.vRipple1, binding.ivStatus1);
+        stopSonarRipple(binding.vRipple2, binding.ivStatus2);
+        stopSonarRipple(binding.vRipple3, binding.ivStatus3);
+        stopSonarRipple(binding.vRipple4, binding.ivStatus4);
+        stopSonarRipple(binding.vRipple5, binding.ivStatus5);
+        if (binding.mapWebView != null) {
+            ((android.view.ViewGroup) binding.mapWebView.getParent()).removeView(binding.mapWebView);
+            binding.mapWebView.destroy();
         }
     }
 
@@ -85,8 +150,35 @@ public class OrderTrackingActivity extends AppCompatActivity {
                     updateMapMarkers(result.data);
                 }
                 updateTimeline(result.data.getStatus(), result.data);
+                setupAnonymousReporting(result.data);
             }
         });
+    }
+
+    private void setupAnonymousReporting(Order order) {
+        if (order.isAnonymous()) {
+            binding.btnReportOrder.setVisibility(View.VISIBLE);
+            binding.btnReportOrder.setOnClickListener(v -> reportOrder());
+        } else {
+            binding.btnReportOrder.setVisibility(View.GONE);
+        }
+    }
+
+    private void reportOrder() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Report Sender")
+                .setMessage("Are you receiving unwanted gifts? We take harassment seriously. By proceeding, you will reject this gift and the sender's identity will be flagged for review by our safety team.")
+                .setPositiveButton("Report & Reject Gift", (dialog, which) -> {
+                    showSnackbar("Sender reported. We will take appropriate action.");
+                    // Mock API call to update status to "cancelled_reported"
+                    viewModel.cancelOrder(orderId).observe(this, result -> {
+                        if (result.status == NetworkResult.Status.SUCCESS) {
+                            finish();
+                        }
+                    });
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     private void cancelOrder() {
@@ -96,10 +188,10 @@ public class OrderTrackingActivity extends AppCompatActivity {
                 .setPositiveButton("Yes, Cancel", (dialog, which) -> {
                     viewModel.cancelOrder(orderId).observe(this, result -> {
                         if (result.status == NetworkResult.Status.SUCCESS) {
-                            Toast.makeText(this, "Order cancelled", Toast.LENGTH_SHORT).show();
+                            showSnackbar("Order cancelled");
                             finish();
                         } else if (result.status == NetworkResult.Status.ERROR) {
-                            Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show();
+                            showSnackbar(result.message);
                         }
                     });
                 })
@@ -180,16 +272,24 @@ public class OrderTrackingActivity extends AppCompatActivity {
             }
             return false;
         });
+
+        boolean isDarkMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        String tileLayerUrl = isDarkMode 
+                ? "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
+                : "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png";
+        
+        // Ensure webview matches night mode instantly
+        binding.mapWebView.setBackgroundColor(Color.TRANSPARENT);
         
         String html = "<html><head>" +
                 "<link rel='stylesheet' href='https://unpkg.com/leaflet@1.7.1/dist/leaflet.css' />" +
                 "<script src='https://unpkg.com/leaflet@1.7.1/dist/leaflet.js'></script>" +
-                "<style>#map { height: 100%; width: 100%; margin: 0; padding: 0; }</style>" +
-                "</head><body>" +
+                "<style>#map { height: 100%; width: 100%; margin: 0; padding: 0; background-color: transparent; }</style>" +
+                "</head><body style=\"background-color: transparent;\">" +
                 "<div id='map'></div>" +
                 "<script>" +
                 "var map = L.map('map', {zoomControl: false}).setView([21.1458, 79.0882], 14);" +
-                "L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png').addTo(map);" +
+                "L.tileLayer('" + tileLayerUrl + "').addTo(map);" +
                 "map.on('dragstart zoomstart', function() { if (window.recenterTimer) clearTimeout(window.recenterTimer); });" +
                 "map.on('dragend zoomend', function() { " +
                 "  if (window.recenterTimer) clearTimeout(window.recenterTimer);" +
@@ -243,6 +343,11 @@ public class OrderTrackingActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 isMapReady = true;
+                // Fade out shimmer map smoothly
+                binding.vShimmerMap.animate().alpha(0f).setDuration(600).withEndAction(() -> {
+                    binding.vShimmerMap.setVisibility(View.GONE);
+                }).start();
+                
                 if (pendingOrderData != null) {
                     updateMapMarkers(pendingOrderData);
                 }
@@ -254,7 +359,6 @@ public class OrderTrackingActivity extends AppCompatActivity {
     private void setupObservers() {
         viewModel.getOrderStatus().observe(this, status -> {
             if (status != null) {
-                // Fetch full order data for map updates when status changes
                 fetchOrderData();
             }
         });
@@ -270,7 +374,6 @@ public class OrderTrackingActivity extends AppCompatActivity {
         else if (lowerStatus.contains("prepar")) step = 3;
         else if (lowerStatus.contains("confirm")) step = 2;
 
-        // Task 1: Cancel only if not prepared
         if (step < 3 && !"cancelled".equalsIgnoreCase(status)) {
             binding.btnCancelOrder.setVisibility(View.VISIBLE);
         } else {
@@ -280,27 +383,12 @@ public class OrderTrackingActivity extends AppCompatActivity {
         float active = 1.0f;
         float inactive = 0.4f;
         
-        animateStep(binding.rlStep1, step >= 1 ? active : inactive, 0);
-        animateStep(binding.rlStep2, step >= 2 ? active : inactive, 100);
-        animateStep(binding.rlStep3, step >= 3 ? active : inactive, 200);
-        animateStep(binding.cvStep4, step >= 4 ? active : inactive, 300);
-        animateStep(binding.rlStep5, step >= 5 ? active : inactive, 400);
-
-        if (step == 1) startSonarRipple(binding.vRipple1, binding.ivStatus1);
-        else if (step == 2) startSonarRipple(binding.vRipple2, binding.ivStatus2);
-        else if (step == 3) startSonarRipple(binding.vRipple3, binding.ivStatus3);
-        else if (step == 4) startSonarRipple(binding.vRipple4, binding.ivStatus4);
-        else if (step == 5) startSonarRipple(binding.vRipple5, binding.ivStatus5);
-        
-        animateLine(binding.line1, step >= 2);
-        animateLine(binding.line2, step >= 3);
-        animateLine(binding.line3, step >= 4);
-        
-        animateIconColor(binding.ivStatus1, step >= 1);
-        animateIconColor(binding.ivStatus2, step >= 2);
-        animateIconColor(binding.ivStatus3, step >= 3);
-        animateIconColor(binding.ivStatus4, step >= 4);
-        animateIconColor(binding.ivStatus5, step >= 5);
+        // Group 1
+        setAlphaForGroup(binding.ivStatus1, binding.tvStatus1Title, binding.tvStatus1Desc, binding.tvStatus1Time, step >= 1 ? active : inactive);
+        setAlphaForGroup(binding.ivStatus2, binding.tvStatus2Title, binding.tvStatus2Desc, binding.tvStatus2Time, step >= 2 ? active : inactive);
+        setAlphaForGroup(binding.ivStatus3, binding.tvStatus3Title, binding.tvStatus3Desc, binding.tvStatus3Time, step >= 3 ? active : inactive);
+        binding.cvStep4.setAlpha(step >= 4 ? active : inactive);
+        setAlphaForGroup(binding.ivStatus5, binding.tvStatus5Title, binding.tvStatus5Desc, null, step >= 5 ? active : inactive);
 
         stopSonarRipple(binding.vRipple1, binding.ivStatus1);
         stopSonarRipple(binding.vRipple2, binding.ivStatus2);
@@ -313,55 +401,62 @@ public class OrderTrackingActivity extends AppCompatActivity {
         else if (step == 3) startSonarRipple(binding.vRipple3, binding.ivStatus3);
         else if (step == 4) startSonarRipple(binding.vRipple4, binding.ivStatus4);
         else if (step == 5) startSonarRipple(binding.vRipple5, binding.ivStatus5);
+        
+        animateLine(binding.line1, step >= 2);
+        animateLine(binding.line2, step >= 3);
+        animateLine(binding.line3, step >= 4);
+        animateLine(binding.line4, step >= 5);
+        
+        animateIconColor(binding.ivStatus1, step >= 1);
+        animateIconColor(binding.ivStatus2, step >= 2);
+        animateIconColor(binding.ivStatus3, step >= 3);
+        animateIconColor(binding.ivStatus4, step >= 4);
+        animateIconColor(binding.ivStatus5, step >= 5);
 
-        // Task 5: Show courier info and OTP only when Out for Delivery
+        // Show courier info and OTP only when Out for Delivery
         if (step >= 4) {
             if (binding.cvCourierInfo.getVisibility() != View.VISIBLE) {
                 binding.cvCourierInfo.setVisibility(View.VISIBLE);
                 binding.cvCourierInfo.setAlpha(0f);
                 binding.cvCourierInfo.animate().alpha(1f).setDuration(500).start();
             }
+            if (binding.cvOtp != null && binding.cvOtp.getVisibility() != View.VISIBLE) {
+                binding.cvOtp.setVisibility(View.VISIBLE);
+                binding.cvOtp.setAlpha(0f);
+                binding.cvOtp.animate().alpha(1f).setDuration(500).start();
+            }
             if (order != null) {
                 binding.tvCourierName.setText(order.getRiderName() != null ? order.getRiderName() : "David R.");
                 String otp = order.getDeliveryOtp();
-                if (otp == null || otp.isEmpty()) otp = "419822"; 
-                else otp = otp.replace(" ", ""); 
-                if (otp.length() < 6) otp = "419822";
-                animateOtpReveal(otp);
+                if (otp != null && !otp.isEmpty()) {
+                    animateOtpReveal(otp);
+                }
             }
         } else {
             binding.cvCourierInfo.setVisibility(View.GONE);
-            isOtpRevealed = false;
-            binding.tvOtp.setText("--- ---");
+            if (binding.cvOtp != null) binding.cvOtp.setVisibility(View.GONE);
         }
     }
-
-    private void animateStep(View stepView, float targetAlpha, long delay) {
-        if (stepView.getAlpha() == targetAlpha) return;
-        stepView.setTranslationY(40f);
-        stepView.animate()
-            .alpha(targetAlpha)
-            .translationY(0f)
-            .setDuration(600)
-            .setStartDelay(delay)
-            .setInterpolator(new android.view.animation.OvershootInterpolator())
-            .start();
+    
+    private void setAlphaForGroup(View icon, View title, View desc, View time, float alpha) {
+        icon.animate().alpha(alpha).setDuration(600).start();
+        title.animate().alpha(alpha).setDuration(600).start();
+        desc.animate().alpha(alpha).setDuration(600).start();
+        if (time != null) time.animate().alpha(alpha).setDuration(600).start();
     }
 
     private void animateLine(View line, boolean shouldGrow) {
-        int currentHeight = line.getLayoutParams().height;
-        int targetHeight = shouldGrow ? (int)(50 * getResources().getDisplayMetrics().density) : 0;
-        if (currentHeight == targetHeight) return;
+        if (line.getPivotY() != 0) {
+            line.setPivotY(0f);
+        }
+        float targetScale = shouldGrow ? 1f : 0f;
+        if (line.getScaleY() == targetScale) return;
 
-        android.animation.ValueAnimator anim = android.animation.ValueAnimator.ofInt(currentHeight, targetHeight);
-        anim.setDuration(shouldGrow ? 1200 : 300);
-        anim.setInterpolator(new android.view.animation.DecelerateInterpolator());
-        anim.addUpdateListener(animation -> {
-            android.view.ViewGroup.LayoutParams params = line.getLayoutParams();
-            params.height = (int) animation.getAnimatedValue();
-            line.setLayoutParams(params);
-        });
-        anim.start();
+        line.animate()
+            .scaleY(targetScale)
+            .setDuration(shouldGrow ? 1200 : 300)
+            .setInterpolator(new android.view.animation.DecelerateInterpolator())
+            .start();
     }
 
     private void startSonarRipple(View rippleView, View iconView) {
@@ -404,8 +499,16 @@ public class OrderTrackingActivity extends AppCompatActivity {
     }
 
     private void animateIconColor(View view, boolean isActive) {
-        int activeColor = Color.parseColor("#A82D47");
-        int inactiveColor = Color.parseColor("#F8F8F8");
+        int colorPrimaryId = getResources().getIdentifier("colorPrimary", "attr", getPackageName());
+        int colorSurfaceVariantId = getResources().getIdentifier("colorSurfaceVariant", "attr", getPackageName());
+        
+        android.util.TypedValue tv = new android.util.TypedValue();
+        getTheme().resolveAttribute(colorPrimaryId, tv, true);
+        int activeColor = tv.data;
+        
+        getTheme().resolveAttribute(colorSurfaceVariantId, tv, true);
+        int inactiveColor = tv.data;
+        
         int targetColor = isActive ? activeColor : inactiveColor;
         
         ColorStateList currentTint = view.getBackgroundTintList();

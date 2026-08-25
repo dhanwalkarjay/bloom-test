@@ -11,6 +11,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!-- Offline Map Fallback -->
+    <LinearLayout
+        android:id="@+id/llOfflineFallback"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_offline_map"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:alpha="0.4"
+            android:src="@drawable/ic_search_location"
+            app:tint="?attr/colorOnSurfaceVariant" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:text="Map unavailable"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/work_sans"
+            android:gravity="center"
+            android:text="No internet — type your address in the search bar below"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="14sp" />
+    </LinearLayout>
+
     <!-- A subtle gradient overlay on the map so the status bar icons are visible -->
     <View
         android:layout_width="match_parent"
@@ -34,7 +72,7 @@
             android:layout_gravity="start|center_vertical"
             android:layout_marginStart="@dimen/spacing_m"
             android:background="@drawable/bg_circle_translucent"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="?attr/colorSurface"
             android:contentDescription="Back"
             android:padding="10dp"
             android:src="@drawable/ic_arrow_back"
@@ -47,7 +85,7 @@
             android:layout_height="40dp"
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="@dimen/spacing_m"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="?attr/colorSurface"
             android:fontFamily="@font/plus_jakarta_sans"
             android:text="Confirm"
             android:textColor="?attr/colorPrimary"
@@ -61,18 +99,35 @@
             
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- Map Center Pin (Static in center of screen) -->
-    <ImageView
-        android:layout_width="@dimen/spacing_xxl"
-        android:layout_height="@dimen/spacing_xxl"
-        android:src="@drawable/ic_location_pin"
-        app:tint="?attr/colorPrimary"
+    <!-- Map Center Pin Assembly (Static center, animated pulse) -->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:translationY="-30dp" />
+        android:translationY="-36dp">
+
+        <!-- Animated pulse ring -->
+        <View
+            android:id="@+id/vPinPulse"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:alpha="0.0"
+            android:background="@drawable/bg_pin_pulse" />
+
+        <!-- Pin icon -->
+        <ImageView
+            android:id="@+id/ivCenterPin"
+            android:layout_width="@dimen/spacing_xxl"
+            android:layout_height="@dimen/spacing_xxl"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_location_pin"
+            app:tint="?attr/colorPrimary" />
+    </FrameLayout>
 
     <View
-        android:layout_width="@dimen/spacing_m"
-        android:layout_height="@dimen/spacing_s"
+        android:layout_width="32dp"
+        android:layout_height="10dp"
         android:background="@drawable/bg_circle_translucent"
         android:backgroundTint="#40000000"
         android:layout_gravity="center" />
@@ -85,11 +140,11 @@
         android:layout_marginTop="80dp"
         android:background="@drawable/bg_bottom_sheet_premium"
         android:elevation="16dp"
-        app:behavior_peekHeight="150dp"
+        app:behavior_peekHeight="220dp"
         app:behavior_hideable="false"
         app:behavior_fitToContents="false"
-        app:behavior_expandedOffset="100dp"
-        app:behavior_halfExpandedRatio="0.40"
+        app:behavior_expandedOffset="80dp"
+        app:behavior_halfExpandedRatio="0.45"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <!-- Drag Handle -->
@@ -98,7 +153,7 @@
             android:layout_width="40dp"
             android:layout_height="4dp"
             android:layout_marginTop="@dimen/spacing_s"
-            android:background="#D9D9D9"
+            android:background="?attr/colorOutlineVariant"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -136,11 +191,11 @@
             android:layout_height="56dp"
             android:layout_marginHorizontal="@dimen/spacing_l"
             android:layout_marginTop="@dimen/spacing_m"
-            app:cardBackgroundColor="#F5F5F5"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="16dp"
             app:cardElevation="0dp"
             app:strokeWidth="1dp"
-            app:strokeColor="#E4E2E1"
+            app:strokeColor="?attr/colorOutline"
             app:layout_constraintTop_toBottomOf="@id/tvHeroTitle">
 
             <LinearLayout
@@ -172,6 +227,15 @@
                     android:imeOptions="actionSearch"
                     android:maxLines="1" />
 
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progressSearch"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:visibility="gone"
+                    app:indicatorColor="?attr/colorPrimary"
+                    app:indicatorSize="20dp"
+                    app:trackThickness="2dp" />
+
                 <ImageView
                     android:id="@+id/ivClear"
                     android:layout_width="24dp"
@@ -182,12 +246,26 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Live Suggestions Dropdown -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSuggestions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_l"
+            android:background="@drawable/bg_search_suggestions"
+            android:elevation="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cvSearchBar" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/spacing_l"
+            android:layout_marginTop="@dimen/spacing_s"
+            android:clipToPadding="false"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cvSearchBar">
+            app:layout_constraintTop_toBottomOf="@id/rvSuggestions">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -208,11 +286,27 @@
                     android:layout_marginBottom="@dimen/spacing_l"
                     android:elevation="4dp">
 
-                    <ImageView
+                    <FrameLayout
                         android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_my_location"
-                        app:tint="?attr/colorSurface" />
+                        android:layout_height="32dp">
+
+                        <ImageView
+                            android:id="@+id/ivGpsIcon"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_my_location"
+                            app:tint="?attr/colorSurface" />
+
+                        <com.google.android.material.progressindicator.CircularProgressIndicator
+                            android:id="@+id/progressGps"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            app:indicatorColor="@android:color/white"
+                            app:indicatorSize="28dp"
+                            app:trackThickness="2dp" />
+                    </FrameLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -231,11 +325,12 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvGpsSubtitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/work_sans"
                             android:text="Enable GPS for precise delivery"
-                            android:textColor="#EFFFFFFF"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -271,7 +366,7 @@
                             android:layout_width="220dp"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="@dimen/spacing_s"
-                            app:cardBackgroundColor="#FFFFFF"
+                            app:cardBackgroundColor="?attr/colorSurface"
                             app:cardCornerRadius="20dp"
                             app:cardElevation="6dp"
                             app:strokeWidth="0dp">
@@ -317,7 +412,7 @@
                             android:layout_width="220dp"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="@dimen/spacing_s"
-                            app:cardBackgroundColor="#FFFFFF"
+                            app:cardBackgroundColor="?attr/colorSurface"
                             app:cardCornerRadius="20dp"
                             app:cardElevation="6dp"
                             app:strokeWidth="0dp">
@@ -363,7 +458,7 @@
                             android:layout_width="220dp"
                             android:layout_height="match_parent"
                             android:layout_marginHorizontal="@dimen/spacing_s"
-                            app:cardBackgroundColor="#F8F9FA"
+                            app:cardBackgroundColor="?attr/colorSurfaceVariant"
                             app:cardCornerRadius="20dp"
                             app:cardElevation="0dp"
                             app:strokeColor="?attr/colorOutline"
@@ -396,6 +491,7 @@
                     </LinearLayout>
                 </HorizontalScrollView>
                 
+                <!-- Recent Searches (populated dynamically from SharedPreferences) -->
                 <TextView
                     android:id="@+id/tvRecentSearches"
                     android:layout_width="wrap_content"
@@ -433,7 +529,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/spacing_m"
                         android:fontFamily="@font/work_sans"
-                        android:text="Koregaon Park, Pune"
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -462,7 +557,34 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/spacing_m"
                         android:fontFamily="@font/work_sans"
-                        android:text="Bandra West, Mumbai"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llRecent3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing_l"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="@dimen/spacing_s"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_clock"
+                        app:tint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:id="@+id/tvRecent3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_m"
+                        android:fontFamily="@font/work_sans"
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -486,15 +608,42 @@
                     android:paddingTop="@dimen/spacing_l"
                     android:paddingBottom="100dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Header with Change Area link -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:text="Enter Address Details"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/plus_jakarta_sans"
+                                android:text="Enter Address Details"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textSize="22sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvChangeArea"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/work_sans"
+                                android:text="Change area"
+                                android:textColor="?attr/colorPrimary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Selected Area chip -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -522,6 +671,24 @@
                             android:textSize="15sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
+                    <!-- Recipient Name (NEW) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_l"
+                        android:hint="Recipient Name"
+                        app:boxBackgroundColor="#00000000"
+                        app:boxStrokeColor="?attr/colorPrimary"
+                        app:hintTextColor="?attr/colorPrimary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etRecipientName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/work_sans"
+                            android:inputType="textPersonName|textCapWords" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -620,3 +787,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+

@@ -115,8 +115,9 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- Birthday Card (Active) -->
+                        <!-- Birthday Card -->
                         <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cardBirthday"
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
                             android:layout_marginEnd="12dp"
@@ -152,6 +153,7 @@
 
                         <!-- Anniversary Card -->
                         <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cardAnniversary"
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
                             android:layout_marginEnd="12dp"
@@ -187,6 +189,7 @@
                         
                         <!-- Valentine's Card -->
                         <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cardValentine"
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
                             android:layout_marginEnd="12dp"
@@ -222,6 +225,7 @@
                         
                         <!-- Mother's Day Card -->
                         <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cardMother"
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
                             android:layout_marginEnd="12dp"
@@ -255,10 +259,47 @@
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
+                        <!-- Custom Card -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cardCustom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:layout_marginEnd="12dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardCornerRadius="24dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="1dp"
+                            app:strokeColor="?attr/colorOutlineVariant"
+                            app:cardBackgroundColor="?attr/colorSurface">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                android:paddingHorizontal="16dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="✨"
+                                    android:textSize="18sp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="Custom"
+                                    android:fontFamily="@font/plus_jakarta_sans"
+                                    android:textStyle="bold"
+                                    android:textSize="14sp"
+                                    android:textColor="?attr/colorOnSurfaceVariant"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
                     </LinearLayout>
             </HorizontalScrollView>
 
             <TextView
+                android:id="@+id/tvCustomTitleHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_l"
@@ -267,13 +308,16 @@
                 android:text="Custom Title"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCustomTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_l"
                 android:layout_marginTop="8dp"
+                android:visibility="gone"
                 app:boxCornerRadiusBottomEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
                 app:boxCornerRadiusTopEnd="16dp"
@@ -348,6 +392,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilRecipientName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_l"
@@ -358,6 +403,10 @@
                 app:boxCornerRadiusTopStart="16dp"
                 app:boxStrokeColor="?attr/colorOutline"
                 app:boxStrokeWidth="1dp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@android:drawable/ic_menu_add"
+                app:endIconTint="?attr/colorPrimary"
+                app:endIconContentDescription="Pick from Contacts"
                 app:hintEnabled="false"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -377,7 +426,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_l"
                 android:layout_marginTop="12dp"
-                android:layout_marginBottom="48dp"
                 app:boxCornerRadiusBottomEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
                 app:boxCornerRadiusTopEnd="16dp"
@@ -397,6 +445,51 @@
                     android:textColor="?attr/colorOnSurface"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Reminder Preferences -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_l"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:text="When should we remind you?"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/cgReminders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_l"
+                android:layout_marginTop="12dp"
+                app:singleSelection="true"
+                app:selectionRequired="true"
+                app:checkedChip="@+id/chipReminder7Days">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipReminder7Days"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7 Days Before" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipReminder3Days"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3 Days Before" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipReminderDayOf"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="On the Day" />
+
+            </com.google.android.material.chip.ChipGroup>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

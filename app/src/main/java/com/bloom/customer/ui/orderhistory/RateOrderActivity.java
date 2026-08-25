@@ -5,12 +5,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
+import android.graphics.Color;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bloom.customer.data.repository.ReviewRepository;
 import com.bloom.customer.util.NetworkResult;
 import com.bloom.databinding.ActivityRateOrderBinding;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.ViewCompat;
 
 public class RateOrderActivity extends AppCompatActivity {
 
@@ -23,6 +28,16 @@ public class RateOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityRateOrderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
+            androidx.core.graphics.Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         orderId = getIntent().getStringExtra("order_id");
         String productName = getIntent().getStringExtra("product_name");
@@ -39,7 +54,7 @@ public class RateOrderActivity extends AppCompatActivity {
             String comment = binding.etFeedback.getText().toString().trim();
             
             if (rating == 0) {
-                Toast.makeText(this, "Please select a rating", Toast.LENGTH_SHORT).show();
+                Snackbar.make(binding.getRoot(), "Please select a rating", Snackbar.LENGTH_SHORT).show();
                 return;
             }
             
@@ -62,13 +77,13 @@ public class RateOrderActivity extends AppCompatActivity {
                     binding.llSuccessState.setVisibility(View.VISIBLE);
                     binding.llSuccessState.animate().alpha(1f).setDuration(400).start();
                     
-                    new Handler(Looper.getMainLooper()).postDelayed(this::finish, 1500);
+                    binding.getRoot().postDelayed(this::finish, 1500);
                 }).start();
                 
             } else if (result.status == NetworkResult.Status.ERROR) {
                 binding.btnSubmit.setEnabled(true);
                 binding.btnSubmit.setText("Submit Review");
-                Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show();
+                Snackbar.make(binding.getRoot(), result.message != null ? result.message : "Error submitting review", Snackbar.LENGTH_SHORT).show();
             }
         });
     }

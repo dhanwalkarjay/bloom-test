@@ -72,7 +72,7 @@ public class AddressRepository {
                             errorMsg += " - " + response.errorBody().string();
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        timber.log.Timber.e(e, "Error parsing addresses from json");
                     }
                     result.setValue(NetworkResult.error(errorMsg, null));
                 }

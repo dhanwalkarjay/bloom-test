@@ -1,0 +1,10 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="160dp"
+    android:height="160dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+  <!-- Outer soft pink petals/star -->
+  <path
+      android:fillColor="#33A82D47"
+      android:pathData="M50 0 C60 20 80 20 100 30 C80 40 80 60 100 70 C80 80 60 80 50 100 C40 80 20 80 0 70 C20 60 20 40 0 30 C20 20 40 20 50 0Z" />
+</vector>

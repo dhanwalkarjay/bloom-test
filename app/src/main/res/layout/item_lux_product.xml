@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_40sdp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <com.bloom.customer.ui.common.AspectRatioConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_lux_image_border"
+        app:bloomHeightRatio="5"
+        app:bloomWidthRatio="4">
+
+        <ImageView
+            android:id="@+id/ivProduct"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </com.bloom.customer.ui.common.AspectRatioConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_m"
+        android:fontFamily="@font/playfair_display"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:lineHeight="@dimen/_30ssp"
+        android:textColor="@color/lux_text"
+        android:textSize="@dimen/_24ssp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_l"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/spacing_l"
+        android:fontFamily="@font/work_sans"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:lineHeight="@dimen/_24ssp"
+        android:textColor="@color/lux_text_muted"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_s"
+        android:fontFamily="@font/dm_sans"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:letterSpacing="0.01"
+        android:lineHeight="@dimen/_26ssp"
+        android:textColor="@color/lux_accent"
+        android:textSize="@dimen/_18ssp" />
+
+    <View
+        android:layout_width="@dimen/_48sdp"
+        android:layout_height="1dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/spacing_s"
+        android:background="@drawable/bg_lux_product_meta_line" />
+
+    <TextView
+        android:id="@+id/tvStockWarning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:fontFamily="@font/dm_sans"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:letterSpacing="0.1"
+        android:lineHeight="@dimen/_16ssp"
+        android:textColor="@color/lux_accent"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold" />
+
+</LinearLayout>

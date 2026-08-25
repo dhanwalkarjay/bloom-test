@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Delivery Details"
+            app:titleCentered="true"/>
+            
+        <TextView
+            android:id="@+id/tvOfflineBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D32F2F"
+            android:padding="8dp"
+            android:text="Offline Mode - Changes will sync when connected"
+            android:textColor="#FFFFFF"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- High-Contrast Address & Customer Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeWidth="2dp"
+                app:strokeColor="?attr/colorOutlineVariant">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DELIVERY ADDRESS"
+                        android:fontFamily="@font/dm_sans"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:textColor="?attr/colorOutline"/>
+
+                    <TextView
+                        android:id="@+id/tvAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="123 Blossom Lane\nFloral City, FC 12345"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/plus_jakarta_sans"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnNavigate"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Navigate in Google Maps"
+                        android:textSize="16sp"
+                        app:cornerRadius="12dp"
+                        app:icon="@android:drawable/ic_menu_directions"/>
+                        
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="16dp"
+                        android:background="?attr/colorOutlineVariant" />
+                        
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_toStartOf="@id/llContactActions">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="RECIPIENT"
+                                android:fontFamily="@font/dm_sans"
+                                android:textStyle="bold"
+                                android:textSize="12sp"
+                                android:textColor="?attr/colorOutline"/>
+
+                            <TextView
+                                android:id="@+id/tvCustomerName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="John Doe"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="?attr/colorOnSurface"/>
+                        </LinearLayout>
+                        
+                        <LinearLayout
+                            android:id="@+id/llContactActions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true">
+                            
+                            <ImageButton
+                                android:id="@+id/btnCallCustomer"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@drawable/bg_circle_translucent"
+                                android:backgroundTint="#E8F5E9"
+                                android:src="@android:drawable/ic_menu_call"
+                                app:tint="#2E7D32"/>
+                                
+                            <ImageButton
+                                android:id="@+id/btnTextCustomer"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="12dp"
+                                android:background="@drawable/bg_circle_translucent"
+                                android:backgroundTint="#E3F2FD"
+                                android:src="@android:drawable/stat_notify_chat"
+                                app:tint="#1565C0"/>
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Order Items Card (Simplified) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutlineVariant">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Order Items"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="?attr/colorOnSurface"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvOrderItems"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 4-Box OTP Input -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recipient's 4-Digit PIN"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="?attr/colorOnSurface"/>
+                    
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center">
+                    
+                    <EditText
+                        android:id="@+id/etOtp1"
+                        android:layout_width="60dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/bg_input_pill_lux"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textSize="28sp"
+                        android:textStyle="bold"/>
+                        
+                    <EditText
+                        android:id="@+id/etOtp2"
+                        android:layout_width="60dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/bg_input_pill_lux"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textSize="28sp"
+                        android:textStyle="bold"/>
+                        
+                    <EditText
+                        android:id="@+id/etOtp3"
+                        android:layout_width="60dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/bg_input_pill_lux"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textSize="28sp"
+                        android:textStyle="bold"/>
+                        
+                    <EditText
+                        android:id="@+id/etOtp4"
+                        android:layout_width="60dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/bg_input_pill_lux"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textSize="28sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+                
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbBypassOtp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Bypass OTP (Leave at door)"
+                    android:fontFamily="@font/work_sans"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+
+            <!-- Proof of Delivery -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCaptureProof"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="64dp"
+                    android:layout_weight="1"
+                    android:text="Capture Proof"
+                    android:textSize="16sp"
+                    app:icon="@android:drawable/ic_menu_camera"
+                    app:cornerRadius="12dp"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvProofPreview"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="16dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="8dp"
+                    app:strokeColor="?attr/colorOutline"
+                    app:strokeWidth="1dp">
+                    <ImageView
+                        android:id="@+id/ivProofPreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop" />
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+            
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnIssue"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="32dp"
+                android:text="Unable to Deliver?"
+                android:textColor="#D32F2F"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Sticky Bottom Bar with Swipe-to-Deliver Slider -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorSurface"
+        android:elevation="8dp"
+        android:padding="16dp"
+        android:orientation="vertical">
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp">
+            
+            <!-- We will use a massive MaterialButton with swipe functionality mapped in Java using TouchListener, or simply a prominent slider-like button for now if touch logic is too complex to write blindly. Let's use a standard SeekBar mimicking a slider -->
+            <SeekBar
+                android:id="@+id/sbSwipeToDeliver"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:progress="0"
+                android:max="100"
+                android:splitTrack="false"
+                android:progressDrawable="@drawable/bg_swipe_track"
+                android:thumb="@drawable/ic_swipe_thumb"
+                android:enabled="false" />
+                
+            <TextView
+                android:id="@+id/tvSwipeHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Capture Proof to Deliver"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:elevation="2dp"
+                android:clickable="false"
+                android:focusable="false" />
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

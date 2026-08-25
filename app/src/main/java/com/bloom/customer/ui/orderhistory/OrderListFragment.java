@@ -98,7 +98,7 @@ public class OrderListFragment extends Fragment {
                     
                     startActivity(Intent.createChooser(shareIntent, "Share Invoice"));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    timber.log.Timber.e(e, "Error parsing saved order history state");
                     android.widget.Toast.makeText(requireContext(), "Failed to generate invoice", android.widget.Toast.LENGTH_SHORT).show();
                 }
             }
@@ -109,17 +109,30 @@ public class OrderListFragment extends Fragment {
         String userId = SessionManager.getInstance(requireContext()).getUserId();
         if (userId == null) {
             binding.swipeRefresh.setRefreshing(false);
+            binding.rvOrderHistory.setVisibility(View.GONE);
+            binding.tvEmptyTitle.setText("Log in to view orders");
+            binding.tvEmptySubtitle.setText("Sign in to track your luxury floral deliveries.");
+            binding.btnRetry.setText("Join Now");
+            binding.btnRetry.setVisibility(View.VISIBLE);
+            binding.btnRetry.setOnClickListener(v -> {
+                startActivity(new Intent(requireContext(), com.bloom.customer.ui.auth.LoginActivity.class));
+            });
             binding.emptyState.setVisibility(View.VISIBLE);
             return;
+        } else {
+            binding.btnRetry.setText("Retry");
+            binding.btnRetry.setOnClickListener(v -> fetchOrders());
         }
 
-        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.shimmerLoading.setVisibility(View.VISIBLE);
+        binding.shimmerLoading.startShimmer();
         binding.rvOrderHistory.setVisibility(View.GONE);
         binding.emptyState.setVisibility(View.GONE);
 
         viewModel.getOrderHistory(userId).observe(getViewLifecycleOwner(), result -> {
             binding.swipeRefresh.setRefreshing(false);
-            binding.progressBar.setVisibility(View.GONE);
+            binding.shimmerLoading.stopShimmer();
+            binding.shimmerLoading.setVisibility(View.GONE);
             
             if (result.status == NetworkResult.Status.SUCCESS) {
                 if (result.data != null && !result.data.isEmpty()) {
@@ -166,6 +179,13 @@ public class OrderListFragment extends Fragment {
                     
                     if (filtered.isEmpty()) {
                         binding.rvOrderHistory.setVisibility(View.GONE);
+                        binding.tvEmptyTitle.setText("Your floral journey starts here");
+                        binding.tvEmptySubtitle.setText("Discover our curated collection of luxury bouquets.");
+                        binding.btnRetry.setText("Shop Now");
+                        binding.btnRetry.setVisibility(View.VISIBLE);
+                        binding.btnRetry.setOnClickListener(v -> {
+                            // Optionally switch to Home tab
+                        });
                         binding.emptyState.setVisibility(View.VISIBLE);
                     } else {
                         adapter.setOrders(filtered);
@@ -173,9 +193,17 @@ public class OrderListFragment extends Fragment {
                         binding.emptyState.setVisibility(View.GONE);
                     }
                 } else {
+                    binding.tvEmptyTitle.setText("Your floral journey starts here");
+                    binding.tvEmptySubtitle.setText("Discover our curated collection of luxury bouquets.");
+                    binding.btnRetry.setText("Shop Now");
+                    binding.btnRetry.setVisibility(View.VISIBLE);
+                    binding.btnRetry.setOnClickListener(v -> {});
                     binding.emptyState.setVisibility(View.VISIBLE);
                 }
             } else {
+                binding.tvEmptyTitle.setText("Couldn't load orders");
+                binding.tvEmptySubtitle.setText(result.message != null ? result.message : "Pull down to retry.");
+                binding.btnRetry.setVisibility(View.VISIBLE);
                 binding.emptyState.setVisibility(View.VISIBLE);
             }
         });

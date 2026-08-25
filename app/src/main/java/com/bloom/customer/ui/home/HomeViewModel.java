@@ -43,6 +43,22 @@ public class HomeViewModel extends AndroidViewModel {
     private final MutableLiveData<NetworkResult<List<Product>>> bestsellerProducts = new MutableLiveData<>();
     private final MutableLiveData<NetworkResult<List<Product>>> newArrivalProducts = new MutableLiveData<>();
 
+    public static class HeroCampaign {
+        public final String title;
+        public final String subtitle;
+        public final String buttonText;
+        public final int imageResId;
+
+        public HeroCampaign(String title, String subtitle, String buttonText, int imageResId) {
+            this.title = title;
+            this.subtitle = subtitle;
+            this.buttonText = buttonText;
+            this.imageResId = imageResId;
+        }
+    }
+
+    private final MutableLiveData<HeroCampaign> heroCampaign = new MutableLiveData<>();
+
     // Manual location state - persists across refreshes until user explicitly changes it
     private boolean hasManualLocation = false;
     private double manualLat;
@@ -56,8 +72,20 @@ public class HomeViewModel extends AndroidViewModel {
         this.locationHelper = new LocationHelper(application);
         this.prefs = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
+        // Fetch dynamic hero data (Mocked for now)
+        heroCampaign.setValue(new HeroCampaign(
+                "Spring Awakening Sale",
+                "Save up to 30% on seasonal favorites",
+                "Shop Collection",
+                com.bloom.R.drawable.home_hero_spring_sale
+        ));
+
         loadPersistedLocation();
         fetchFeaturedProducts();
+    }
+
+    public LiveData<HeroCampaign> getHeroCampaign() {
+        return heroCampaign;
     }
 
     private void loadPersistedLocation() {

@@ -95,11 +95,29 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         }
 
         private String formatCustomization(CartItem item) {
+            StringBuilder sb = new StringBuilder();
             String size = item.getSize();
             if (size == null || size.trim().isEmpty() || "Regular".equalsIgnoreCase(size.trim())) {
-                return "Standard arrangement";
+                sb.append("Standard arrangement");
+            } else {
+                sb.append(size.trim());
             }
-            return size.trim();
+
+            if (item.getAddons() != null && !item.getAddons().isEmpty()) {
+                sb.append(" • + ");
+                for (int i = 0; i < item.getAddons().size(); i++) {
+                    sb.append(item.getAddons().get(i).getName());
+                    if (i < item.getAddons().size() - 1) {
+                        sb.append(", ");
+                    }
+                }
+            }
+            
+            if (item.getCardMessage() != null && !item.getCardMessage().isEmpty()) {
+                if (sb.length() > 0) sb.append("\n");
+                sb.append("Msg: \"").append(item.getCardMessage()).append("\"");
+            }
+            return sb.toString();
         }
     }
 }

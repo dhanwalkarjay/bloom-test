@@ -31,6 +31,7 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
 
     public interface OnProductClickListener {
         void onProductClick(Product product, boolean isShopOpen);
+        void onQuantityChanged(Product product, int newQuantity);
     }
 
     public void setOnProductClickListener(OnProductClickListener listener) {
@@ -98,6 +99,7 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
             binding.ivPlus.setOnClickListener(v -> {
                 quantity++;
                 binding.tvQuantity.setText(String.valueOf(quantity));
+                if (listener != null) listener.onQuantityChanged(product, quantity);
                 if (quantity == 1) {
                     expandToStepper();
                 } else {
@@ -111,9 +113,11 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
                     quantity--;
                     binding.tvQuantity.setText(String.valueOf(quantity));
                     animateBump(binding.tvQuantity);
+                    if (listener != null) listener.onQuantityChanged(product, quantity);
                 } else {
                     quantity = 0;
                     collapseToPlus(true);
+                    if (listener != null) listener.onQuantityChanged(product, quantity);
                 }
             });
         }

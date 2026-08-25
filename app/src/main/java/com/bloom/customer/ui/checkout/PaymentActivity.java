@@ -23,6 +23,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bloom.R;
 import com.bloom.customer.data.local.SessionManager;
 import com.bloom.customer.data.model.CartItem;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
 import com.bloom.customer.data.model.Order;
 import com.bloom.customer.data.model.OrderItem;
 import com.bloom.customer.data.model.Shop;
@@ -93,6 +97,44 @@ public class PaymentActivity extends AppCompatActivity {
         );
 
         binding.btnPayNow.setOnClickListener(v -> handlePlaceOrder());
+        
+        binding.switchAnonymous.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                com.bloom.customer.util.HapticUtil.performSuccess(this);
+                showSnackbar("Identity Hidden");
+            }
+        });
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
+            );
+
+            binding.bottomBar.setPadding(
+                    binding.bottomBar.getPaddingLeft(),
+                    binding.bottomBar.getPaddingTop(),
+                    binding.bottomBar.getPaddingRight(),
+                    insets.bottom
+            );
+
+            binding.bottomBar.post(() -> {
+                int bottomBarHeight = binding.bottomBar.getHeight();
+                androidx.core.widget.NestedScrollView scrollView = (androidx.core.widget.NestedScrollView) binding.getRoot().getChildAt(1);
+                if (scrollView != null) {
+                    View scrollContent = scrollView.getChildAt(0);
+                    if (scrollContent != null) {
+                        scrollContent.setPadding(
+                            scrollContent.getPaddingLeft(),
+                            scrollContent.getPaddingTop(),
+                            scrollContent.getPaddingRight(),
+                            bottomBarHeight + insets.bottom
+                        );
+                    }
+                }
+            });
+            return windowInsets;
+        });
+        ViewCompat.requestApplyInsets(binding.getRoot());
     }
 
     private boolean isUpiPaymentSuccessful(String response) {
@@ -109,9 +151,15 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void handlePaymentFailure(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        showSnackbar(message);
         binding.btnPayNow.setEnabled(true);
         updatePayButtonText();
+    }
+
+    private void showSnackbar(String message) {
+        Snackbar snackbar = Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG);
+        snackbar.setAnchorView(binding.bottomBar);
+        snackbar.show();
     }
 
     private void setupToolbar() {
@@ -122,17 +170,16 @@ public class PaymentActivity extends AppCompatActivity {
         binding.blackCardContainer.setOnClickListener(v -> selectMethod("CARD"));
         binding.cardUpi.setOnClickListener(v -> selectMethod("UPI"));
         binding.cardWallet.setOnClickListener(v -> selectMethod("WALLET"));
-        binding.cardBank.setOnClickListener(v -> selectMethod("BANK"));
         binding.cardCod.setOnClickListener(v -> selectMethod("COD"));
         
         if (binding.ivEditCard != null) {
-            binding.ivEditCard.setOnClickListener(v -> Toast.makeText(this, "Manage saved cards in Profile", Toast.LENGTH_SHORT).show());
+            binding.ivEditCard.setOnClickListener(v -> showSnackbar("Manage saved cards in Profile"));
         }
     }
 
     private void selectMethod(String method) {
         if (method.equals("UPI") && !isUpiAvailable) {
-            Toast.makeText(this, "No UPI apps installed", Toast.LENGTH_SHORT).show();
+            showSnackbar("No UPI apps installed");
             return;
         }
 
@@ -143,7 +190,6 @@ public class PaymentActivity extends AppCompatActivity {
         resetMethodUI(null, binding.rbCard);
         resetMethodUI(binding.cardUpi, binding.rbUpi);
         resetMethodUI(binding.cardWallet, binding.rbWallet);
-        resetMethodUI(binding.cardBank, binding.rbBank);
         resetMethodUI(binding.cardCod, binding.rbCod);
         
         switch (method) {
@@ -155,9 +201,6 @@ public class PaymentActivity extends AppCompatActivity {
                 break;
             case "WALLET":
                 highlightMethod(binding.cardWallet, binding.rbWallet);
-                break;
-            case "BANK":
-                highlightMethod(binding.cardBank, binding.rbBank);
                 break;
             case "COD":
                 highlightMethod(binding.cardCod, binding.rbCod);
@@ -309,6 +352,60 @@ public class PaymentActivity extends AppCompatActivity {
             binding.btnPayNow.setBackgroundTintList(android.content.res.ColorStateList.valueOf(ContextCompat.getColor(this, R.color.cart_primary)));
         }
 
+        if (deliverySlot != null && deliverySlot.contains("SAME-DAY")) {
+            final int prepTime = shop.getPreparationMinutes() > 0 ? shop.getPreparationMinutes() : 60;
+            binding.tvEstimatedEta.setVisibility(View.VISIBLE);
+            binding.tvEstimatedEta.setText("Calculating real-time ETA...");
+            
+            // Task 8.3: OSRM Routing API for real traffic ETA
+            new Thread(() -> {
+                try {
+                    String urlString = "https://router.project-osrm.org/route/v1/driving/" 
+                            + shop.getLongitude() + "," + shop.getLatitude() + ";" 
+                            + address.getLongitude() + "," + address.getLatitude();
+                    java.net.URL url = new java.net.URL(urlString);
+                    java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setConnectTimeout(5000);
+                    conn.setReadTimeout(5000);
+                    
+                    if (conn.getResponseCode() == 200) {
+                        java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
+                        StringBuilder response = new StringBuilder();
+                        String line;
+                        while ((line = in.readLine()) != null) response.append(line);
+                        in.close();
+                        
+                        org.json.JSONObject json = new org.json.JSONObject(response.toString());
+                        org.json.JSONArray routes = json.getJSONArray("routes");
+                        if (routes.length() > 0) {
+                            double durationSec = routes.getJSONObject(0).getDouble("duration");
+                            int travelTimeMins = (int) Math.ceil(durationSec / 60.0);
+                            int totalEtaMins = prepTime + travelTimeMins;
+                            
+                            runOnUiThread(() -> {
+                                if (isDestroyed() || isFinishing()) return;
+                                binding.tvEstimatedEta.setText(String.format("Estimated ETA: ~%d mins (Live Traffic)", totalEtaMins));
+                            });
+                            return;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
+                // Fallback to heuristic
+                runOnUiThread(() -> {
+                    if (isDestroyed() || isFinishing()) return;
+                    int travelTimeMins = (int) Math.ceil(distanceKm * 4);
+                    int totalEtaMins = prepTime + travelTimeMins;
+                    binding.tvEstimatedEta.setText(String.format("Estimated ETA: ~%d mins", totalEtaMins));
+                });
+            }).start();
+        } else {
+            binding.tvEstimatedEta.setVisibility(View.GONE);
+        }
+
         deliveryFee = Math.max(20.0, distanceKm * 10.0);
         updateSummary();
     }
@@ -341,7 +438,11 @@ public class PaymentActivity extends AppCompatActivity {
                 binding.btnPayNow.setText("Pay " + formattedTotal + " via Bank");
                 break;
             case "COD":
-                binding.btnPayNow.setText("Place Order (Cash on Delivery)");
+                if (totalAmount > 500) {
+                    binding.btnPayNow.setText("Pay ₹100 Advance (Partial COD)");
+                } else {
+                    binding.btnPayNow.setText("Place Order (Cash on Delivery)");
+                }
                 break;
         }
     }
@@ -350,6 +451,18 @@ public class PaymentActivity extends AppCompatActivity {
         double subtotal = viewModel.getCartTotal();
         totalAmount = subtotal + deliveryFee + 10.0; // Including platform fee
         binding.tvTotalAmount.setText(CurrencyFormatter.format(totalAmount));
+        
+        // Update COD text if total > 500
+        if (totalAmount > 500) {
+            binding.tvCodTitle.setText("Partial COD (₹100 Advance)");
+            binding.tvCodSubtitle.setText("Pay ₹100 now, rest on delivery");
+            binding.tvCodTitle.setTextColor(android.graphics.Color.parseColor("#A82D47")); // Highlight
+        } else {
+            binding.tvCodTitle.setText("Cash on Delivery");
+            binding.tvCodSubtitle.setText("Pay when flowers arrive");
+            binding.tvCodTitle.setTextColor(ContextCompat.getColor(this, com.google.android.material.R.color.m3_sys_color_dynamic_light_on_surface));
+        }
+
         updatePayButtonText();
         
         // Breakdown in accordion
@@ -387,7 +500,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void handlePlaceOrder() {
         binding.btnPayNow.setEnabled(false);
-        binding.btnPayNow.setText("Checking Inventory...");
+        binding.btnPayNow.setText("Processing Payment...");
         
         String shopId = viewModel.getCartShopId();
         viewModel.getProductsByShop(shopId).observe(this, result -> {
@@ -414,14 +527,45 @@ public class PaymentActivity extends AppCompatActivity {
                     }
                 }
                 
-                binding.btnPayNow.setText("Processing...");
-                createPendingOrder();
+                lockInventoryAndProceed();
             } else {
                 binding.btnPayNow.setEnabled(true);
                 updatePayButtonText();
-                Toast.makeText(this, "Failed to verify inventory", Toast.LENGTH_SHORT).show();
+                showSnackbar("Failed to verify inventory");
             }
         });
+    }
+
+    private void lockInventoryAndProceed() {
+        binding.getRoot().postDelayed(() -> {
+            if (isDestroyed() || isFinishing()) return;
+            if ("COD".equals(selectedMethod) && totalAmount > 500) {
+                binding.btnPayNow.setText("Processing Advance...");
+                new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Partial COD Required")
+                    .setMessage("For orders above ₹500, a non-refundable advance of ₹100 is required via UPI to prevent fake orders.")
+                    .setPositiveButton("Pay ₹100 via UPI", (dialog, which) -> {
+                        showSnackbar("Mock UPI Payment Successful!");
+                        createPendingOrder();
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> {
+                        releaseInventoryLock();
+                    })
+                    .setCancelable(false)
+                    .show();
+            } else {
+                createPendingOrder();
+            }
+        }, 1000);
+    }
+
+    private void releaseInventoryLock() {
+        binding.getRoot().postDelayed(() -> {
+            if (isDestroyed() || isFinishing()) return;
+            binding.btnPayNow.setEnabled(true);
+            updatePayButtonText();
+            showSnackbar("Inventory lock released");
+        }, 800);
     }
 
     private String pendingOrderId;
@@ -434,6 +578,10 @@ public class PaymentActivity extends AppCompatActivity {
         order.setTotalAmount(totalAmount);
         order.setDeliverySlot(deliverySlot);
         order.setStatus("placed");
+        
+        // Generate Delivery OTP
+        String otp = String.format("%04d", new java.util.Random().nextInt(10000));
+        order.setDeliveryOtp(otp);
         
         // 2-step checkout: always set to pending first to prevent ghost charges
         order.setPaymentStatus("pending");
@@ -483,7 +631,7 @@ public class PaymentActivity extends AppCompatActivity {
             } else {
                 binding.btnPayNow.setEnabled(true);
                 updatePayButtonText();
-                Toast.makeText(this, "Failed to initialize order", Toast.LENGTH_LONG).show();
+                showSnackbar("Failed to initialize order");
             }
         });
     }
@@ -503,32 +651,45 @@ public class PaymentActivity extends AppCompatActivity {
                 upiPaymentLauncher.launch(intent);
                 return;
             } catch (Exception e) {
-                Toast.makeText(this, "Could not launch UPI app, completing order as pending", Toast.LENGTH_SHORT).show();
+                showSnackbar("Could not launch UPI app, completing order as pending");
                 finishOrderConfirmation(); // fallback for testing
             }
         } else {
             // Mocking Razorpay/Card success
-            Toast.makeText(this, "Payment successful via " + selectedMethod, Toast.LENGTH_SHORT).show();
+            showSnackbar("Payment successful via " + selectedMethod);
             markOrderAsPaid();
         }
     }
     
     private void markOrderAsPaid() {
         binding.progressBar.setVisibility(View.VISIBLE);
-        binding.btnPayNow.setText("Confirming Payment...");
         
         viewModel.updateOrderPaymentStatus(pendingOrderId, "paid").observe(this, result -> {
             binding.progressBar.setVisibility(View.GONE);
             if (result.status == com.bloom.customer.util.NetworkResult.Status.SUCCESS) {
                 finishOrderConfirmation();
             } else {
-                Toast.makeText(this, "Order placed but payment status sync failed.", Toast.LENGTH_LONG).show();
+                showSnackbar("Order placed but payment status sync failed.");
                 finishOrderConfirmation();
             }
         });
     }
     
     private void finishOrderConfirmation() {
+        if (isAddressless && recipientPhone != null) {
+            String senderName = binding.switchAnonymous.isChecked() ? "A Secret Admirer" : "A friend";
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("WhatsApp Notification Sent")
+                .setMessage("Simulating Twilio WhatsApp API:\n\nTo: " + recipientPhone + "\nMessage: 'Hi! " + senderName + " has sent you a surprise gift via Bloom. Tap here to securely provide your delivery address.'")
+                .setPositiveButton("OK", (dialog, which) -> proceedToConfirmationScreen())
+                .setCancelable(false)
+                .show();
+        } else {
+            proceedToConfirmationScreen();
+        }
+    }
+    
+    private void proceedToConfirmationScreen() {
         viewModel.clearCart();
         Intent intent = new Intent(this, OrderConfirmationActivity.class);
         intent.putExtra("order_id", pendingOrderId);

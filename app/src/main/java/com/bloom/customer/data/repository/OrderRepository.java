@@ -31,35 +31,34 @@ public class OrderRepository {
         MutableLiveData<NetworkResult<Order>> result = new MutableLiveData<>();
         result.setValue(NetworkResult.loading(null));
 
-        // Save items and clear them from the order object to avoid PostgREST 400 error
-        // (PostgREST sees 'order_items' in JSON and looks for a column, but it's a separate table)
         final List<OrderItem> itemsToSave = order.getItems();
         final com.bloom.customer.data.model.Order.ShopInfo savedShop = order.getShop();
-        
-        order.setItems(null);
-        order.setShop(null);
 
-        api.createOrder(order).enqueue(new Callback<List<Order>>() {
+        // Convert Order + Items into a Map for the RPC
+        java.util.Map<String, Object> body = new java.util.HashMap<>();
+        
+        // Use Gson to serialize to Maps
+        com.google.gson.Gson gson = new com.google.gson.Gson();
+        String orderJson = gson.toJson(order);
+        java.util.Map<String, Object> orderMap = gson.fromJson(orderJson, new com.google.gson.reflect.TypeToken<java.util.Map<String, Object>>(){}.getType());
+        
+        // Remove items and shop from the order_data map
+        orderMap.remove("items");
+        orderMap.remove("shop");
+        
+        body.put("order_data", orderMap);
+        body.put("items_data", itemsToSave);
+
+        api.placeOrderAtomic(body).enqueue(new Callback<Order>() {
             @Override
-            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+            public void onResponse(Call<Order> call, Response<Order> response) {
                 // Restore items for local use
                 order.setItems(itemsToSave);
                 order.setShop(savedShop);
 
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    Order createdOrder = response.body().get(0);
-                    
-                    if (itemsToSave != null) {
-                        // Assign the returned ID to all items
-                        for (OrderItem item : itemsToSave) {
-                            item.setOrderId(createdOrder.getId());
-                        }
-                        
-                        // Now push the items
-                        createOrderItems(itemsToSave, result, createdOrder);
-                    } else {
-                        result.setValue(NetworkResult.success(createdOrder));
-                    }
+                if (response.isSuccessful() && response.body() != null) {
+                    Order createdOrder = response.body();
+                    result.setValue(NetworkResult.success(createdOrder));
                 } else {
                     String error = "Failed to create order: " + response.code();
                     try {
@@ -67,14 +66,14 @@ public class OrderRepository {
                             error += " - " + response.errorBody().string();
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        timber.log.Timber.e(e, "Error parsing orders from json");
                     }
                     result.setValue(NetworkResult.error(error, null));
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Order>> call, Throwable t) {
+            public void onFailure(Call<Order> call, Throwable t) {
                 result.setValue(NetworkResult.error(t.getMessage(), null));
             }
         });
@@ -133,31 +132,7 @@ public class OrderRepository {
         return result;
     }
 
-    private void createOrderItems(List<OrderItem> items, MutableLiveData<NetworkResult<Order>> result, Order createdOrder) {
-        api.createOrderItems(items).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    result.setValue(NetworkResult.success(createdOrder));
-                } else {
-                    String error = "Order created, but items failed: " + response.code();
-                    try {
-                        if (response.errorBody() != null) {
-                            error += " - " + response.errorBody().string();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    result.setValue(NetworkResult.error(error, null));
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                result.setValue(NetworkResult.error("Failed to save order items: " + t.getMessage(), null));
-            }
-        });
-    }
 
     public LiveData<NetworkResult<Void>> cancelOrder(String orderId) {
         MutableLiveData<NetworkResult<Void>> result = new MutableLiveData<>();

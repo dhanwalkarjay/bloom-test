@@ -1,0 +1,30 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!--
+      Two overlapping decorative circles from the Bloom logo.
+      Precisely matched to the reference bloom_cursive_logo.png.
+      
+      Large circle: warm beige/taupe (#D4CBC5), semi-opaque
+      Small circle: soft dusty rose (#DAAAA8), lighter opacity, overlapping to the upper-right
+      
+      The natural alpha-blending where they overlap creates the subtle
+      sage/green-tinted region visible in the original logo.
+    -->
+
+    <!-- Large circle (behind, left-lower) - warm beige/taupe -->
+    <path
+        android:fillColor="#D4CBC5"
+        android:fillAlpha="0.60"
+        android:pathData="M50,72 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" />
+
+    <!-- Smaller circle (in front, right-upper) - dusty rose/pink -->
+    <path
+        android:fillColor="#D9A5A3"
+        android:fillAlpha="0.38"
+        android:pathData="M72,48 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
+
+</vector>

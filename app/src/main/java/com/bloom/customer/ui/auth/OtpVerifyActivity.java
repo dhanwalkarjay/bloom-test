@@ -20,6 +20,8 @@ import com.bloom.customer.util.NetworkResult;
 import com.bloom.customer.util.SystemBarInsets;
 import com.bloom.databinding.ActivityOtpVerifyBinding;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.color.MaterialColors;
+import android.graphics.Color;
 
 public class OtpVerifyActivity extends AppCompatActivity {
 
@@ -85,8 +87,8 @@ public class OtpVerifyActivity extends AppCompatActivity {
         TextView[] textViews = {binding.tvOtp1, binding.tvOtp2, binding.tvOtp3, binding.tvOtp4, binding.tvOtp5, binding.tvOtp6};
         MaterialCardView[] cards = {binding.cardOtp1, binding.cardOtp2, binding.cardOtp3, binding.cardOtp4, binding.cardOtp5, binding.cardOtp6};
         
-        int colorPrimary = ContextCompat.getColor(this, R.color.bloom_primary);
-        int colorOutline = ContextCompat.getColor(this, R.color.cart_outline);
+        int colorPrimary = MaterialColors.getColor(this, androidx.appcompat.R.attr.colorPrimary, Color.BLACK);
+        int colorOutline = MaterialColors.getColor(this, com.google.android.material.R.attr.colorOutline, Color.GRAY);
 
         for (int i = 0; i < 6; i++) {
             if (i < otp.length()) {
@@ -121,7 +123,7 @@ public class OtpVerifyActivity extends AppCompatActivity {
                 long seconds = millisUntilFinished / 1000;
                 binding.tvResend.setText("Resend in 0:" + (seconds < 10 ? "0" + seconds : seconds));
                 
-                int colorPrimary = ContextCompat.getColor(OtpVerifyActivity.this, R.color.bloom_primary);
+                int colorPrimary = MaterialColors.getColor(OtpVerifyActivity.this, androidx.appcompat.R.attr.colorPrimary, Color.BLACK);
                 binding.tvResend.setTextColor(colorPrimary); 
             }
 
@@ -148,16 +150,9 @@ public class OtpVerifyActivity extends AppCompatActivity {
             } else if (result.status == NetworkResult.Status.SUCCESS) {
                 setLoading(false);
                 
-                boolean isRecovery = getIntent().getBooleanExtra("is_recovery", false);
-                if (isRecovery) {
-                    Intent intent = new Intent(this, ResetPasswordActivity.class);
-                    intent.putExtra("phone", phone);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
             } else if (result.status == NetworkResult.Status.ERROR) {
                 setLoading(false);

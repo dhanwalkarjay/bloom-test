@@ -72,6 +72,23 @@
             tools:visibility="visible" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvSoonBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_home_notification_dot"
+        android:backgroundTint="?attr/colorSurfaceVariant"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:text="SOON"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"

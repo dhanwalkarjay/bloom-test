@@ -16,6 +16,12 @@ import android.widget.TextView;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.graphics.Insets;
+import android.content.res.Configuration;
+import android.view.ViewGroup;
 
 import com.bloom.R;
 import com.bloom.customer.ui.shop.ShopDetailActivity;
@@ -39,19 +45,34 @@ public class ShopMapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Premium transparent status bar
-        Window window = getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(Color.TRANSPARENT);
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        // Premium transparent status bar (Edge-to-Edge)
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
         
         setContentView(R.layout.activity_shop_map);
 
         mapWebView = findViewById(R.id.mapWebView);
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+        View cvBack = findViewById(R.id.cvBack);
+        View btnRecenter = findViewById(R.id.btnRecenter);
         
-        findViewById(R.id.btnRecenter).setOnClickListener(v -> {
+        cvBack.setOnClickListener(v -> finish());
+        
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            
+            ViewGroup.MarginLayoutParams backParams = (ViewGroup.MarginLayoutParams) cvBack.getLayoutParams();
+            backParams.topMargin = systemBars.top + (int) (16 * getResources().getDisplayMetrics().density);
+            cvBack.setLayoutParams(backParams);
+            
+            ViewGroup.MarginLayoutParams recenterParams = (ViewGroup.MarginLayoutParams) btnRecenter.getLayoutParams();
+            recenterParams.bottomMargin = systemBars.bottom + (int) (40 * getResources().getDisplayMetrics().density);
+            btnRecenter.setLayoutParams(recenterParams);
+            
+            return insets;
+        });
+
+        btnRecenter.setOnClickListener(v -> {
             mapWebView.evaluateJavascript("setCenter(19.0760, 72.8777, 12);", null);
         });
         
@@ -89,6 +110,12 @@ public class ShopMapActivity extends AppCompatActivity {
                 // Inject shops after page loads
                 if (mockShops != null) {
                     mapWebView.evaluateJavascript("addShops('" + mockShops.toString().replace("'", "\\'") + "');", null);
+                }
+                
+                // Inject Dark Mode if system is in dark mode
+                int uiMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                if (uiMode == Configuration.UI_MODE_NIGHT_YES) {
+                    mapWebView.evaluateJavascript("document.body.classList.add('dark-mode');", null);
                 }
             }
         });
@@ -137,7 +164,7 @@ public class ShopMapActivity extends AppCompatActivity {
             allMockShops = new JSONArray(mockShops.toString());
             
         } catch (Exception e) {
-            e.printStackTrace();
+            timber.log.Timber.e(e, "Error creating mock shops JSON");
         }
     }
 
@@ -167,7 +194,7 @@ public class ShopMapActivity extends AppCompatActivity {
             mapWebView.evaluateJavascript("addShops('" + mockShops.toString().replace("'", "\\'") + "');", null);
             
         } catch (Exception e) {
-            e.printStackTrace();
+            timber.log.Timber.e(e, "Error filtering mock shops");
         }
     }
 
@@ -220,7 +247,10 @@ public class ShopMapActivity extends AppCompatActivity {
             // Map the previous 'address' string to the meta string and description
             String address = selectedShop.getString("address");
             tvDescription.setText("London's premier boutique florist, crafting bespoke bouquets and floral arrangements. Mon-Sat 9am-6pm.");
-            tvMeta.setText(selectedShop.getDouble("rating") + " · 0.8 miles · Open until 6 PM");
+            
+            String offerText = selectedShop.optString("offerText", "");
+            String metaText = offerText.isEmpty() ? address : offerText + " · " + address;
+            tvMeta.setText(metaText);
 
             Glide.with(this)
                  .load(selectedShop.getString("imageUrl"))
@@ -272,7 +302,7 @@ public class ShopMapActivity extends AppCompatActivity {
                     handler.postDelayed(runnable, 1500);
                     
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    timber.log.Timber.e(e, "Error parsing shop JSON");
                 }
             });
 
@@ -291,7 +321,7 @@ public class ShopMapActivity extends AppCompatActivity {
             dialog.show();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            timber.log.Timber.e(e, "Error finding nearest shop");
         }
     }
 }

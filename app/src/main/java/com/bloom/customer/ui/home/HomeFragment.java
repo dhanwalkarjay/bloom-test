@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
         } else {
             binding.llLoginPrompt.setVisibility(View.VISIBLE);
             binding.rvShops.setVisibility(View.GONE);
-            binding.progressBar.setVisibility(View.GONE);
+            binding.shimmerLoading.setVisibility(View.GONE);
             binding.emptyState.setVisibility(View.GONE);
         }
     }
@@ -198,21 +198,66 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        viewModel.getHeroCampaign().observe(getViewLifecycleOwner(), campaign -> {
+            if (campaign != null) {
+                binding.tvHeroTitle.setText(campaign.title);
+                binding.tvHeroSubtitle.setText(campaign.subtitle);
+                binding.btnShopCollection.setText(campaign.buttonText);
+                binding.ivHeroImage.setImageResource(campaign.imageResId);
+            }
+        });
+
         viewModel.getSeasonalProducts().observe(getViewLifecycleOwner(), result -> {
-            if (result.status == NetworkResult.Status.SUCCESS) {
-                seasonalAdapter.setProducts(result.data);
+            if (result.status == NetworkResult.Status.LOADING) {
+                binding.shimmerSeasonal.setVisibility(View.VISIBLE);
+                binding.shimmerSeasonal.startShimmer();
+                binding.rvSeasonal.setVisibility(View.GONE);
+            } else if (result.status == NetworkResult.Status.SUCCESS) {
+                binding.shimmerSeasonal.stopShimmer();
+                binding.shimmerSeasonal.setVisibility(View.GONE);
+                if (result.data != null && !result.data.isEmpty()) {
+                    seasonalAdapter.setProducts(result.data);
+                    binding.rvSeasonal.setVisibility(View.VISIBLE);
+                }
+            } else if (result.status == NetworkResult.Status.ERROR) {
+                binding.shimmerSeasonal.stopShimmer();
+                binding.shimmerSeasonal.setVisibility(View.GONE);
             }
         });
 
         viewModel.getBestsellerProducts().observe(getViewLifecycleOwner(), result -> {
-            if (result.status == NetworkResult.Status.SUCCESS) {
-                bestsellerAdapter.setProducts(result.data);
+            if (result.status == NetworkResult.Status.LOADING) {
+                binding.shimmerBestsellers.setVisibility(View.VISIBLE);
+                binding.shimmerBestsellers.startShimmer();
+                binding.rvBestsellers.setVisibility(View.GONE);
+            } else if (result.status == NetworkResult.Status.SUCCESS) {
+                binding.shimmerBestsellers.stopShimmer();
+                binding.shimmerBestsellers.setVisibility(View.GONE);
+                if (result.data != null && !result.data.isEmpty()) {
+                    bestsellerAdapter.setProducts(result.data);
+                    binding.rvBestsellers.setVisibility(View.VISIBLE);
+                }
+            } else if (result.status == NetworkResult.Status.ERROR) {
+                binding.shimmerBestsellers.stopShimmer();
+                binding.shimmerBestsellers.setVisibility(View.GONE);
             }
         });
 
         viewModel.getNewArrivalProducts().observe(getViewLifecycleOwner(), result -> {
-            if (result.status == NetworkResult.Status.SUCCESS) {
-                newArrivalsAdapter.setProducts(result.data);
+            if (result.status == NetworkResult.Status.LOADING) {
+                binding.shimmerNewArrivals.setVisibility(View.VISIBLE);
+                binding.shimmerNewArrivals.startShimmer();
+                binding.rvNewArrivals.setVisibility(View.GONE);
+            } else if (result.status == NetworkResult.Status.SUCCESS) {
+                binding.shimmerNewArrivals.stopShimmer();
+                binding.shimmerNewArrivals.setVisibility(View.GONE);
+                if (result.data != null && !result.data.isEmpty()) {
+                    newArrivalsAdapter.setProducts(result.data);
+                    binding.rvNewArrivals.setVisibility(View.VISIBLE);
+                }
+            } else if (result.status == NetworkResult.Status.ERROR) {
+                binding.shimmerNewArrivals.stopShimmer();
+                binding.shimmerNewArrivals.setVisibility(View.GONE);
             }
         });
 
@@ -251,7 +296,7 @@ public class HomeFragment extends Fragment {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                timber.log.Timber.e(e, "Error locating nearest shop");
             }
         }).start();
     }
@@ -281,13 +326,20 @@ public class HomeFragment extends Fragment {
 
         // Ensure cvCreateOwn is visually enabled
         binding.cvCreateOwn.setAlpha(1.0f);
-        binding.tvComingSoon.setVisibility(View.GONE);
         
         binding.cvCreateOwn.setOnClickListener(v -> {
             if (loadedShops != null && !loadedShops.isEmpty()) {
                 Intent intent = new Intent(requireContext(), com.bloom.customer.ui.bespoke.CreateBouquetActivity.class);
                 intent.putExtra("shop_id", loadedShops.get(0).getId());
                 startActivity(intent);
+            } else {
+                Toast.makeText(requireContext(), "Please wait for shops to load...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.cvSurpriseMe.setOnClickListener(v -> {
+            if (loadedShops != null && !loadedShops.isEmpty()) {
+                handleSurpriseMe();
             } else {
                 Toast.makeText(requireContext(), "Please wait for shops to load...", Toast.LENGTH_SHORT).show();
             }
@@ -347,6 +399,38 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    private void handleSurpriseMe() {
+        Toast.makeText(requireContext(), "AI is curating a surprise bouquet for you...", Toast.LENGTH_SHORT).show();
+        viewModel.getBestsellerProducts().observe(getViewLifecycleOwner(), result -> {
+            if (result.status == NetworkResult.Status.SUCCESS && result.data != null && !result.data.isEmpty()) {
+                int randomIndex = new java.util.Random().nextInt(result.data.size());
+                Product surpriseProduct = result.data.get(randomIndex);
+                
+                com.bloom.customer.data.model.CartItem item = new com.bloom.customer.data.model.CartItem(surpriseProduct);
+                
+                new android.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Surprise Me!")
+                    .setMessage("We've selected '" + surpriseProduct.getName() + "' for you. Would you like to add it to your cart?")
+                    .setPositiveButton("Yes, add it", (dialog, which) -> {
+                        boolean success = cartRepository.addToCart(item);
+                        if (success) {
+                            Toast.makeText(requireContext(), "Surprise added to cart!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(requireContext(), CartActivity.class));
+                        } else {
+                            cartRepository.clearCart();
+                            cartRepository.addToCart(item);
+                            Toast.makeText(requireContext(), "Surprise added to cart!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(requireContext(), CartActivity.class));
+                        }
+                    })
+                    .setNegativeButton("No, try another", (dialog, which) -> handleSurpriseMe())
+                    .show();
+            } else if (result.status == NetworkResult.Status.ERROR) {
+                Toast.makeText(requireContext(), "Couldn't fetch surprise bouquet.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void checkLocationPermission() {
         if (locationHelper.hasLocationPermission()) {
             viewModel.refreshLocation();
@@ -371,11 +455,13 @@ public class HomeFragment extends Fragment {
     private void fetchShops(double lat, double lng) {
         viewModel.getNearbyShops(lat, lng).observe(getViewLifecycleOwner(), result -> {
             if (result.status == NetworkResult.Status.LOADING) {
-                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.shimmerLoading.setVisibility(View.VISIBLE);
+                binding.shimmerLoading.startShimmer();
                 binding.rvShops.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.GONE);
             } else if (result.status == NetworkResult.Status.SUCCESS) {
-                binding.progressBar.setVisibility(View.GONE);
+                binding.shimmerLoading.stopShimmer();
+                binding.shimmerLoading.setVisibility(View.GONE);
                 if (result.data != null && !result.data.isEmpty()) {
                     loadedShops = result.data;
                     // Limit to 4 cards for home carousel
@@ -393,7 +479,8 @@ public class HomeFragment extends Fragment {
                     binding.emptyState.setVisibility(View.VISIBLE);
                 }
             } else if (result.status == NetworkResult.Status.ERROR) {
-                binding.progressBar.setVisibility(View.GONE);
+                binding.shimmerLoading.stopShimmer();
+                binding.shimmerLoading.setVisibility(View.GONE);
                 binding.rvShops.setVisibility(View.GONE);
                 binding.tvEmptyTitle.setText("Couldn't load shops");
                 binding.tvEmptySubtitle.setText(result.message != null ? result.message : "Pull down to retry.");

@@ -38,7 +38,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="48dp"
                 android:background="@drawable/bg_circle_translucent"
-                android:backgroundTint="#40FFFFFF"
+                android:backgroundTint="?attr/colorSurfaceVariant"
                 android:padding="12dp"
                 android:src="@drawable/ic_arrow_back"
                 app:tint="?attr/colorPrimary"
@@ -239,8 +239,8 @@
                         android:inputType="number"
                         android:maxLength="6"
                         android:textColor="@android:color/transparent"
-                        android:importantForAutofill="yes"
-                        android:autofillHints="smsOTPCode" />
+                        android:importantForAutofill="no"
+                        android:autofillHints="" />
 
                 </FrameLayout>
 
@@ -321,3 +321,4 @@
     </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
