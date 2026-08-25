@@ -14,6 +14,9 @@
 .cxx
 local.properties
 
+# Backend secrets (copy application.properties.example and fill in locally)
+backend/src/main/resources/application.properties
+
 # Debug logs
 logcat.txt
 *.log
