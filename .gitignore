@@ -29,3 +29,6 @@ logcat.txt
 !settings.gradle.kts
 !build.gradle.kts
 !package.json
+
+# Environment variables
+.env

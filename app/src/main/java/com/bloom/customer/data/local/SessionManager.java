@@ -61,7 +61,26 @@ public class SessionManager {
     }
 
     public String getUserId() {
-        return sharedPreferences.getString(Constants.KEY_USER_ID, null);
+        String userId = sharedPreferences.getString(Constants.KEY_USER_ID, null);
+        if (userId == null) {
+            String token = getAccessToken();
+            if (token != null) {
+                try {
+                    String[] split = token.split("\\.");
+                    if (split.length > 1) {
+                        String payload = new String(android.util.Base64.decode(split[1], android.util.Base64.URL_SAFE), "UTF-8");
+                        org.json.JSONObject json = new org.json.JSONObject(payload);
+                        userId = json.optString("sub", null);
+                        if (userId != null) {
+                            sharedPreferences.edit().putString(Constants.KEY_USER_ID, userId).apply();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return userId;
     }
 
     public void setDefaultAddressId(String addressId) {

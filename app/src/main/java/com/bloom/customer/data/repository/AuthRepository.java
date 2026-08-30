@@ -243,7 +243,7 @@ public class AuthRepository {
         body.put("authorizationCode", authorizationCode);
         body.put("codeVerifier", codeVerifier);
 
-        String backendUrl = "http://192.168.1.34:8080/api/auth/truecaller/verify";
+        String backendUrl = com.bloom.customer.util.Constants.BACKEND_URL + "/api/auth/truecaller/verify";
         
         authApi.verifyTruecaller(backendUrl, body).enqueue(new Callback<AuthResponse>() {
             @Override
@@ -280,7 +280,7 @@ public class AuthRepository {
         Map<String, Object> body = new HashMap<>();
         body.put("phone", phone);
 
-        String backendUrl = "http://192.168.1.34:8080/api/auth/otp/send";
+        String backendUrl = com.bloom.customer.util.Constants.BACKEND_URL + "/api/auth/otp/send";
         
         authApi.sendBackendOtp(backendUrl, body).enqueue(new Callback<Map<String, String>>() {
             @Override
@@ -309,7 +309,7 @@ public class AuthRepository {
         body.put("phone", phone);
         body.put("token", otp);
 
-        String backendUrl = "http://192.168.1.34:8080/api/auth/otp/verify";
+        String backendUrl = com.bloom.customer.util.Constants.BACKEND_URL + "/api/auth/otp/verify";
         
         authApi.verifyBackendOtp(backendUrl, body).enqueue(new Callback<AuthResponse>() {
             @Override

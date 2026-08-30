@@ -23,6 +23,9 @@ public final class Constants {
     public static final String REST_ENDPOINT = "rest/v1/";
     public static final String FUNCTIONS_ENDPOINT = "functions/v1/";
     
+    // Custom Backend URL (Update this to your Railway URL once deployed)
+    public static final String BACKEND_URL = "http://localhost:8080";
+    
     // Shared Preferences Keys
     public static final String PREFS_NAME = "bloom_secure_prefs";
     public static final String KEY_ACCESS_TOKEN = "access_token";

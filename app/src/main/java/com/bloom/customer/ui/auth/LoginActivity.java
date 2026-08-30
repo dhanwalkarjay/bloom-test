@@ -123,8 +123,9 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(TcOAuthError tcOAuthError) {
-                // User denied or Truecaller failed — fall back to OTP
-                Log.d("LoginActivity", "Truecaller failed: " + tcOAuthError.getErrorCode());
+                Log.e("LoginActivity", "Truecaller failed: code=" + tcOAuthError.getErrorCode()
+                        + " message=" + tcOAuthError.getErrorMessage());
+                Toast.makeText(LoginActivity.this, "Truecaller error: " + tcOAuthError.getErrorMessage(), Toast.LENGTH_LONG).show();
                 showManualPhoneInput();
             }
 
@@ -137,28 +138,36 @@ public class LoginActivity extends AppCompatActivity {
 
         TcSdk.init(tcSdkOptions);
 
-        // 2. AUTO-TRIGGER: Check if Truecaller is available and trigger immediately
+        binding.btnTruecallerLogin.setOnClickListener(v -> triggerTruecallerVerification());
+
+        if (TcSdk.getInstance().isOAuthFlowUsable()) {
+            binding.btnTruecallerLogin.setVisibility(View.VISIBLE);
+            triggerTruecallerVerification(); // keep auto-attempt
+        } else {
+            showManualPhoneInput();
+        }
+    }
+
+    private void triggerTruecallerVerification() {
         try {
             if (TcSdk.getInstance().isOAuthFlowUsable()) {
-                // Truecaller is installed! Auto-trigger the consent screen
-                Log.d("LoginActivity", "Truecaller detected — auto-triggering verification");
+                Log.d("LoginActivity", "Truecaller usable — triggering verification");
                 setLoading(true);
                 binding.tvTitle.setText("Verifying with Truecaller...");
-                
+
                 currentCodeVerifier = com.truecaller.android.sdk.oAuth.CodeVerifierUtil.Companion.generateRandomCodeVerifier();
                 String codeChallenge = com.truecaller.android.sdk.oAuth.CodeVerifierUtil.Companion.getCodeChallenge(currentCodeVerifier);
-                
+
                 TcSdk.getInstance().setOAuthState(java.util.UUID.randomUUID().toString());
                 TcSdk.getInstance().setOAuthScopes(new String[]{"profile", "phone"});
                 TcSdk.getInstance().setCodeChallenge(codeChallenge);
                 TcSdk.getInstance().getAuthorizationCode(LoginActivity.this);
             } else {
-                // Truecaller not installed — go straight to OTP
-                Log.d("LoginActivity", "Truecaller not available — showing OTP input");
+                Log.d("LoginActivity", "Truecaller not usable — showing OTP input");
+                Toast.makeText(this, "Truecaller not available on this device", Toast.LENGTH_SHORT).show();
                 showManualPhoneInput();
             }
         } catch (Exception e) {
-            // Any SDK error — go straight to OTP
             Log.e("LoginActivity", "Truecaller SDK error", e);
             showManualPhoneInput();
         }

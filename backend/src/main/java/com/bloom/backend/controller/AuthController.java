@@ -4,6 +4,8 @@ import com.bloom.backend.dto.AuthResponse;
 import com.bloom.backend.dto.TruecallerAuthRequest;
 import com.bloom.backend.service.SupabaseService;
 import com.bloom.backend.service.TruecallerService;
+import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +17,21 @@ public class AuthController {
     @Autowired
     private TruecallerService truecallerService;
 
+    Logger logger = org.slf4j.LoggerFactory.getLogger(AuthController.class);
+
     @Autowired
     private SupabaseService supabaseService;
 
     @PostMapping("/truecaller/verify")
     public ResponseEntity<?> verifyTruecaller(@RequestBody TruecallerAuthRequest request) {
+        logger.info("Received Truecaller auth request for code: " + request.getAuthorizationCode());
         try {
             // 1. Exchange auth code for access token
             String accessToken = truecallerService.exchangeCodeForAccessToken(
                     request.getAuthorizationCode(),
                     request.getCodeVerifier()
             );
-
+            logger.info("in try block 34 " + request.getAuthorizationCode());
             // 2. Fetch user's profile
             java.util.Map<String, String> profile = truecallerService.fetchUserProfile(accessToken);
             String phoneNumber = profile.get("phone_number");
