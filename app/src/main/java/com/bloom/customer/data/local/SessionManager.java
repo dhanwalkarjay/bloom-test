@@ -20,21 +20,38 @@ import java.security.GeneralSecurityException;
 public class SessionManager {
 
     private static SessionManager instance;
-    private final SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     private SessionManager(Context context) {
         try {
-            String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-            sharedPreferences = EncryptedSharedPreferences.create(
-                    Constants.PREFS_NAME,
-                    masterKeyAlias,
-                    context,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-        } catch (GeneralSecurityException | IOException e) {
-            throw new RuntimeException("Could not create EncryptedSharedPreferences", e);
+            sharedPreferences = initEncryptedSharedPreferences(context);
+        } catch (Exception e) {
+            android.util.Log.e("SessionManager", "Error creating EncryptedSharedPreferences, clearing and retrying", e);
+            try {
+                // Delete the corrupted preferences file
+                java.io.File dir = new java.io.File(context.getApplicationInfo().dataDir, "shared_prefs");
+                java.io.File file = new java.io.File(dir, Constants.PREFS_NAME + ".xml");
+                if (file.exists()) {
+                    file.delete();
+                }
+                // Try again
+                sharedPreferences = initEncryptedSharedPreferences(context);
+            } catch (Exception ex) {
+                android.util.Log.e("SessionManager", "Failed again, falling back to unencrypted SharedPreferences", ex);
+                sharedPreferences = context.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
+            }
         }
+    }
+
+    private SharedPreferences initEncryptedSharedPreferences(Context context) throws GeneralSecurityException, IOException {
+        String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+        return EncryptedSharedPreferences.create(
+                Constants.PREFS_NAME,
+                masterKeyAlias,
+                context,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        );
     }
 
     public static synchronized SessionManager getInstance(Context context) {
@@ -61,7 +78,34 @@ public class SessionManager {
     }
 
     public String getUserId() {
-        return sharedPreferences.getString(Constants.KEY_USER_ID, null);
+        String userId = sharedPreferences.getString(Constants.KEY_USER_ID, null);
+        if (userId == null) {
+            String token = getAccessToken();
+            if (token != null) {
+                try {
+                    String[] split = token.split("\\.");
+                    if (split.length > 1) {
+                        String payload = new String(android.util.Base64.decode(split[1], android.util.Base64.URL_SAFE), "UTF-8");
+                        org.json.JSONObject json = new org.json.JSONObject(payload);
+                        userId = json.optString("sub", null);
+                        if (userId != null) {
+                            sharedPreferences.edit().putString(Constants.KEY_USER_ID, userId).apply();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return userId;
+    }
+
+    public void setDefaultAddressId(String addressId) {
+        sharedPreferences.edit().putString("default_address_id", addressId).apply();
+    }
+
+    public String getDefaultAddressId() {
+        return sharedPreferences.getString("default_address_id", null);
     }
 
     public void clearSession() {
@@ -70,6 +114,14 @@ public class SessionManager {
 
     public boolean isLoggedIn() {
         return getAccessToken() != null;
+    }
+
+    public boolean isFirstLaunch() {
+        return sharedPreferences.getBoolean("is_first_launch", true);
+    }
+
+    public void setFirstLaunch(boolean isFirstLaunch) {
+        sharedPreferences.edit().putBoolean("is_first_launch", isFirstLaunch).apply();
     }
 }
 
