@@ -20,21 +20,38 @@ import java.security.GeneralSecurityException;
 public class SessionManager {
 
     private static SessionManager instance;
-    private final SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     private SessionManager(Context context) {
         try {
-            String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-            sharedPreferences = EncryptedSharedPreferences.create(
-                    Constants.PREFS_NAME,
-                    masterKeyAlias,
-                    context,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-        } catch (GeneralSecurityException | IOException e) {
-            throw new RuntimeException("Could not create EncryptedSharedPreferences", e);
+            sharedPreferences = initEncryptedSharedPreferences(context);
+        } catch (Exception e) {
+            android.util.Log.e("SessionManager", "Error creating EncryptedSharedPreferences, clearing and retrying", e);
+            try {
+                // Delete the corrupted preferences file
+                java.io.File dir = new java.io.File(context.getApplicationInfo().dataDir, "shared_prefs");
+                java.io.File file = new java.io.File(dir, Constants.PREFS_NAME + ".xml");
+                if (file.exists()) {
+                    file.delete();
+                }
+                // Try again
+                sharedPreferences = initEncryptedSharedPreferences(context);
+            } catch (Exception ex) {
+                android.util.Log.e("SessionManager", "Failed again, falling back to unencrypted SharedPreferences", ex);
+                sharedPreferences = context.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE);
+            }
         }
+    }
+
+    private SharedPreferences initEncryptedSharedPreferences(Context context) throws GeneralSecurityException, IOException {
+        String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+        return EncryptedSharedPreferences.create(
+                Constants.PREFS_NAME,
+                masterKeyAlias,
+                context,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        );
     }
 
     public static synchronized SessionManager getInstance(Context context) {

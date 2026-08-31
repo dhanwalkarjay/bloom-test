@@ -2,6 +2,7 @@ package com.bloom.customer.ui.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,10 +150,18 @@ public class ProfileFragment extends Fragment {
         }
 
         String userId = SessionManager.getInstance(requireContext()).getUserId();
-        if (userId == null) return;
+
+        Log.d("ProfileFragment", "fetchProfileData called. userId=" + userId);
+        if (userId == null) {
+            Log.e("ProfileFragment", "User ID is null! Cannot fetch profile.");
+            return;
+        }
 
         profileRepository.getProfile(userId).observe(getViewLifecycleOwner(), result -> {
+            Log.d("ProfileFragment", "getProfile result status: " + result.status + " -*************- " + userId);
+            Toast.makeText(getActivity(), "Got " + result.status + " --- " + result.data, Toast.LENGTH_SHORT).show();
             if (result.status == NetworkResult.Status.SUCCESS && result.data != null) {
+                Toast.makeText(getActivity(), "Got if", Toast.LENGTH_SHORT).show();
                 // Remove Shimmer
                 binding.shimmerName.setVisibility(View.GONE);
                 binding.shimmerEmail.setVisibility(View.GONE);
@@ -164,6 +173,13 @@ public class ProfileFragment extends Fragment {
 
                 String email = result.data.getEmail();
                 String phone = result.data.getPhone();
+
+                Log.d("ProfileFragment", "User Details Loaded -> Name: " + name + 
+                        ", Phone: " + phone + 
+                        ", Email: " + email + 
+                        ", AvatarUrl: " + result.data.getAvatarUrl());
+                
+                Toast.makeText(requireContext(), "Loaded: Name=" + name + ", Phone=" + phone, Toast.LENGTH_LONG).show();
                 if (email != null && !email.trim().isEmpty()) {
                     binding.tvEmail.setText(email);
                 } else if (phone != null && !phone.trim().isEmpty()) {
@@ -178,6 +194,16 @@ public class ProfileFragment extends Fragment {
                             .circleCrop()
                             .into(binding.ivAvatar);
                 }
+            } else if (result.status == NetworkResult.Status.ERROR) {
+                // Handle Error
+                binding.shimmerName.setVisibility(View.GONE);
+                binding.shimmerEmail.setVisibility(View.GONE);
+
+                Toast.makeText(getActivity(), "Got else", Toast.LENGTH_SHORT).show();
+                
+                String errorMsg = result.message != null ? result.message : "Unknown error fetching profile";
+                Log.e("ProfileFragment", "Error fetching profile: " + errorMsg);
+                Toast.makeText(requireContext(), "Error: " + errorMsg, Toast.LENGTH_LONG).show();
             }
         });
     }

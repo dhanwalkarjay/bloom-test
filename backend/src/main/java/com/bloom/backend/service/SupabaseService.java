@@ -2,6 +2,7 @@ package com.bloom.backend.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.SignatureAlgorithm;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -140,7 +141,7 @@ public class SupabaseService {
                 .post(body)
                 .addHeader("Authorization", "Bearer " + serviceRoleKey)
                 .addHeader("apikey", serviceRoleKey)
-                .addHeader("Prefer", "resolution=ignore-duplicates") // Do not overwrite if it exists
+                .addHeader("Prefer", "resolution=merge-duplicates") // Upsert to merge new details from Truecaller
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
@@ -151,6 +152,7 @@ public class SupabaseService {
     }
 
     public String generateCustomJwt(String userId) {
+        // Use raw UTF-8 bytes to ensure exact match with Legacy HS256 secret
         SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
         
         long nowMillis = System.currentTimeMillis();
@@ -160,12 +162,12 @@ public class SupabaseService {
 
         return Jwts.builder()
                 .subject(userId)
-                .audience().add("authenticated").and()
+                .claim("aud", "authenticated") // Must be a string, not an array
                 .claim("role", "authenticated")
                 .claim("app_metadata", new JSONObject().put("provider", "truecaller").toMap())
                 .issuedAt(now)
                 .expiration(exp)
-                .signWith(key)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 }

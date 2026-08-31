@@ -37,7 +37,13 @@ public class ProfileRepository {
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
                     result.setValue(NetworkResult.success(response.body().get(0)));
                 } else {
-                    result.setValue(NetworkResult.error("Profile not found", null));
+                    String errorMsg = "HTTP " + response.code();
+                    try {
+                        if (response.errorBody() != null) {
+                            errorMsg += " - " + response.errorBody().string();
+                        }
+                    } catch (Exception e) {}
+                    result.setValue(NetworkResult.error(errorMsg, null));
                 }
             }
 
